@@ -363,31 +363,67 @@ if not cw_df.empty:
         "🌐 4. TOÀN BỘ CHỨNG QUYỀN TRÊN SÀN (ALL CW)"
     ])
 
-    # Helper Renderer for Table + Export Options
+    # Helper Renderer for Table + Filter Controls + Export Options
     def render_tab_content(subset_df, title, desc, tab_key):
         st.subheader(title)
         st.caption(desc)
 
+        # Multi-Column & Universal Search Controls
+        with st.expander("🔍 **CÔNG CỤ TÌM KIẾM TẤT CẢ CÁC CỘT & LỌC CHI TIẾT**", expanded=True):
+            f1, f2, f3, f4 = st.columns([2, 1, 1, 1])
+            with f1:
+                search_query = st.text_input("🔎 Tìm kiếm tất cả các cột (Mã, Giá, TCPH, Điểm...):", key=f"global_search_{tab_key}").strip().upper()
+            with f2:
+                issuers = ["Tất cả"] + sorted(list(subset_df['TCPH'].unique())) if not subset_df.empty else ["Tất cả"]
+                sel_issuer = st.selectbox("🏢 Lọc theo TCPH:", issuers, key=f"filter_tcph_{tab_key}")
+            with f3:
+                underlyings = ["Tất cả"] + sorted(list(subset_df['CK_co_so'].unique())) if not subset_df.empty else ["Tất cả"]
+                sel_ck = st.selectbox("📈 Lọc theo CK Cơ Sở:", underlyings, key=f"filter_ck_{tab_key}")
+            with f4:
+                sel_status = st.selectbox("💰 Moneyness:", ["Tất cả", "ITM (Có lãi)", "OTM (Chưa lãi)"], key=f"filter_itm_{tab_key}")
+
+        # Apply Filters
+        filtered_df = subset_df.copy()
+
+        if search_query:
+            def matches_all_cols(row):
+                row_str = " ".join([str(val) for val in row.values]).upper()
+                return search_query in row_str
+            filtered_df = filtered_df[filtered_df.apply(matches_all_cols, axis=1)]
+
+        if sel_issuer != "Tất cả":
+            filtered_df = filtered_df[filtered_df['TCPH'] == sel_issuer]
+
+        if sel_ck != "Tất cả":
+            filtered_df = filtered_df[filtered_df['CK_co_so'] == sel_ck]
+
+        if sel_status == "ITM (Có lãi)":
+            filtered_df = filtered_df[filtered_df['Pct_to_ITM'] > 0]
+        elif sel_status == "OTM (Chưa lãi)":
+            filtered_df = filtered_df[filtered_df['Pct_to_ITM'] <= 0]
+
+        st.markdown(f"**Hiển thị:** `{len(filtered_df)}` / `{len(subset_df)}` kết quả")
+
         # Formatted Display Table
         disp = pd.DataFrame()
-        disp['STT'] = [f"#{i+1}" for i in range(len(subset_df))]
-        disp['Mã CW'] = subset_df['CW']
-        disp['TCPH'] = subset_df['TCPH']
-        disp['CK Cơ Sở'] = subset_df['CK_co_so']
-        disp['Giá CW'] = subset_df['Gia_CW'].apply(lambda p: f"{p:,.0f}đ")
-        disp['Giá Cơ Sở'] = subset_df['Gia_hien_tai'].apply(lambda p: f"{p:,.0f}đ")
-        disp['Giá TH'] = subset_df['Gia_TH'].apply(lambda p: f"{p:,.0f}đ")
-        disp['% Moneyness'] = subset_df['Pct_to_ITM'].apply(lambda p: f"+{p:.2f}%" if p > 0 else f"{p:.2f}%")
-        disp['Tỉ lệ CĐ'] = subset_df['Ti_le_CD_str']
-        disp['Ngày Còn Lai'] = subset_df['So_ngay_con_lai'].apply(lambda d: f"{d:.0f} ngày")
-        disp['Tổng KL'] = subset_df['Tong_KL'].apply(lambda k: f"{k:,.0f}")
-        disp['Điểm TB ⭐'] = subset_df['Diem_TB'].apply(lambda s: f"{s:.1f} ⭐")
+        disp['STT'] = [f"#{i+1}" for i in range(len(filtered_df))]
+        disp['Mã CW'] = filtered_df['CW']
+        disp['TCPH'] = filtered_df['TCPH']
+        disp['CK Cơ Sở'] = filtered_df['CK_co_so']
+        disp['Giá CW'] = filtered_df['Gia_CW'].apply(lambda p: f"{p:,.0f}đ")
+        disp['Giá Cơ Sở'] = filtered_df['Gia_hien_tai'].apply(lambda p: f"{p:,.0f}đ")
+        disp['Giá TH'] = filtered_df['Gia_TH'].apply(lambda p: f"{p:,.0f}đ")
+        disp['% Moneyness'] = filtered_df['Pct_to_ITM'].apply(lambda p: f"+{p:.2f}%" if p > 0 else f"{p:.2f}%")
+        disp['Tỉ lệ CĐ'] = filtered_df['Ti_le_CD_str']
+        disp['Ngày Còn Lai'] = filtered_df['So_ngay_con_lai'].apply(lambda d: f"{d:.0f} ngày")
+        disp['Tổng KL'] = filtered_df['Tong_KL'].apply(lambda k: f"{k:,.0f}")
+        disp['Điểm TB ⭐'] = filtered_df['Diem_TB'].apply(lambda s: f"{s:.1f} ⭐")
 
-        if 'Effective_Gearing' in subset_df.columns:
-            disp['Đòn Bẩy Thực (Ω)'] = subset_df['Effective_Gearing'].apply(lambda g: f"{g:.2f}x")
+        if 'Effective_Gearing' in filtered_df.columns:
+            disp['Đòn Bẩy Thực (Ω)'] = filtered_df['Effective_Gearing'].apply(lambda g: f"{g:.2f}x")
 
-        if 'Khuyen_nghi' in subset_df.columns:
-            disp['Khuyến Nghị'] = subset_df['Khuyen_nghi']
+        if 'Khuyen_nghi' in filtered_df.columns:
+            disp['Khuyến Nghị'] = filtered_df['Khuyen_nghi']
 
         st.dataframe(disp, use_container_width=True, hide_index=True)
 
@@ -397,13 +433,13 @@ if not cw_df.empty:
         
         ex_col1, ex_col2 = st.columns([1, 1])
         with ex_col1:
-            tsv_text = to_tsv(subset_df)
+            tsv_text = to_tsv(filtered_df)
             st.markdown("**1-Click Copy Snippet (Chuẩn Tab-Separated cho Excel):**")
             st.text_area(label="Dữ liệu TSV", value=tsv_text, height=140, key=f"tsv_{tab_key}")
 
         with ex_col2:
             st.markdown("**Xuất File Trực Tiếp:**")
-            excel_bytes = to_excel_bytes(subset_df, tab_name=tab_key)
+            excel_bytes = to_excel_bytes(filtered_df, tab_name=tab_key)
             st.download_button(
                 label="📊 Tải File Excel (.xlsx)",
                 data=excel_bytes,
@@ -459,45 +495,10 @@ if not cw_df.empty:
         )
 
     with tab4:
-        st.subheader("🌐 4. Toàn Bộ Chứng Quyền Niêm Yết Trên Sàn Chứng Khoán")
-        st.caption("Tra cứu toàn bộ danh sách chứng quyền niêm yết với công cụ tìm kiếm và lọc đa chiều")
-
-        f_col1, f_col2, f_col3 = st.columns([2, 1, 1])
-
-        with f_col1:
-            search_query = st.text_input("🔍 Tìm kiếm theo Mã CW hoặc Mã CK Cơ Sở (vd: ACB, CMBB, MWG...):", key="search_cw").strip().upper()
-
-        with f_col2:
-            all_issuers = ["Tất cả"] + sorted(list(unique_cw['TCPH'].unique()))
-            selected_issuer = st.selectbox("🏢 Tổ Chức Phát Hành (TCPH):", all_issuers, key="filter_issuer")
-
-        with f_col3:
-            status_options = ["Tất cả", "ITM (Có lãi)", "OTM (Chưa có lãi)"]
-            selected_status = st.selectbox("📈 Trạng Thái Moneyness:", status_options, key="filter_status")
-
-        filtered_all = unique_cw.copy()
-
-        if search_query:
-            filtered_all = filtered_all[
-                filtered_all['CW'].str.contains(search_query, case=False, na=False) |
-                filtered_all['CK_co_so'].str.contains(search_query, case=False, na=False)
-            ]
-
-        if selected_issuer != "Tất cả":
-            filtered_all = filtered_all[filtered_all['TCPH'] == selected_issuer]
-
-        if selected_status == "ITM (Có lãi)":
-            filtered_all = filtered_all[filtered_all['Pct_to_ITM'] > 0]
-        elif selected_status == "OTM (Chưa có lãi)":
-            filtered_all = filtered_all[filtered_all['Pct_to_ITM'] <= 0]
-
-        filtered_all = filtered_all.sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False])
-
-        st.markdown(f"**Hiển thị:** `{len(filtered_all)}` / `{len(unique_cw)}` mã chứng quyền")
-
+        all_cw_sorted = unique_cw.sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False])
         render_tab_content(
-            filtered_all,
-            "Danh Sách Chi Tiết Toàn Bộ CW",
-            "Sắp xếp theo Điểm TB ↓ và Thanh khoản ↓",
+            all_cw_sorted,
+            "🌐 4. Toàn Bộ Chứng Quyền Niêm Yết Trên Sàn Chứng Khoán",
+            "Tra cứu toàn bộ danh sách chứng quyền niêm yết với công cụ tìm kiếm tất cả các cột",
             "All_CW"
         )

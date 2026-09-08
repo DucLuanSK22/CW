@@ -605,38 +605,46 @@
                 .sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL || a.Pct_to_breakeven - b.Pct_to_breakeven).slice(0, 50);
         } else if (currentTab === 'tab4') {
             title = "🌐 4. TOÀN BỘ CHỨNG QUYỀN NIÊM YẾT TRÊN SÀN";
-            desc = "Tra cứu & lọc toàn bộ danh sách chứng quyền niêm yết";
-            
-            const searchVal = (document.getElementById('searchInput')?.value || '').toUpperCase().trim();
-            const issuerVal = document.getElementById('issuerSelect')?.value || 'Tất cả';
-            const statusVal = document.getElementById('statusSelect')?.value || 'Tất cả';
-
-            subset = [...allWarrantsData];
-            if (searchVal) subset = subset.filter(d => d.CW.includes(searchVal) || d.CK_co_so.includes(searchVal));
-            if (issuerVal !== 'Tất cả') subset = subset.filter(d => d.TCPH === issuerVal);
-            if (statusVal === 'ITM') subset = subset.filter(d => d.Pct_to_ITM > 0);
-            else if (statusVal === 'OTM') subset = subset.filter(d => d.Pct_to_ITM <= 0);
-
-            subset.sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL);
+            desc = "Tra cứu toàn bộ danh sách chứng quyền niêm yết";
+            subset = [...allWarrantsData].sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL);
         }
 
-        let filterHtml = "";
-        if (currentTab === 'tab4') {
-            const issuers = ['Tất cả', ...new Set(allWarrantsData.map(d => d.TCPH))].sort();
-            filterHtml = `
-                <div class="filter-panel">
-                    <input type="text" id="searchInput" placeholder="🔍 Tìm Mã CW hoặc Mã CK..." oninput="renderCurrentTab()" value="${document.getElementById('searchInput')?.value || ''}">
-                    <select id="issuerSelect" onchange="renderCurrentTab()">
-                        ${issuers.map(i => `<option value="${i}" ${i === (document.getElementById('issuerSelect')?.value || 'Tất cả') ? 'selected' : ''}>${i}</option>`).join('')}
-                    </select>
-                    <select id="statusSelect" onchange="renderCurrentTab()">
-                        <option value="Tất cả">Trạng thái: Tất cả</option>
-                        <option value="ITM" ${document.getElementById('statusSelect')?.value === 'ITM' ? 'selected' : ''}>ITM (Có lãi)</option>
-                        <option value="OTM" ${document.getElementById('statusSelect')?.value === 'OTM' ? 'selected' : ''}>OTM (Lỗ)</option>
-                    </select>
-                </div>
-            `;
+        // Apply Universal Search & Filters
+        const searchVal = (document.getElementById('searchInput')?.value || '').toUpperCase().trim();
+        const issuerVal = document.getElementById('issuerSelect')?.value || 'Tất cả';
+        const ckVal = document.getElementById('ckSelect')?.value || 'Tất cả';
+        const statusVal = document.getElementById('statusSelect')?.value || 'Tất cả';
+
+        if (searchVal) {
+            subset = subset.filter(d => {
+                const fullStr = `${d.CW} ${d.TCPH} ${d.CK_co_so} ${d.Gia_CW} ${d.Gia_hien_tai} ${d.Gia_TH} ${d.Pct_to_ITM.toFixed(2)}% ${d.Diem_TB.toFixed(1)} ${d.Khuyen_nghi}`.toUpperCase();
+                return fullStr.includes(searchVal);
+            });
         }
+        if (issuerVal !== 'Tất cả') subset = subset.filter(d => d.TCPH === issuerVal);
+        if (ckVal !== 'Tất cả') subset = subset.filter(d => d.CK_co_so === ckVal);
+        if (statusVal === 'ITM') subset = subset.filter(d => d.Pct_to_ITM > 0);
+        else if (statusVal === 'OTM') subset = subset.filter(d => d.Pct_to_ITM <= 0);
+
+        const issuers = ['Tất cả', ...new Set(allWarrantsData.map(d => d.TCPH))].sort();
+        const cks = ['Tất cả', ...new Set(allWarrantsData.map(d => d.CK_co_so))].sort();
+        const filterHtml = `
+            <div class="filter-panel">
+                <input type="text" id="searchInput" placeholder="🔎 Tìm kiếm TẤT CẢ các cột (Mã, Giá, TCPH, Điểm...)" oninput="renderCurrentTab()" value="${document.getElementById('searchInput')?.value || ''}" style="flex: 2; min-width: 260px;">
+                <select id="issuerSelect" onchange="renderCurrentTab()">
+                    ${issuers.map(i => `<option value="${i}" ${i === issuerVal ? 'selected' : ''}>TCPH: ${i}</option>`).join('')}
+                </select>
+                <select id="ckSelect" onchange="renderCurrentTab()">
+                    ${cks.map(c => `<option value="${c}" ${c === ckVal ? 'selected' : ''}>CK: ${c}</option>`).join('')}
+                </select>
+                <select id="statusSelect" onchange="renderCurrentTab()">
+                    <option value="Tất cả" ${statusVal === 'Tất cả' ? 'selected' : ''}>Moneyness: Tất cả</option>
+                    <option value="ITM" ${statusVal === 'ITM' ? 'selected' : ''}>ITM (Có lãi)</option>
+                    <option value="OTM" ${statusVal === 'OTM' ? 'selected' : ''}>OTM (Lỗ)</option>
+                </select>
+            </div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Hiển thị: <b>${subset.length}</b> mã</div>
+        `;
 
         const tsvText = generateTSV(subset);
 
