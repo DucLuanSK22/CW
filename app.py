@@ -405,6 +405,12 @@ if not cw_df.empty:
             with r3_4:
                 f_min_gcs = st.number_input("🏛️ Giá Cơ Sở Min (đ):", value=0, step=1000, key=f"fgcs_{tab_key}")
 
+            if st.button("🧹 XÓA TẤT CẢ BỘ LỌC & TÌM KIẾM", key=f"reset_{tab_key}", type="secondary", use_container_width=True):
+                for k in [f"global_search_{tab_key}", f"fcw_{tab_key}", f"ftcph_{tab_key}", f"fck_{tab_key}", f"fmon_{tab_key}", f"fmin_gcw_{tab_key}", f"fmax_gcw_{tab_key}", f"fscore_{tab_key}", f"fdays_{tab_key}", f"fvol_{tab_key}", f"fratio_{tab_key}", f"fgcs_{tab_key}"]:
+                    if k in st.session_state:
+                        del st.session_state[k]
+                st.rerun()
+
         # Apply All Filters
         filtered_df = subset_df.copy()
 

@@ -41,7 +41,7 @@
         }
 
         .container {
-            max-width: 1450px;
+            max-width: 1500px;
             margin: 0 auto;
         }
 
@@ -168,7 +168,7 @@
             box-shadow: 0 -2px 10px rgba(37, 99, 235, 0.3);
         }
 
-        /* Universal Search Panel */
+        /* Universal Search & Clear Controls */
         .search-panel {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -178,10 +178,12 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-wrap: wrap;
         }
 
         .search-panel input {
             flex: 1;
+            min-width: 250px;
             background: #0b0e14;
             border: 1px solid var(--card-border);
             color: var(--text-main);
@@ -193,6 +195,27 @@
 
         .search-panel input:focus {
             border-color: var(--accent-blue);
+        }
+
+        .btn-clear {
+            background: #ef4444;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-clear:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
         }
 
         /* Data Tables */
@@ -220,6 +243,16 @@
             border-bottom: 1px solid var(--card-border);
             white-space: nowrap;
             vertical-align: top;
+            user-select: none;
+        }
+
+        .sortable-th {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .sortable-th:hover {
+            color: #38ef7d;
         }
 
         td {
@@ -388,6 +421,10 @@
     let currentTab = 'tab1';
     let lastUpdateStr = '';
 
+    // Stateful Column Sorting A-Z / Z-A
+    let sortColumn = 'Tong_KL';
+    let sortAsc = false;
+
     async function fetchSSIData() {
         try {
             const staticRes = await fetch('./cw_data.json?t=' + new Date().getTime());
@@ -540,6 +577,39 @@
         renderCurrentTab();
     }
 
+    function handleSort(colKey) {
+        if (sortColumn === colKey) {
+            sortAsc = !sortAsc;
+        } else {
+            sortColumn = colKey;
+            sortAsc = (colKey === 'CW' || colKey === 'TCPH' || colKey === 'CK_co_so');
+        }
+        renderCurrentTab();
+    }
+
+    function clearAllFilters() {
+        const gs = document.getElementById('globalSearch');
+        if (gs) gs.value = '';
+        const f_cw = document.getElementById('f_cw'); if (f_cw) f_cw.value = '';
+        const f_tcph = document.getElementById('f_tcph'); if (f_tcph) f_tcph.value = 'ALL';
+        const f_ck = document.getElementById('f_ck'); if (f_ck) f_ck.value = 'ALL';
+        const f_gcw = document.getElementById('f_gcw'); if (f_gcw) f_gcw.value = '';
+        const f_gcs = document.getElementById('f_gcs'); if (f_gcs) f_gcs.value = '';
+        const f_gth = document.getElementById('f_gth'); if (f_gth) f_gth.value = '';
+        const f_mon = document.getElementById('f_mon'); if (f_mon) f_mon.value = 'ALL';
+        const f_ratio = document.getElementById('f_ratio'); if (f_ratio) f_ratio.value = '';
+        const f_days = document.getElementById('f_days'); if (f_days) f_days.value = '';
+        const f_vol = document.getElementById('f_vol'); if (f_vol) f_vol.value = '';
+        const f_score = document.getElementById('f_score'); if (f_score) f_score.value = '';
+        const f_rec = document.getElementById('f_rec'); if (f_rec) f_rec.value = 'ALL';
+        const f_gearing = document.getElementById('f_gearing'); if (f_gearing) f_gearing.value = '';
+
+        sortColumn = 'Tong_KL';
+        sortAsc = false;
+
+        renderCurrentTab();
+    }
+
     function generateTSV(subset) {
         let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\t% Moneyness\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
         subset.forEach((r, idx) => {
@@ -607,21 +677,19 @@
         if (currentTab === 'tab1') {
             title = "📌 1. ĐÁNH GIÁ DANH MỤC NẮM GIỮ";
             desc = "Chi tiết các mã chứng quyền monitored & cảnh báo quản trị rủi ro";
-            subset = allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW)).sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL);
+            subset = allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW));
         } else if (currentTab === 'tab2') {
             title = "⚡ 2. TOP 10 TIỀM NĂNG TĂNG GIÁ (EFFECTIVE GEARING)";
             desc = "Bộ lọc: Ngày còn lại ≥ 50, Tổng KL ≥ 100,000, Tỉ lệ CĐ ≤ 3.5, Moneyness ≥ -8.0%, Điểm TB ≥ 3.4";
-            subset = allWarrantsData.filter(d => d.So_ngay_con_lai >= 50 && d.Tong_KL >= 100000 && d.Ti_le_CD_num <= 3.5 && d.Pct_to_ITM >= -8.0 && d.Diem_TB >= 3.4)
-                .sort((a, b) => b.Effective_Gearing - a.Effective_Gearing || b.Tong_KL - a.Tong_KL).slice(0, 10);
+            subset = allWarrantsData.filter(d => d.So_ngay_con_lai >= 50 && d.Tong_KL >= 100000 && d.Ti_le_CD_num <= 3.5 && d.Pct_to_ITM >= -8.0 && d.Diem_TB >= 3.4).slice(0, 10);
         } else if (currentTab === 'tab3') {
             title = "🏆 3. TOP 50 CHỨNG QUYỀN HÀNG ĐẦU THỊ TRƯỜNG";
-            desc = "Bộ lọc: Ngày còn lại ≥ 10, Giá CW > 0, Tổng KL ≥ 10,000 | Sắp xếp theo Điểm TB ↓, Thanh Khoản ↓, % Đến Hòa Vốn ↑";
-            subset = allWarrantsData.filter(d => d.So_ngay_con_lai >= 10 && d.Gia_CW > 0 && d.Tong_KL >= 10000)
-                .sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL || a.Pct_to_breakeven - b.Pct_to_breakeven).slice(0, 50);
+            desc = "Bộ lọc: Ngày còn lại ≥ 10, Giá CW > 0, Tổng KL ≥ 10,000";
+            subset = allWarrantsData.filter(d => d.So_ngay_con_lai >= 10 && d.Gia_CW > 0 && d.Tong_KL >= 10000).slice(0, 50);
         } else if (currentTab === 'tab4') {
             title = "🌐 4. TOÀN BỘ CHỨNG QUYỀN NIÊM YẾT TRÊN SÀN";
             desc = "Tra cứu toàn bộ danh sách chứng quyền niêm yết";
-            subset = [...allWarrantsData].sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL);
+            subset = [...allWarrantsData];
         }
 
         // Apply Universal & Excel-Style Direct Column AutoFilters
@@ -659,8 +727,26 @@
         if (f_score > 1.0) subset = subset.filter(d => d.Diem_TB >= f_score);
         if (f_rec !== 'ALL') subset = subset.filter(d => d.Khuyen_nghi.includes(f_rec));
 
+        // Column Sorting A-Z / Z-A (Numeric / Text)
+        subset.sort((a, b) => {
+            let valA = a[sortColumn];
+            let valB = b[sortColumn];
+            if (typeof valA === 'string') {
+                valA = valA.toUpperCase();
+                valB = valB.toUpperCase();
+            }
+            if (valA < valB) return sortAsc ? -1 : 1;
+            if (valA > valB) return sortAsc ? 1 : -1;
+            return 0;
+        });
+
         const issuers = ['ALL', ...new Set(allWarrantsData.map(d => d.TCPH))].sort();
         const cks = ['ALL', ...new Set(allWarrantsData.map(d => d.CK_co_so))].sort();
+
+        const getSortIndicator = (colKey) => {
+            if (sortColumn !== colKey) return ' <i class="fa-solid fa-sort" style="opacity:0.3; font-size:11px;"></i>';
+            return sortAsc ? ' <i class="fa-solid fa-sort-up" style="color:#38ef7d;"></i>' : ' <i class="fa-solid fa-sort-down" style="color:#38ef7d;"></i>';
+        };
 
         const tsvText = generateTSV(subset);
 
@@ -699,6 +785,9 @@
             <div class="search-panel">
                 <i class="fa-solid fa-magnifying-glass" style="color: var(--accent-blue);"></i>
                 <input type="text" id="globalSearch" placeholder="🔎 Tìm kiếm TẤT CẢ các cột (Mã, Giá, TCPH, Điểm...)" oninput="renderCurrentTab()" value="${document.getElementById('globalSearch')?.value || ''}">
+                <button class="btn-clear" onclick="clearAllFilters()">
+                    <i class="fa-solid fa-broom"></i> Xóa Tất Cả Bộ Lọc
+                </button>
                 <span style="font-size: 13px; color: var(--text-muted); white-space: nowrap;">Kết quả: <b>${subset.length}</b> mã</span>
             </div>
 
@@ -706,20 +795,20 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>STT</th>
-                            <th>Mã CW</th>
-                            <th>TCPH</th>
-                            <th>CK Cơ Sở</th>
-                            <th>Giá CW</th>
-                            <th>Giá Cơ Sở</th>
-                            <th>Giá TH</th>
-                            <th>% Moneyness</th>
-                            <th>Tỉ lệ CĐ</th>
-                            <th>Ngày Còn Lai</th>
-                            <th>Tổng KL</th>
-                            <th>Điểm TB ⭐</th>
-                            ${currentTab === 'tab2' ? `<th>Đòn Bẩy Thực (Ω)</th>` : ''}
-                            ${currentTab === 'tab1' ? `<th>Khuyến Nghị</th>` : ''}
+                            <th class="sortable-th">STT</th>
+                            <th class="sortable-th" onclick="handleSort('CW')">Mã CW ${getSortIndicator('CW')}</th>
+                            <th class="sortable-th" onclick="handleSort('TCPH')">TCPH ${getSortIndicator('TCPH')}</th>
+                            <th class="sortable-th" onclick="handleSort('CK_co_so')">CK Cơ Sở ${getSortIndicator('CK_co_so')}</th>
+                            <th class="sortable-th" onclick="handleSort('Gia_CW')">Giá CW ${getSortIndicator('Gia_CW')}</th>
+                            <th class="sortable-th" onclick="handleSort('Gia_hien_tai')">Giá Cơ Sở ${getSortIndicator('Gia_hien_tai')}</th>
+                            <th class="sortable-th" onclick="handleSort('Gia_TH')">Giá TH ${getSortIndicator('Gia_TH')}</th>
+                            <th class="sortable-th" onclick="handleSort('Pct_to_ITM')">% Moneyness ${getSortIndicator('Pct_to_ITM')}</th>
+                            <th class="sortable-th" onclick="handleSort('Ti_le_CD_num')">Tỉ lệ CĐ ${getSortIndicator('Ti_le_CD_num')}</th>
+                            <th class="sortable-th" onclick="handleSort('So_ngay_con_lai')">Ngày Còn Lai ${getSortIndicator('So_ngay_con_lai')}</th>
+                            <th class="sortable-th" onclick="handleSort('Tong_KL')">Tổng KL ${getSortIndicator('Tong_KL')}</th>
+                            <th class="sortable-th" onclick="handleSort('Diem_TB')">Điểm TB ⭐ ${getSortIndicator('Diem_TB')}</th>
+                            ${currentTab === 'tab2' ? `<th class="sortable-th" onclick="handleSort('Effective_Gearing')">Đòn Bẩy Thực (Ω) ${getSortIndicator('Effective_Gearing')}</th>` : ''}
+                            ${currentTab === 'tab1' ? `<th class="sortable-th" onclick="handleSort('Khuyen_nghi')">Khuyến Nghị ${getSortIndicator('Khuyen_nghi')}</th>` : ''}
                         </tr>
                         <!-- Excel-Style AutoFilter Header Row -->
                         <tr style="background: #111927;">
