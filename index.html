@@ -1000,14 +1000,27 @@
                 const cwList = json.data?.coveredWarrantData || [];
                 const underlyingList = json.data?.underlyingData || [];
 
+                const today = new Date();
+                const currentHour = today.getHours();
+                const isBefore9AM = (currentHour < 9);
+
                 const uPrices = {};
                 underlyingList.forEach(u => {
-                    uPrices[u.stockSymbol] = u.matchedPrice || u.refPrice || u.priorClosePrice || 0;
+                    if (isBefore9AM) {
+                        uPrices[u.stockSymbol] = u.priorClosePrice || u.refPrice || u.matchedPrice || 0;
+                    } else {
+                        uPrices[u.stockSymbol] = u.matchedPrice || u.refPrice || u.priorClosePrice || 0;
+                    }
                 });
 
-                const today = new Date();
                 const records = cwList.map(item => {
-                    const giaCW = item.matchedPrice || item.refPrice || item.priorClosePrice || 0;
+                    let giaCW = 0;
+                    if (isBefore9AM) {
+                        giaCW = item.priorClosePrice || item.refPrice || item.matchedPrice || 0;
+                    } else {
+                        giaCW = item.matchedPrice || item.refPrice || item.priorClosePrice || 0;
+                    }
+
                     const tongKL = item.nmTotalTradedQty || item.stockVol || 0;
                     const giaHienTai = uPrices[item.underlyingSymbol] || 0;
                     const giaTH = item.exercisePrice || 0;
@@ -1034,9 +1047,12 @@
                     }
 
                     const refPrice = item.refPrice || item.priorClosePrice || 0;
-                    let pctChangeCW = (item.priceChangePercent !== undefined && item.priceChangePercent !== null) ? item.priceChangePercent : item.changePercent;
-                    if (pctChangeCW === undefined || pctChangeCW === null) {
-                        pctChangeCW = (refPrice > 0 && giaCW > 0) ? ((giaCW - refPrice) / refPrice) * 100 : 0.0;
+                    let pctChangeCW = 0.0;
+                    if (!isBefore9AM) {
+                        pctChangeCW = (item.priceChangePercent !== undefined && item.priceChangePercent !== null) ? item.priceChangePercent : item.changePercent;
+                        if (pctChangeCW === undefined || pctChangeCW === null) {
+                            pctChangeCW = (refPrice > 0 && giaCW > 0) ? ((giaCW - refPrice) / refPrice) * 100 : 0.0;
+                        }
                     }
 
                     return {

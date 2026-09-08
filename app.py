@@ -133,19 +133,33 @@ def fetch_ssi_data():
             cw_list = raw_json.get('coveredWarrantData', [])
             underlying_list = raw_json.get('underlyingData', [])
 
+            today = datetime.datetime.now()
+            is_before_9am = today.time() < datetime.time(9, 0)
+
             underlying_prices = {}
             for u in underlying_list:
                 sym = u.get('stockSymbol')
-                price = u.get('matchedPrice', 0) or u.get('refPrice', 0) or u.get('priorClosePrice', 0) or 0
+                if is_before_9am:
+                    # Trước 9:00 AM: Ưu tiên lấy giá đóng cửa / tham chiếu hôm trước
+                    price = u.get('priorClosePrice', 0) or u.get('refPrice', 0) or u.get('matchedPrice', 0) or 0
+                else:
+                    # Từ 9:00 AM trở đi: Lấy giá khớp realtime hiện tại trong phiên
+                    price = u.get('matchedPrice', 0) or u.get('refPrice', 0) or u.get('priorClosePrice', 0) or 0
                 underlying_prices[sym] = float(price)
 
-            today = datetime.datetime.now()
             records = []
             for item in cw_list:
                 cw_code = item.get('stockSymbol')
                 issuer = item.get('issuerName', 'N/A')
                 underlying = item.get('underlyingSymbol', 'N/A')
-                gia_cw = float(item.get('matchedPrice', 0) or item.get('refPrice', 0) or item.get('priorClosePrice', 0) or 0)
+                
+                if is_before_9am:
+                    # Trước 9:00 AM: Lấy giá đóng cửa / tham chiếu hôm trước của CW
+                    gia_cw = float(item.get('priorClosePrice', 0) or item.get('refPrice', 0) or item.get('matchedPrice', 0) or 0)
+                else:
+                    # Trong phiên giao dịch: Lấy giá khớp realtime hiện tại của CW
+                    gia_cw = float(item.get('matchedPrice', 0) or item.get('refPrice', 0) or item.get('priorClosePrice', 0) or 0)
+                
                 tong_kl = float(item.get('nmTotalTradedQty', 0) or item.get('stockVol', 0) or 0)
                 gia_hien_tai = underlying_prices.get(underlying, 0.0)
                 gia_th = float(item.get('exercisePrice', 0) or 0)
@@ -170,13 +184,16 @@ def fetch_ssi_data():
                         pass
 
                 ref_price = float(item.get('refPrice', 0) or item.get('priorClosePrice', 0) or 0)
-                raw_pct = item.get('priceChangePercent', None) if item.get('priceChangePercent', None) is not None else item.get('changePercent', None)
-                if raw_pct is not None:
-                    pct_cw = float(raw_pct)
-                elif ref_price > 0 and gia_cw > 0:
-                    pct_cw = ((gia_cw - ref_price) / ref_price) * 100.0
-                else:
+                if is_before_9am:
                     pct_cw = 0.0
+                else:
+                    raw_pct = item.get('priceChangePercent', None) if item.get('priceChangePercent', None) is not None else item.get('changePercent', None)
+                    if raw_pct is not None:
+                        pct_cw = float(raw_pct)
+                    elif ref_price > 0 and gia_cw > 0:
+                        pct_cw = ((gia_cw - ref_price) / ref_price) * 100.0
+                    else:
+                        pct_cw = 0.0
 
                 records.append({
                     'CW': cw_code,

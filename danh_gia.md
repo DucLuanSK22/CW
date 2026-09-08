@@ -113,3 +113,18 @@ Tổng khối lượng giao dịch khớp lệnh trong phiên thể hiện khả
        row['Diem_TB'] = min(row['Diem_TB'], 1.5)  # Ép trần tối đa không quá 1.5 ⭐
        row['Khuyen_nghi'] = "🚨 RỦI RO MẤT TRẮNG"
    ```
+
+4. **⏰ QUY TẮC THỜI GIAN LẤY DỮ LIỆU THỊ TRƯỜNG (SESSION-AWARE DATA FETCHING):**
+   - **Trước 9:00 AM (Trước giờ mở cửa):** Lấy giá đóng cửa phiên trước (Prior Close Price / Giá tham chiếu).
+   - **Từ 9:00 AM trở đi (Trong phiên giao dịch):** Lấy giá khớp lệnh realtime hiện tại khi người dùng bấm nút **Cập Nhật Dữ Liệu**.
+
+   ```python
+   # Logic kiểm tra giờ giao dịch:
+   now = datetime.datetime.now()
+   if now.time() < datetime.time(9, 0):
+       # Lấy giá đóng cửa/tham chiếu hôm trước
+       price = item.get('priorClosePrice') or item.get('refPrice')
+   else:
+       # Lấy giá khớp realtime hiện tại
+       price = item.get('matchedPrice') or item.get('refPrice')
+   ```
