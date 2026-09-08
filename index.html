@@ -736,13 +736,13 @@
             const pctITM = (r.Gia_hien_tai - r.Gia_TH) / Math.max(r.Gia_hien_tai, 1.0) * 100;
             const gearing = r.Gia_hien_tai / Math.max(r.Gia_CW * r.Ti_le_CD_num, 1.0);
 
-            // 5-Tier Moneyness Classification
-            let phanLoai = "ATM";
-            if (pctITM > 5.0) phanLoai = "ITM sâu";
-            else if (pctITM > 0.0) phanLoai = "ITM nhẹ";
-            else if (pctITM === 0.0) phanLoai = "ATM";
-            else if (pctITM >= -5.0) phanLoai = "OTM nhẹ";
-            else phanLoai = "OTM sâu";
+            // 5-Tier Moneyness Classification (Numbered 1-5)
+            let phanLoai = "3. ATM";
+            if (pctITM > 5.0) phanLoai = "1. ITM sâu";
+            else if (pctITM > 0.0) phanLoai = "2. ITM nhẹ";
+            else if (pctITM === 0.0) phanLoai = "3. ATM";
+            else if (pctITM >= -5.0) phanLoai = "4. OTM nhẹ";
+            else phanLoai = "5. OTM sâu";
 
             let delta = 0.10;
             if (pctITM >= 10) delta = 0.85;
@@ -1197,10 +1197,10 @@
             const pctText = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
 
             let plBadgeClass = "badge-atm";
-            if (r.Phan_loai_Moneyness === "ITM sâu") plBadgeClass = "badge-itm-sau";
-            else if (r.Phan_loai_Moneyness === "ITM nhẹ") plBadgeClass = "badge-itm-nhe";
-            else if (r.Phan_loai_Moneyness === "OTM nhẹ") plBadgeClass = "badge-otm-nhe";
-            else if (r.Phan_loai_Moneyness === "OTM sâu") plBadgeClass = "badge-otm-sau";
+            if (r.Phan_loai_Moneyness.includes("1.")) plBadgeClass = "badge-itm-sau";
+            else if (r.Phan_loai_Moneyness.includes("2.")) plBadgeClass = "badge-itm-nhe";
+            else if (r.Phan_loai_Moneyness.includes("4.")) plBadgeClass = "badge-otm-nhe";
+            else if (r.Phan_loai_Moneyness.includes("5.")) plBadgeClass = "badge-otm-sau";
 
             const isPinned = USER_HOLDINGS.includes(r.CW);
             const pinClass = isPinned ? 'pinned' : '';

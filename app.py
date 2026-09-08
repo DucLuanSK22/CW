@@ -209,11 +209,11 @@ def evaluate_cw(df):
     df['Pct_to_ITM'] = (df['Gia_hien_tai'] - df['Gia_TH']) / np.maximum(df['Gia_hien_tai'], 1.0) * 100
 
     def get_phan_loai(p):
-        if p > 5.0: return "ITM sâu"
-        elif p > 0.0: return "ITM nhẹ"
-        elif p == 0.0: return "ATM"
-        elif p >= -5.0: return "OTM nhẹ"
-        return "OTM sâu"
+        if p > 5.0: return "1. ITM sâu"
+        elif p > 0.0: return "2. ITM nhẹ"
+        elif p == 0.0: return "3. ATM"
+        elif p >= -5.0: return "4. OTM nhẹ"
+        return "5. OTM sâu"
 
     df['Phan_loai_Moneyness'] = df['Pct_to_ITM'].apply(get_phan_loai)
     df['Gearing'] = df['Gia_hien_tai'] / np.maximum(df['Gia_CW'] * df['Ti_le_CD_num'], 1.0)
@@ -394,7 +394,7 @@ if not cw_df.empty:
             # Row 2: Price & Moneyness Numeric Filters
             r2_1, r2_2, r2_3, r2_4 = st.columns(4)
             with r2_1:
-                f_mon_status = st.selectbox("💰 % Moneyness:", ["Tất cả", "ITM (Có lãi > 0%)", "OTM (Chưa lãi <= 0%)"], key=f"fmon_{tab_key}")
+                f_mon_status = st.selectbox("💰 Phân Loại Moneyness:", ["Tất cả", "1. ITM sâu", "2. ITM nhẹ", "3. ATM", "4. OTM nhẹ", "5. OTM sâu"], key=f"fmon_{tab_key}")
             with r2_2:
                 f_min_gcw = st.number_input("💵 Giá CW Min (đ):", value=0, step=100, key=f"fmin_gcw_{tab_key}")
             with r2_3:
