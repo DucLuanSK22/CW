@@ -101,3 +101,15 @@ Tổng khối lượng giao dịch khớp lệnh trong phiên thể hiện khả
 2. **Cờ Cảnh Báo Tự Động (Action Flag):**
    - ⚠️ **Cảnh báo chốt lời**: Khi chứng quyền sắp đáo hạn ($< 20$ ngày) và đang ở trạng thái ITM ($> 0\%$).
    - 🚨 **Báo động cắt lỗ khẩn cấp**: Khi chứng quyền sắp đáo hạn ($< 20$ ngày) và lỗ sâu (OTM $< -10\%$).
+
+3. **🛡️ QUY TẮC KHÓA ĐIỂM BẢO VỆ TÀI KHOẢN:**
+   Khi chứng quyền còn dưới 30 ngày đáo hạn VÀ đang lỗ sâu ($\text{OTM} < -10\%$):
+   - **Ép trần điểm số tối đa:** $\text{Điểm TB} = \min(\text{Điểm TB}, 1.5 ⭐)$
+   - **Nhãn khuyến nghị khẩn cấp:** `🚨 RỦI RO MẤT TRẮNG`
+   
+   ```python
+   # Logic khóa điểm bảo vệ tài khoản:
+   if row['So_ngay_con_lai'] < 30 and row['Pct_to_ITM'] < -10:
+       row['Diem_TB'] = min(row['Diem_TB'], 1.5)  # Ép trần tối đa không quá 1.5 ⭐
+       row['Khuyen_nghi'] = "🚨 RỦI RO MẤT TRẮNG"
+   ```

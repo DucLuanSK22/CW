@@ -1086,11 +1086,18 @@
             const s4 = r.Ti_le_CD_num <= 2.05 ? 5 : (r.Ti_le_CD_num <= 3.05 ? 4 : (r.Ti_le_CD_num <= 4.05 ? 3 : (r.Ti_le_CD_num <= 6.05 ? 2 : 1)));
             const s5 = r.Tong_KL >= 1000000 ? 5 : (r.Tong_KL >= 500000 ? 4 : (r.Tong_KL >= 200000 ? 3 : (r.Tong_KL >= 50000 ? 2 : 1)));
 
-            const diemTB = (s1 + s2 + s3 + s4 + s5) / 5.0;
+            let diemTB = (s1 + s2 + s3 + s4 + s5) / 5.0;
 
             let khuyenNghi = "✅ An toàn";
             if (r.So_ngay_con_lai < 20 && pctITM > 0) khuyenNghi = "⚠️ Cảnh báo chốt lời";
             else if (r.So_ngay_con_lai < 20 && pctITM < -10) khuyenNghi = "🚨 Báo động cắt lỗ";
+
+            // QUY TẮC KHÓA ĐIỂM BẢO VỆ TÀI KHOẢN:
+            // Nếu CW còn dưới 30 ngày VÀ đang OTM sâu (< -10%):
+            if (r.So_ngay_con_lai < 30 && pctITM < -10) {
+                diemTB = Math.min(diemTB, 1.5); // Ép trần tối đa không quá 1.5 ⭐
+                khuyenNghi = "🚨 RỦI RO MẤT TRẮNG";
+            }
 
             return {
                 ...r,

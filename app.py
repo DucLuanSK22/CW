@@ -238,16 +238,26 @@ def evaluate_cw(df):
 
     df['Diem_TB'] = (s1 + s2 + s3 + s4 + s5) / 5.0
 
-    def get_action_flag(row):
+    def apply_protection(row):
+        score = row['Diem_TB']
         days = row['So_ngay_con_lai']
         itm = row['Pct_to_ITM']
+        rec = "✅ An toàn"
         if days < 20 and itm > 0:
-            return "⚠️ Cảnh báo chốt lời"
+            rec = "⚠️ Cảnh báo chốt lời"
         elif days < 20 and itm < -10:
-            return "🚨 Báo động cắt lỗ khẩn cấp"
-        return "✅ An toàn"
+            rec = "🚨 Báo động cắt lỗ khẩn cấp"
+        
+        # QUY TẮC KHÓA ĐIỂM BẢO VỆ TÀI KHOẢN
+        if days < 30 and itm < -10:
+            score = min(score, 1.5)
+            rec = "🚨 RỦI RO MẤT TRẮNG"
+            
+        return pd.Series([score, rec], index=['Diem_TB', 'Khuyen_nghi'])
 
-    df['Khuyen_nghi'] = df.apply(get_action_flag, axis=1)
+    res_df = df.apply(apply_protection, axis=1)
+    df['Diem_TB'] = res_df['Diem_TB']
+    df['Khuyen_nghi'] = res_df['Khuyen_nghi']
     return df
 
 def to_tsv(df_subset):
