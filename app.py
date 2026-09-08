@@ -244,10 +244,11 @@ def evaluate_cw(df):
 
 def to_tsv(df_subset):
     """Original TSV string format specification for Excel copy-paste."""
-    lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"]
+    lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\t% Moneyness\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"]
     for idx, r in df_subset.reset_index(drop=True).iterrows():
         diff = (r['Gia_hien_tai'] - r['Gia_TH']) / 1000.0
         m_str = f"ITM (+{diff:.2f}k)" if diff > 0 else (f"OTM ({diff:.2f}k)" if diff < 0 else "ATM (0.00k)")
+        pct_itm_str = f"{r['Pct_to_ITM']:+.2f}%"
         row_vals = [
             f"TOP {idx + 1}",
             str(r['CW']),
@@ -255,6 +256,7 @@ def to_tsv(df_subset):
             f"{r['CK_co_so']} ({r['Gia_hien_tai']/1000:.2f}k)",
             f"{r['Gia_CW']:.0f}đ",
             m_str,
+            pct_itm_str,
             f"{r['Gia_TH']:.0f}đ",
             str(r['Ti_le_CD_str']),
             f"{r['So_ngay_con_lai']:.0f} ngày",
@@ -270,6 +272,7 @@ def to_excel_bytes(df_subset, tab_name="CW_Analysis"):
     for idx, r in df_subset.reset_index(drop=True).iterrows():
         diff = (r['Gia_hien_tai'] - r['Gia_TH']) / 1000.0
         m_str = f"ITM (+{diff:.2f}k)" if diff > 0 else (f"OTM ({diff:.2f}k)" if diff < 0 else "ATM (0.00k)")
+        pct_itm_str = f"{r['Pct_to_ITM']:+.2f}%"
         export_df = pd.concat([export_df, pd.DataFrame([{
             'Xếp hạng': f"TOP {idx + 1}",
             'Mã CW': str(r['CW']),
@@ -277,6 +280,7 @@ def to_excel_bytes(df_subset, tab_name="CW_Analysis"):
             'Cơ sở (Giá TT)': f"{r['CK_co_so']} ({r['Gia_hien_tai']/1000:.2f}k)",
             'Thị giá CW': f"{r['Gia_CW']:.0f}đ",
             'Trạng thái (Moneyness)': m_str,
+            '% Moneyness': pct_itm_str,
             'Giá TH': f"{r['Gia_TH']:.0f}đ",
             'Tỉ lệ CĐ': str(r['Ti_le_CD_str']),
             'Thời gian còn lại': f"{r['So_ngay_con_lai']:.0f} ngày",
@@ -373,6 +377,7 @@ if not cw_df.empty:
         disp['Giá CW'] = subset_df['Gia_CW'].apply(lambda p: f"{p:,.0f}đ")
         disp['Giá Cơ Sở'] = subset_df['Gia_hien_tai'].apply(lambda p: f"{p:,.0f}đ")
         disp['Giá TH'] = subset_df['Gia_TH'].apply(lambda p: f"{p:,.0f}đ")
+        disp['% Moneyness'] = subset_df['Pct_to_ITM'].apply(lambda p: f"+{p:.2f}%" if p > 0 else f"{p:.2f}%")
         disp['Tỉ lệ CĐ'] = subset_df['Ti_le_CD_str']
         disp['Ngày Còn Lai'] = subset_df['So_ngay_con_lai'].apply(lambda d: f"{d:.0f} ngày")
         disp['Tổng KL'] = subset_df['Tong_KL'].apply(lambda k: f"{k:,.0f}")

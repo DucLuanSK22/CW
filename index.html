@@ -526,10 +526,11 @@
     }
 
     function generateTSV(subset) {
-        let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
+        let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\t% Moneyness\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
         subset.forEach((r, idx) => {
             const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
             const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
+            const pctStr = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
             const row = [
                 `TOP ${idx + 1}`,
                 r.CW,
@@ -537,6 +538,7 @@
                 `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`,
                 `${Math.round(r.Gia_CW)}đ`,
                 mStr,
+                pctStr,
                 `${Math.round(r.Gia_TH)}đ`,
                 r.Ti_le_CD_str,
                 `${Math.round(r.So_ngay_con_lai)} ngày`,
@@ -552,6 +554,7 @@
         const dataForExcel = subset.map((r, idx) => {
             const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
             const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
+            const pctStr = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
             return {
                 "Xếp hạng": `TOP ${idx + 1}`,
                 "Mã CW": r.CW,
@@ -559,6 +562,7 @@
                 "Cơ sở (Giá TT)": `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`,
                 "Thị giá CW": `${Math.round(r.Gia_CW)}đ`,
                 "Trạng thái": mStr,
+                "% Moneyness": pctStr,
                 "Giá TH": `${Math.round(r.Gia_TH)}đ`,
                 "Tỉ lệ CĐ": r.Ti_le_CD_str,
                 "Thời gian còn lại": `${Math.round(r.So_ngay_con_lai)} ngày`,
@@ -640,6 +644,9 @@
             let badgeClass = "badge-safe";
             if (r.Khuyen_nghi.includes("Cảnh báo")) badgeClass = "badge-warn";
             else if (r.Khuyen_nghi.includes("Báo động")) badgeClass = "badge-danger";
+            
+            const pctColor = r.Pct_to_ITM > 0 ? '#10b981' : (r.Pct_to_ITM < 0 ? '#ef4444' : '#94a3b8');
+            const pctText = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
 
             return `
                 <tr>
@@ -650,6 +657,7 @@
                     <td>${Math.round(r.Gia_CW).toLocaleString()}đ</td>
                     <td>${Math.round(r.Gia_hien_tai).toLocaleString()}đ</td>
                     <td>${Math.round(r.Gia_TH).toLocaleString()}đ</td>
+                    <td style="color: ${pctColor}; font-weight: 700;">${pctText}</td>
                     <td>${r.Ti_le_CD_str}</td>
                     <td>${Math.round(r.So_ngay_con_lai)} ngày</td>
                     <td>${Math.round(r.Tong_KL).toLocaleString()}</td>
@@ -675,6 +683,7 @@
                             <th>Giá CW</th>
                             <th>Giá Cơ Sở</th>
                             <th>Giá TH</th>
+                            <th>% Moneyness</th>
                             <th>Tỉ lệ CĐ</th>
                             <th>Ngày Còn Lai</th>
                             <th>Tổng KL</th>
