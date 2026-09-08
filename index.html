@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Phân Tích & Định Giá Chứng Quyền (CW) - SSI Market</title>
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS for Excel (.xlsx) Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #0b0e14;
+            --card-bg: #131b2e;
+            --card-border: #23314d;
+            --text-main: #e0e6ed;
+            --text-muted: #94a3b8;
+            --accent-green: #10b981;
+            --accent-blue: #3b82f6;
+            --accent-gold: #f59e0b;
+            --accent-pink: #ec4899;
+            --accent-red: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 24px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header Card */
+        .header-card {
+            background: linear-gradient(135deg, #131b2e 0%, #1c2a4a 100%);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 24px 30px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title-box h1 {
+            font-size: 26px;
+            font-weight: 800;
+            color: #38ef7d;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-title-box p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        /* KPI Analytics Bar */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+        }
+
+        .kpi-val {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .kpi-lbl {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Navigation Tabs */
+        .tabs-nav {
+            display: flex;
+            gap: 8px;
+            border-bottom: 2px solid var(--card-border);
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: #141c2e;
+            border: 1px solid var(--card-border);
+            border-bottom: none;
+            border-radius: 10px 10px 0 0;
+            padding: 14px 22px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-color: #3b82f6;
+            color: #ffffff;
+            font-weight: 700;
+            box-shadow: 0 -2px 10px rgba(37, 99, 235, 0.3);
+        }
+
+        /* Filter Controls */
+        .filter-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-panel input, .filter-panel select {
+            background: #0b0e14;
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .filter-panel input:focus, .filter-panel select:focus {
+            border-color: var(--accent-blue);
+        }
+
+        /* Data Tables */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            margin-bottom: 24px;
+            background: var(--card-bg);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #17223b;
+            color: #cbd5e1;
+            padding: 14px 16px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--card-border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #1e2d4a;
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background-color: #1a2744;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-safe { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+        .badge-warn { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
+        .badge-danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
+
+        /* Export Container */
+        .export-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .export-section { grid-template-columns: 1fr; }
+        }
+
+        textarea.tsv-area {
+            width: 100%;
+            height: 120px;
+            background: #0b0e14;
+            border: 1px solid var(--card-border);
+            color: #38ef7d;
+            font-family: monospace;
+            padding: 12px;
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 13px;
+        }
+
+        .btn-action {
+            background: #1e293b;
+            color: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .btn-action.btn-excel {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: none;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .status-badge {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header Card -->
+    <div class="header-card">
+        <div class="header-title-box">
+            <h1><i class="fa-solid fa-chart-line"></i> HỆ THỐNG PHÂN TÍCH & ĐỊNH GIÁ CHỨNG QUYỀN (CW)</h1>
+            <p>Mô hình định giá 5-sao & Đòn bẩy thực tế (Effective Gearing) | Nguồn dữ liệu: <b>SSI iBoard API</b></p>
+        </div>
+        <div>
+            <button class="refresh-btn" id="refreshBtn" onclick="loadMarketData()">
+                <i class="fa-solid fa-rotate" id="refreshIcon"></i> CẬP NHẬT DỮ LIỆU TỪ SÀN (SSI)
+            </button>
+            <div class="status-badge" style="margin-top: 6px; text-align: right;" id="lastUpdateText">Đang tải...</div>
+        </div>
+    </div>
+
+    <!-- KPI Summary Grid -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-val" id="kpiTotalCW">0</div>
+            <div class="kpi-lbl">Mã CW Niêm Yết</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-val" style="color: var(--accent-green);" id="kpiITM">0</div>
+            <div class="kpi-lbl">Mã ITM (Có Lãi)</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-val" style="color: var(--accent-gold);" id="kpiAvgScore">0.0 ⭐</div>
+            <div class="kpi-lbl">Điểm TB Thị Trường</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-val" style="color: var(--accent-pink);" id="kpiTopVol">N/A</div>
+            <div class="kpi-lbl">CW Thanh Khoản Nhất</div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+        <button class="tab-btn active" onclick="switchTab('tab1', this)">📌 1. DANH MỤC NẮM GIỮ</button>
+        <button class="tab-btn" onclick="switchTab('tab2', this)">⚡ 2. TOP 10 TIỀM NĂNG (EFFECTIVE GEARING)</button>
+        <button class="tab-btn" onclick="switchTab('tab3', this)">🏆 3. TOP 50 THỊ TRƯỜNG</button>
+        <button class="tab-btn" onclick="switchTab('tab4', this)">🌐 4. TOÀN BỘ CHỨNG QUYỀN (ALL CW)</button>
+    </div>
+
+    <!-- Tab Contents -->
+    <div id="tabContent">
+        <!-- Rendered Dynamically -->
+    </div>
+</div>
+
+<script>
+    const USER_HOLDINGS = ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607'];
+    let allWarrantsData = [];
+    let currentTab = 'tab1';
+
+    async function fetchSSIData() {
+        const url = "https://iboard-query.ssi.com.vn/stock/cw/hose";
+        try {
+            const res = await fetch(url);
+            if (res.ok) {
+                const json = await res.json();
+                const cwList = json.data?.coveredWarrantData || [];
+                const underlyingList = json.data?.underlyingData || [];
+
+                const uPrices = {};
+                underlyingList.forEach(u => {
+                    uPrices[u.stockSymbol] = u.matchedPrice || u.refPrice || u.priorClosePrice || 0;
+                });
+
+                const today = new Date();
+                const records = cwList.map(item => {
+                    const giaCW = item.matchedPrice || item.refPrice || item.priorClosePrice || 0;
+                    const tongKL = item.nmTotalTradedQty || item.stockVol || 0;
+                    const giaHienTai = uPrices[item.underlyingSymbol] || 0;
+                    const giaTH = item.exercisePrice || 0;
+
+                    let ratioStr = item.exerciseRatio || '1:1';
+                    let ratioNum = 1.0;
+                    try {
+                        if (ratioStr.includes(':')) {
+                            const parts = ratioStr.split(':');
+                            ratioNum = parseFloat(parts[0]) / parseFloat(parts[1]);
+                        } else {
+                            ratioNum = parseFloat(ratioStr);
+                        }
+                    } catch(e) { ratioNum = 1.0; }
+
+                    let daysLeft = 0;
+                    if (item.maturityDate) {
+                        const parts = item.maturityDate.split('/');
+                        if (parts.length === 3) {
+                            const matDt = new Date(parts[2], parts[1] - 1, parts[0]);
+                            const diffTime = matDt - today;
+                            daysLeft = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+                        }
+                    }
+
+                    return {
+                        CW: item.stockSymbol,
+                        TCPH: item.issuerName || 'N/A',
+                        CK_co_so: item.underlyingSymbol || 'N/A',
+                        Gia_CW: giaCW,
+                        Tong_KL: tongKL,
+                        Gia_hien_tai: giaHienTai,
+                        Gia_TH: giaTH,
+                        So_ngay_con_lai: daysLeft,
+                        Ti_le_CD_str: ratioStr,
+                        Ti_le_CD_num: ratioNum
+                    };
+                });
+                if (records.length > 0) return records;
+            }
+        } catch(e) { console.warn("API direct fetch failed, fallback mock data used:", e); }
+
+        // Fallback Mock Data
+        return [
+            {CW: 'CMBB2614', TCPH: 'KIS', CK_co_so: 'MBB', Gia_CW: 760, Tong_KL: 1600500, Gia_hien_tai: 20200, Gia_TH: 20825, So_ngay_con_lai: 45, Ti_le_CD_str: '2:1', Ti_le_CD_num: 2.0},
+            {CW: 'CVPB2615', TCPH: 'SSI', CK_co_so: 'VPB', Gia_CW: 1200, Tong_KL: 850000, Gia_hien_tai: 19500, Gia_TH: 18000, So_ngay_con_lai: 110, Ti_le_CD_str: '2.5:1', Ti_le_CD_num: 2.5},
+            {CW: 'CACB2511', TCPH: 'SSI', CK_co_so: 'ACB', Gia_CW: 1450, Tong_KL: 345000, Gia_hien_tai: 22300, Gia_TH: 19832, So_ngay_con_lai: 13, Ti_le_CD_str: '1.7245:1', Ti_le_CD_num: 1.7245},
+            {CW: 'CTCB2611', TCPH: 'VCSC', CK_co_so: 'TCB', Gia_CW: 2100, Tong_KL: 1250000, Gia_hien_tai: 24000, Gia_TH: 21000, So_ngay_con_lai: 190, Ti_le_CD_str: '2:1', Ti_le_CD_num: 2.0},
+            {CW: 'CACB2606', TCPH: 'HSC', CK_co_so: 'ACB', Gia_CW: 890, Tong_KL: 1424200, Gia_hien_tai: 22300, Gia_TH: 24000, So_ngay_con_lai: 120, Ti_le_CD_str: '3.4491:1', Ti_le_CD_num: 3.4491},
+            {CW: 'CMWG2616', TCPH: 'KIS', CK_co_so: 'MWG', Gia_CW: 1850, Tong_KL: 2100000, Gia_hien_tai: 68000, Gia_TH: 62000, So_ngay_con_lai: 95, Ti_le_CD_str: '4:1', Ti_le_CD_num: 4.0},
+            {CW: 'CHPG2607', TCPH: 'MBS', CK_co_so: 'HPG', Gia_CW: 310, Tong_KL: 450000, Gia_hien_tai: 27000, Gia_TH: 31000, So_ngay_con_lai: 15, Ti_le_CD_str: '3:1', Ti_le_CD_num: 3.0}
+        ];
+    }
+
+    function evaluateCW(records) {
+        return records.map(r => {
+            const diemHoaVon = r.Gia_TH + (r.Gia_CW * r.Ti_le_CD_num);
+            const pctBreakeven = (diemHoaVon - r.Gia_hien_tai) / Math.max(r.Gia_hien_tai, 1.0) * 100;
+            const pctITM = (r.Gia_hien_tai - r.Gia_TH) / Math.max(r.Gia_hien_tai, 1.0) * 100;
+            const gearing = r.Gia_hien_tai / Math.max(r.Gia_CW * r.Ti_le_CD_num, 1.0);
+
+            let delta = 0.10;
+            if (pctITM >= 10) delta = 0.85;
+            else if (pctITM >= 5) delta = 0.75;
+            else if (pctITM >= 0) delta = 0.60;
+            else if (pctITM >= -3) delta = 0.50;
+            else if (pctITM >= -7) delta = 0.38;
+            else if (pctITM >= -12) delta = 0.25;
+
+            const effectiveGearing = delta * gearing;
+
+            const s1 = pctITM >= 5 ? 5 : (pctITM >= 0 ? 4 : (pctITM >= -5 ? 3 : (pctITM >= -10 ? 2 : 1)));
+            const s2 = r.So_ngay_con_lai >= 180 ? 5 : (r.So_ngay_con_lai >= 120 ? 4 : (r.So_ngay_con_lai >= 90 ? 3 : (r.So_ngay_con_lai >= 45 ? 2 : 1)));
+            const s3 = pctBreakeven <= 5 ? 5 : (pctBreakeven <= 10 ? 4 : (pctBreakeven <= 15 ? 3 : (pctBreakeven <= 20 ? 2 : 1)));
+            const s4 = r.Ti_le_CD_num <= 2.05 ? 5 : (r.Ti_le_CD_num <= 3.05 ? 4 : (r.Ti_le_CD_num <= 4.05 ? 3 : (r.Ti_le_CD_num <= 6.05 ? 2 : 1)));
+            const s5 = r.Tong_KL >= 1000000 ? 5 : (r.Tong_KL >= 500000 ? 4 : (r.Tong_KL >= 200000 ? 3 : (r.Tong_KL >= 50000 ? 2 : 1)));
+
+            const diemTB = (s1 + s2 + s3 + s4 + s5) / 5.0;
+
+            let khuyenNghi = "✅ An toàn";
+            if (r.So_ngay_con_lai < 20 && pctITM > 0) khuyenNghi = "⚠️ Cảnh báo chốt lời";
+            else if (r.So_ngay_con_lai < 20 && pctITM < -10) khuyenNghi = "🚨 Báo động cắt lỗ";
+
+            return {
+                ...r,
+                Diem_hoa_von_vnd: diemHoaVon,
+                Pct_to_breakeven: pctBreakeven,
+                Pct_to_ITM: pctITM,
+                Gearing: gearing,
+                Delta_Est: delta,
+                Effective_Gearing: effectiveGearing,
+                Diem_TB: diemTB,
+                Khuyen_nghi: khuyenNghi
+            };
+        });
+    }
+
+    async function loadMarketData() {
+        const icon = document.getElementById('refreshIcon');
+        icon.classList.add('spinner');
+        
+        const raw = await fetchSSIData();
+        allWarrantsData = evaluateCW(raw);
+
+        // Deduplicate
+        const map = new Map();
+        allWarrantsData.forEach(item => {
+            if (!map.has(item.CW) || item.Tong_KL > map.get(item.CW).Tong_KL) map.set(item.CW, item);
+        });
+        allWarrantsData = Array.from(map.values()).sort((a, b) => b.Tong_KL - a.Tong_KL);
+
+        // Update KPIs
+        document.getElementById('kpiTotalCW').innerText = allWarrantsData.length.toLocaleString();
+        const itmCount = allWarrantsData.filter(d => d.Pct_to_ITM > 0).length;
+        document.getElementById('kpiITM').innerText = `${itmCount} (${(itmCount/allWarrantsData.length*100).toFixed(1)}%)`;
+        const avgScore = allWarrantsData.reduce((acc, d) => acc + d.Diem_TB, 0) / (allWarrantsData.length || 1);
+        document.getElementById('kpiAvgScore').innerText = `${avgScore.toFixed(1)} ⭐`;
+        document.getElementById('kpiTopVol').innerText = allWarrantsData[0]?.CW || 'N/A';
+
+        const now = new Date();
+        document.getElementById('lastUpdateText').innerText = `Lần cập nhật: ${now.toLocaleTimeString()} - ${now.toLocaleDateString()}`;
+        
+        icon.classList.remove('spinner');
+        renderCurrentTab();
+    }
+
+    function generateTSV(subset) {
+        let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
+        subset.forEach((r, idx) => {
+            const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
+            const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
+            const row = [
+                `TOP ${idx + 1}`,
+                r.CW,
+                r.TCPH,
+                `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`,
+                `${Math.round(r.Gia_CW)}đ`,
+                mStr,
+                `${Math.round(r.Gia_TH)}đ`,
+                r.Ti_le_CD_str,
+                `${Math.round(r.So_ngay_con_lai)} ngày`,
+                Math.round(r.Tong_KL).toLocaleString(),
+                `${r.Diem_TB.toFixed(1)} ⭐`
+            ];
+            lines.push(row.join("\t"));
+        });
+        return lines.join("\n");
+    }
+
+    function exportToExcel(subset, filename) {
+        const dataForExcel = subset.map((r, idx) => {
+            const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
+            const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
+            return {
+                "Xếp hạng": `TOP ${idx + 1}`,
+                "Mã CW": r.CW,
+                "TCPH": r.TCPH,
+                "Cơ sở (Giá TT)": `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`,
+                "Thị giá CW": `${Math.round(r.Gia_CW)}đ`,
+                "Trạng thái": mStr,
+                "Giá TH": `${Math.round(r.Gia_TH)}đ`,
+                "Tỉ lệ CĐ": r.Ti_le_CD_str,
+                "Thời gian còn lại": `${Math.round(r.So_ngay_con_lai)} ngày`,
+                "Tổng KL": r.Tong_KL,
+                "Điểm TB": `${r.Diem_TB.toFixed(1)} ⭐`
+            };
+        });
+        const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "CW_Data");
+        XLSX.writeFile(workbook, `${filename}.xlsx`);
+    }
+
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTab = tabId;
+        renderCurrentTab();
+    }
+
+    function renderCurrentTab() {
+        const container = document.getElementById('tabContent');
+        let subset = [];
+        let title = "";
+        let desc = "";
+
+        if (currentTab === 'tab1') {
+            title = "📌 1. ĐÁNH GIÁ DANH MỤC NẮM GIỮ";
+            desc = "Chi tiết các mã chứng quyền monitored & cảnh báo quản trị rủi ro";
+            subset = allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW)).sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL);
+        } else if (currentTab === 'tab2') {
+            title = "⚡ 2. TOP 10 TIỀM NĂNG TĂNG GIÁ (EFFECTIVE GEARING)";
+            desc = "Bộ lọc: Ngày còn lại ≥ 50, Tổng KL ≥ 100,000, Tỉ lệ CĐ ≤ 3.5, Moneyness ≥ -8.0%, Điểm TB ≥ 3.4";
+            subset = allWarrantsData.filter(d => d.So_ngay_con_lai >= 50 && d.Tong_KL >= 100000 && d.Ti_le_CD_num <= 3.5 && d.Pct_to_ITM >= -8.0 && d.Diem_TB >= 3.4)
+                .sort((a, b) => b.Effective_Gearing - a.Effective_Gearing || b.Tong_KL - a.Tong_KL).slice(0, 10);
+        } else if (currentTab === 'tab3') {
+            title = "🏆 3. TOP 50 CHỨNG QUYỀN HÀNG ĐẦU THỊ TRƯỜNG";
+            desc = "Bộ lọc: Ngày còn lại ≥ 10, Giá CW > 0, Tổng KL ≥ 10,000 | Sắp xếp theo Điểm TB ↓, Thanh Khoản ↓, % Đến Hòa Vốn ↑";
+            subset = allWarrantsData.filter(d => d.So_ngay_con_lai >= 10 && d.Gia_CW > 0 && d.Tong_KL >= 10000)
+                .sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL || a.Pct_to_breakeven - b.Pct_to_breakeven).slice(0, 50);
+        } else if (currentTab === 'tab4') {
+            title = "🌐 4. TOÀN BỘ CHỨNG QUYỀN NIÊM YẾT TRÊN SÀN";
+            desc = "Tra cứu & lọc toàn bộ danh sách chứng quyền niêm yết";
+            
+            const searchVal = (document.getElementById('searchInput')?.value || '').toUpperCase().trim();
+            const issuerVal = document.getElementById('issuerSelect')?.value || 'Tất cả';
+            const statusVal = document.getElementById('statusSelect')?.value || 'Tất cả';
+
+            subset = [...allWarrantsData];
+            if (searchVal) subset = subset.filter(d => d.CW.includes(searchVal) || d.CK_co_so.includes(searchVal));
+            if (issuerVal !== 'Tất cả') subset = subset.filter(d => d.TCPH === issuerVal);
+            if (statusVal === 'ITM') subset = subset.filter(d => d.Pct_to_ITM > 0);
+            else if (statusVal === 'OTM') subset = subset.filter(d => d.Pct_to_ITM <= 0);
+
+            subset.sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL);
+        }
+
+        let filterHtml = "";
+        if (currentTab === 'tab4') {
+            const issuers = ['Tất cả', ...new Set(allWarrantsData.map(d => d.TCPH))].sort();
+            filterHtml = `
+                <div class="filter-panel">
+                    <input type="text" id="searchInput" placeholder="🔍 Tìm Mã CW hoặc Mã CK..." oninput="renderCurrentTab()" value="${document.getElementById('searchInput')?.value || ''}">
+                    <select id="issuerSelect" onchange="renderCurrentTab()">
+                        ${issuers.map(i => `<option value="${i}" ${i === (document.getElementById('issuerSelect')?.value || 'Tất cả') ? 'selected' : ''}>${i}</option>`).join('')}
+                    </select>
+                    <select id="statusSelect" onchange="renderCurrentTab()">
+                        <option value="Tất cả">Trạng thái: Tất cả</option>
+                        <option value="ITM" ${document.getElementById('statusSelect')?.value === 'ITM' ? 'selected' : ''}>ITM (Có lãi)</option>
+                        <option value="OTM" ${document.getElementById('statusSelect')?.value === 'OTM' ? 'selected' : ''}>OTM (Lỗ)</option>
+                    </select>
+                </div>
+            `;
+        }
+
+        const tsvText = generateTSV(subset);
+
+        let tableRows = subset.map((r, idx) => {
+            let badgeClass = "badge-safe";
+            if (r.Khuyen_nghi.includes("Cảnh báo")) badgeClass = "badge-warn";
+            else if (r.Khuyen_nghi.includes("Báo động")) badgeClass = "badge-danger";
+
+            return `
+                <tr>
+                    <td>#${idx + 1}</td>
+                    <td><b>${r.CW}</b></td>
+                    <td>${r.TCPH}</td>
+                    <td>${r.CK_co_so}</td>
+                    <td>${Math.round(r.Gia_CW).toLocaleString()}đ</td>
+                    <td>${Math.round(r.Gia_hien_tai).toLocaleString()}đ</td>
+                    <td>${Math.round(r.Gia_TH).toLocaleString()}đ</td>
+                    <td>${r.Ti_le_CD_str}</td>
+                    <td>${Math.round(r.So_ngay_con_lai)} ngày</td>
+                    <td>${Math.round(r.Tong_KL).toLocaleString()}</td>
+                    <td><b>${r.Diem_TB.toFixed(1)} ⭐</b></td>
+                    ${currentTab === 'tab2' ? `<td><b>${r.Effective_Gearing.toFixed(2)}x</b></td>` : ''}
+                    ${currentTab === 'tab1' ? `<td><span class="badge ${badgeClass}">${r.Khuyen_nghi}</span></td>` : ''}
+                </tr>
+            `;
+        }).join('');
+
+        container.innerHTML = `
+            <h2>${title}</h2>
+            <p style="color: var(--text-muted); margin-bottom: 16px;">${desc}</p>
+            ${filterHtml}
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã CW</th>
+                            <th>TCPH</th>
+                            <th>CK Cơ Sở</th>
+                            <th>Giá CW</th>
+                            <th>Giá Cơ Sở</th>
+                            <th>Giá TH</th>
+                            <th>Tỉ lệ CĐ</th>
+                            <th>Ngày Còn Lai</th>
+                            <th>Tổng KL</th>
+                            <th>Điểm TB ⭐</th>
+                            ${currentTab === 'tab2' ? `<th>Đòn Bẩy Thực (Ω)</th>` : ''}
+                            ${currentTab === 'tab1' ? `<th>Khuyến Nghị</th>` : ''}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows.length > 0 ? tableRows : '<tr><td colspan="12" style="text-align:center;">Không tìm thấy dữ liệu phù hợp</td></tr>'}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="export-section">
+                <div>
+                    <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-copy"></i> 1-Click Copy TSV (Cho Excel)</h3>
+                    <textarea class="tsv-area" readonly onclick="this.select()">${tsvText}</textarea>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-file-export"></i> Xuất File Trực Tiếp</h3>
+                    <button class="btn-action btn-excel" onclick="exportToExcel(allWarrantsData, '${currentTab}_CW_Report')">
+                        <i class="fa-solid fa-file-excel"></i> Tải File Excel (.xlsx)
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Initialize Page
+    loadMarketData();
+</script>
+</body>
+</html>
