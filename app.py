@@ -116,6 +116,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 USER_HOLDINGS = ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607']
+USER_WATCHLIST = ['CFPT2501', 'CVHM2502', 'CSTB2503', 'CVNM2504']
 
 def fetch_ssi_data():
     """Direct fetch from SSI iBoard API with error handling."""
@@ -375,10 +376,10 @@ if not cw_df.empty:
 
     # 4 Main Interactive Tabs
     tab1, tab2, tab3, tab4 = st.tabs([
-        "📌 1. ĐÁNH GIÁ DANH MỤC NẮM GIỮ",
-        "⚡ 2. TOP 10 TIỀM NĂNG TĂNG GIÁ (EFFECTIVE GEARING)",
-        "🏆 3. TOP 50 CHỨNG QUYỀN HÀNG ĐẦU THỊ TRƯỜNG",
-        "🌐 4. TOÀN BỘ CHỨNG QUYỀN TRÊN SÀN (ALL CW)"
+        "📌 1. DANH MỤC NẮM GIỮ",
+        "👁️ 2. DANH SÁCH THEO DÕI",
+        "⚡ 3. TOP 30 TIỀM NĂNG (EFFECTIVE GEARING)",
+        "🌐 4. TOÀN BỘ CHỨNG QUYỀN (ALL CW)"
     ])
 
     # Helper Renderer for Table + Filter Controls + Export Options
@@ -534,12 +535,13 @@ if not cw_df.empty:
                 use_container_width=True
             )
 
+    all_available_cw = sorted(list(unique_cw['CW'].unique()))
+
     with tab1:
         if 'user_holdings' not in st.session_state:
             st.session_state['user_holdings'] = USER_HOLDINGS.copy()
 
         st.markdown("### 📌 Quản Lý Danh Mục Chứng Quyền Nắm Giữ")
-        all_available_cw = sorted(list(unique_cw['CW'].unique()))
         selected_holdings = st.multiselect(
             "➕ **Thêm / Bớt Mã CW Trong Danh Mục Nắm Giữ:**",
             options=all_available_cw,
@@ -554,33 +556,46 @@ if not cw_df.empty:
         render_tab_content(
             hold_df,
             "📌 1. Danh Mục Chứng Quyền Đang Nắm Giữ",
-            "Đánh giá chi tiết tình trạng mã CW monitored và các cảnh báo hành động (Chốt lời / Cắt lỗ / An toàn)",
+            "Chi tiết các mã chứng quyền monitored và các cảnh báo quản trị rủi ro",
             "Holdings"
         )
 
     with tab2:
+        if 'user_watchlist' not in st.session_state:
+            st.session_state['user_watchlist'] = USER_WATCHLIST.copy()
+
+        st.markdown("### 👁️ Quản Lý Danh Sách Theo Dõi (Watchlist)")
+        selected_watchlist = st.multiselect(
+            "➕ **Thêm / Bớt Mã CW Trong Danh Sách Theo Dõi:**",
+            options=all_available_cw,
+            default=[cw for cw in st.session_state['user_watchlist'] if cw in all_available_cw],
+            key="watchlist_multiselect"
+        )
+        if selected_watchlist != st.session_state['user_watchlist']:
+            st.session_state['user_watchlist'] = selected_watchlist
+            st.rerun()
+
+        watch_df = unique_cw[unique_cw['CW'].isin(st.session_state['user_watchlist'])].sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False])
+        render_tab_content(
+            watch_df,
+            "👁️ 2. Danh Sách Chứng Quyền Theo Dõi (Watchlist)",
+            "Danh sách chứng quyền quan sát tiềm năng được theo dõi riêng",
+            "Watchlist"
+        )
+
+    with tab3:
         pot_df = unique_cw[
             (unique_cw['So_ngay_con_lai'] >= 50) &
             (unique_cw['Tong_KL'] >= 100000) &
             (unique_cw['Ti_le_CD_num'] <= 3.5) &
             (unique_cw['Pct_to_ITM'] >= -8.0) &
             (unique_cw['Diem_TB'] >= 3.4)
-        ].sort_values(by=['Effective_Gearing', 'Tong_KL'], ascending=[False, False]).head(10)
+        ].sort_values(by=['Effective_Gearing', 'Tong_KL'], ascending=[False, False]).head(30)
         render_tab_content(
             pot_df,
-            "⚡ 2. Top 10 CW Tiềm Năng Tăng Giá Cao Nhất (Effective Gearing)",
+            "⚡ 3. Top 30 CW Tiềm Năng Tăng Giá Cao Nhất (Effective Gearing)",
             "Bộ lọc: Ngày còn lại ≥ 50, Tổng KL ≥ 100,000, Tỉ lệ CĐ ≤ 3.5, Moneyness ≥ -8.0%, Điểm TB ≥ 3.4 | Sắp xếp theo Đòn bẩy thực tế (Effective Gearing)",
-            "Top10_Growth"
-        )
-
-    with tab3:
-        viable = unique_cw[(unique_cw['So_ngay_con_lai'] >= 10) & (unique_cw['Gia_CW'] > 0) & (unique_cw['Tong_KL'] >= 10000)]
-        top50_df = viable.sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False]).head(50)
-        render_tab_content(
-            top50_df,
-            "🏆 3. Top 50 Chứng Quyền Tốt Nhất Toàn Thị Trường",
-            "Bộ lọc: Ngày còn lại ≥ 10, Giá CW > 0, Tổng KL ≥ 10,000 | Sắp xếp theo Điểm TB ↓, Thanh Khoản ↓, % Đến Hòa Vốn ↑",
-            "Top50_Market"
+            "Top30_Growth"
         )
 
     with tab4:

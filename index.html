@@ -757,8 +757,8 @@
     <!-- Navigation Tabs -->
     <div class="tabs-nav">
         <button class="tab-btn active" onclick="switchTab('tab1', this)">📌 1. DANH MỤC NẮM GIỮ</button>
-        <button class="tab-btn" onclick="switchTab('tab2', this)">⚡ 2. TOP 10 TIỀM NĂNG (EFFECTIVE GEARING)</button>
-        <button class="tab-btn" onclick="switchTab('tab3', this)">🏆 3. TOP 50 THỊ TRƯỜNG</button>
+        <button class="tab-btn" onclick="switchTab('tab2', this)">👁️ 2. DANH SÁCH THEO DÕI</button>
+        <button class="tab-btn" onclick="switchTab('tab3', this)">⚡ 3. TOP 30 TIỀM NĂNG (EFFECTIVE GEARING)</button>
         <button class="tab-btn" onclick="switchTab('tab4', this)">🌐 4. TOÀN BỘ CHỨNG QUYỀN (ALL CW)</button>
     </div>
 
@@ -785,7 +785,8 @@
 
 <!-- Custom Context Menu for Row Right-Click Selection -->
 <div class="context-menu" id="rowContextMenu">
-    <div class="context-menu-item" id="ctxToggleHolding" onclick="toggleHoldingFromCtx()"><i class="fa-solid fa-bookmark"></i> <span>Thêm vào Danh Mục</span></div>
+    <div class="context-menu-item" id="ctxToggleHolding" onclick="toggleHoldingFromCtx()"><i class="fa-solid fa-pin"></i> <span>Thêm vào Danh Mục Nắm Giữ 📌</span></div>
+    <div class="context-menu-item" id="ctxToggleWatchlist" onclick="toggleWatchlistFromCtx()"><i class="fa-solid fa-eye"></i> <span>Thêm vào Danh Sách Theo Dõi 👁️</span></div>
     <div class="context-menu-item" onclick="copyCWFromCtx()"><i class="fa-solid fa-copy"></i> Copy Mã CW</div>
     <div class="context-menu-item" onclick="filterCWFromCtx()"><i class="fa-solid fa-magnifying-glass"></i> Lọc nhanh mã này</div>
 </div>
@@ -957,9 +958,14 @@
         bodyContainer.scrollTop = bodyContainer.scrollHeight;
     }
     let USER_HOLDINGS = JSON.parse(localStorage.getItem('cw_user_holdings') || 'null') || ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607'];
+    let USER_WATCHLIST = JSON.parse(localStorage.getItem('cw_user_watchlist') || 'null') || ['CFPT2501', 'CVHM2502', 'CSTB2503', 'CVNM2504'];
     
     function saveUserHoldings() {
         localStorage.setItem('cw_user_holdings', JSON.stringify(USER_HOLDINGS));
+    }
+
+    function saveUserWatchlist() {
+        localStorage.setItem('cw_user_watchlist', JSON.stringify(USER_WATCHLIST));
     }
 
     let allWarrantsData = [];
@@ -1152,18 +1158,32 @@
         renderCurrentTab();
     }
 
-    // --- HOLDINGS MANAGEMENT FUNCTIONS ---
+    // --- HOLDINGS & WATCHLIST MANAGEMENT FUNCTIONS ---
     function toggleHolding(event, cwCode) {
         if (event) event.stopPropagation();
         const idx = USER_HOLDINGS.indexOf(cwCode);
         if (idx >= 0) {
             USER_HOLDINGS.splice(idx, 1);
-            showToast(`Đã xóa ${cwCode} khỏi Danh Mục Nắm Giữ`, 'warn');
+            showToast(`Đã xóa ${cwCode} khỏi Danh Mục Nắm Giữ 📌`, 'warn');
         } else {
             USER_HOLDINGS.push(cwCode);
-            showToast(`Đã thêm ${cwCode} vào Danh Mục Nắm Giữ ⭐`, 'success');
+            showToast(`Đã thêm ${cwCode} vào Danh Mục Nắm Giữ 📌`, 'success');
         }
         saveUserHoldings();
+        renderCurrentTab();
+    }
+
+    function toggleWatchlist(event, cwCode) {
+        if (event) event.stopPropagation();
+        const idx = USER_WATCHLIST.indexOf(cwCode);
+        if (idx >= 0) {
+            USER_WATCHLIST.splice(idx, 1);
+            showToast(`Đã xóa ${cwCode} khỏi Danh Sách Theo Dõi 👁️`, 'warn');
+        } else {
+            USER_WATCHLIST.push(cwCode);
+            showToast(`Đã thêm ${cwCode} vào Danh Sách Theo Dõi 👁️`, 'success');
+        }
+        saveUserWatchlist();
         renderCurrentTab();
     }
 
@@ -1175,11 +1195,27 @@
         if (!USER_HOLDINGS.includes(val)) {
             USER_HOLDINGS.push(val);
             saveUserHoldings();
-            showToast(`Đã thêm ${val} vào Danh Mục Nắm Giữ ⭐`, 'success');
+            showToast(`Đã thêm ${val} vào Danh Mục Nắm Giữ 📌`, 'success');
             input.value = '';
             renderCurrentTab();
         } else {
             showToast(`${val} đã có sẵn trong Danh Mục Nắm Giữ!`, 'warn');
+        }
+    }
+
+    function addManualWatchlist() {
+        const input = document.getElementById('addWatchlistInput');
+        if (!input) return;
+        const val = input.value.trim().toUpperCase();
+        if (!val) return;
+        if (!USER_WATCHLIST.includes(val)) {
+            USER_WATCHLIST.push(val);
+            saveUserWatchlist();
+            showToast(`Đã thêm ${val} vào Danh Sách Theo Dõi 👁️`, 'success');
+            input.value = '';
+            renderCurrentTab();
+        } else {
+            showToast(`${val} đã có sẵn trong Danh Sách Theo Dõi!`, 'warn');
         }
     }
 
@@ -1190,11 +1226,17 @@
         selectedCtxCW = cwCode;
         const menu = document.getElementById('rowContextMenu');
         const isPinned = USER_HOLDINGS.includes(cwCode);
-        document.getElementById('ctxToggleHolding').innerHTML = isPinned ?
-            '<i class="fa-solid fa-trash" style="color:#ef4444;"></i> <span>Xóa khỏi Danh Mục Nắm Giữ</span>' :
-            '<i class="fa-solid fa-bookmark" style="color:#f59e0b;"></i> <span>Thêm vào Danh Mục Nắm Giữ</span>';
+        const isWatched = USER_WATCHLIST.includes(cwCode);
         
-        menu.style.top = Math.min(e.clientY, window.innerHeight - 150) + 'px';
+        document.getElementById('ctxToggleHolding').innerHTML = isPinned ?
+            '<i class="fa-solid fa-trash" style="color:#ef4444;"></i> <span>Xóa khỏi Nắm Giữ 📌</span>' :
+            '<i class="fa-solid fa-pin" style="color:#f59e0b;"></i> <span>Thêm vào Nắm Giữ 📌</span>';
+        
+        document.getElementById('ctxToggleWatchlist').innerHTML = isWatched ?
+            '<i class="fa-solid fa-trash" style="color:#ef4444;"></i> <span>Xóa khỏi Theo Dõi 👁️</span>' :
+            '<i class="fa-solid fa-eye" style="color:#10b981;"></i> <span>Thêm vào Theo Dõi 👁️</span>';
+
+        menu.style.top = Math.min(e.clientY, window.innerHeight - 180) + 'px';
         menu.style.left = Math.min(e.clientX, window.innerWidth - 230) + 'px';
         menu.style.display = 'block';
     }
@@ -1211,20 +1253,8 @@
         closeContextMenu();
     }
 
-    function copyCWFromCtx() {
-        if (selectedCtxCW) {
-            navigator.clipboard.writeText(selectedCtxCW);
-            showToast(`Đã copy mã ${selectedCtxCW} vào bộ nhớ tạm!`, 'success');
-        }
-        closeContextMenu();
-    }
-
-    function filterCWFromCtx() {
-        if (selectedCtxCW) {
-            const gs = document.getElementById('globalSearch');
-            if (gs) gs.value = selectedCtxCW;
-            renderCurrentTab();
-        }
+    function toggleWatchlistFromCtx() {
+        if (selectedCtxCW) toggleWatchlist(null, selectedCtxCW);
         closeContextMenu();
     }
 
@@ -1383,11 +1413,11 @@
             const sub = allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW));
             return sub.sort((a, b) => b.Diem_TB !== a.Diem_TB ? b.Diem_TB - a.Diem_TB : b.Tong_KL - a.Tong_KL);
         } else if (currentTab === 'tab2') {
+            const sub = allWarrantsData.filter(d => USER_WATCHLIST.includes(d.CW));
+            return sub.sort((a, b) => b.Diem_TB !== a.Diem_TB ? b.Diem_TB - a.Diem_TB : b.Tong_KL - a.Tong_KL);
+        } else if (currentTab === 'tab3') {
             const sub = allWarrantsData.filter(d => d.So_ngay_con_lai >= 50 && d.Tong_KL >= 100000 && d.Ti_le_CD_num <= 3.5 && d.Pct_to_ITM >= -8.0 && d.Diem_TB >= 3.4);
             return sub.sort((a, b) => b.Effective_Gearing !== a.Effective_Gearing ? b.Effective_Gearing - a.Effective_Gearing : b.Tong_KL - a.Tong_KL);
-        } else if (currentTab === 'tab3') {
-            const sub = allWarrantsData.filter(d => d.So_ngay_con_lai >= 10 && d.Gia_CW > 0 && d.Tong_KL >= 10000);
-            return sub.sort((a, b) => b.Diem_TB !== a.Diem_TB ? b.Diem_TB - a.Diem_TB : b.Tong_KL - a.Tong_KL);
         }
         return [...allWarrantsData].sort((a, b) => b.Diem_TB !== a.Diem_TB ? b.Diem_TB - a.Diem_TB : b.Tong_KL - a.Tong_KL);
     }
@@ -1459,16 +1489,15 @@
         let desc = "";
 
         if (currentTab === 'tab1') {
-            title = "📌 1. ĐÁNH GIÁ DANH MỤC NẮM GIỮ";
+            title = "📌 1. DANH MỤC NẮM GIỮ";
             desc = "Chi tiết các mã chứng quyền monitored & cảnh báo quản trị rủi ro";
         } else if (currentTab === 'tab2') {
-            title = "⚡ 2. TOP 10 TIỀM NĂNG TĂNG GIÁ (EFFECTIVE GEARING)";
-            desc = "Bộ lọc: Ngày còn lại ≥ 50, Tổng KL ≥ 100,000, Tỉ lệ CĐ ≤ 3.5, Moneyness ≥ -8.0%, Điểm TB ≥ 3.4";
-            subset = subset.slice(0, 10);
+            title = "👁️ 2. DANH SÁCH THEO DÕI";
+            desc = "Danh sách chứng quyền quan sát tiềm năng (Watchlist)";
         } else if (currentTab === 'tab3') {
-            title = "🏆 3. TOP 50 CHỨNG QUYỀN HÀNG ĐẦU THỊ TRƯỜNG";
-            desc = "Bộ lọc: Ngày còn lại ≥ 10, Giá CW > 0, Tổng KL ≥ 10,000";
-            subset = subset.slice(0, 50);
+            title = "⚡ 3. TOP 30 TIỀM NĂNG TĂNG GIÁ (EFFECTIVE GEARING)";
+            desc = "Bộ lọc: Ngày còn lại ≥ 50, Tổng KL ≥ 100,000, Tỉ lệ CĐ ≤ 3.5, Moneyness ≥ -8.0%, Điểm TB ≥ 3.4";
+            subset = subset.slice(0, 30);
         } else if (currentTab === 'tab4') {
             title = "🌐 4. TOÀN BỘ CHỨNG QUYỀN NIÊM YẾT TRÊN SÀN";
             desc = "Tra cứu toàn bộ danh sách chứng quyền niêm yết";
@@ -1492,16 +1521,17 @@
         });
 
         // Column Sorting A-Z / Z-A
-        subset.sort((a, b) => {
-            if (sortColumn === 'STT') return 0;
-            let valA = a[sortColumn];
-            let valB = b[sortColumn];
-            if (valA === undefined) return 0;
-            if (typeof valA === 'string') {
-                return sortAsc ? valA.localeCompare(valB, 'vi') : valB.localeCompare(valA, 'vi');
-            }
-            return sortAsc ? (valA - valB) : (valB - valA);
-        });
+        if (sortColumn !== 'STT') {
+            subset.sort((a, b) => {
+                let valA = a[sortColumn];
+                let valB = b[sortColumn];
+                if (valA === undefined) return 0;
+                if (typeof valA === 'string') {
+                    return sortAsc ? valA.localeCompare(valB, 'vi') : valB.localeCompare(valA, 'vi');
+                }
+                return sortAsc ? (valA - valB) : (valB - valA);
+            });
+        }
 
         const columnsHeader = [
             { key: 'STT', name: 'STT' },
@@ -1519,15 +1549,15 @@
             { key: 'Diem_TB', name: 'Điểm TB ⭐' }
         ];
 
-        if (currentTab === 'tab2') columnsHeader.push({ key: 'Effective_Gearing', name: 'Đòn Bẩy Thực (Ω)' });
-        if (currentTab === 'tab1') columnsHeader.push({ key: 'Khuyen_nghi', name: 'Khuyến Nghị' });
+        if (currentTab === 'tab3') columnsHeader.push({ key: 'Effective_Gearing', name: 'Đòn Bẩy Thực (Ω)' });
+        if (currentTab === 'tab1' || currentTab === 'tab2') columnsHeader.push({ key: 'Khuyen_nghi', name: 'Khuyến Nghị' });
 
         const tsvText = generateTSV(subset);
 
         let tableRows = subset.map((r, idx) => {
             let badgeClass = "badge-safe";
             if (r.Khuyen_nghi.includes("Cảnh báo")) badgeClass = "badge-warn";
-            else if (r.Khuyen_nghi.includes("Báo động")) badgeClass = "badge-danger";
+            else if (r.Khuyen_nghi.includes("Báo động") || r.Khuyen_nghi.includes("MẤT TRẮNG")) badgeClass = "badge-danger";
             
             const pctColor = r.Pct_to_ITM > 0 ? '#10b981' : (r.Pct_to_ITM < 0 ? '#ef4444' : '#94a3b8');
             const pctText = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
@@ -1538,15 +1568,17 @@
             else if (r.Phan_loai_Moneyness.includes("4.")) plBadgeClass = "badge-otm-nhe";
             else if (r.Phan_loai_Moneyness.includes("5.")) plBadgeClass = "badge-otm-sau";
 
-            const isPinned = USER_HOLDINGS.includes(r.CW);
-            const pinClass = isPinned ? 'pinned' : '';
-            const pinTitle = isPinned ? 'Bấm để XÓA khỏi Danh Mục Nắm Giữ' : 'Bấm để THÊM vào Danh Mục Nắm Giữ';
+            const isPinnedHolding = USER_HOLDINGS.includes(r.CW);
+            const isPinnedWatchlist = USER_WATCHLIST.includes(r.CW);
 
             return `
                 <tr oncontextmenu="openContextMenu(event, '${r.CW}')" data-cw="${r.CW}">
                     <td>
-                        <button class="pin-toggle-btn ${pinClass}" onclick="toggleHolding(event, '${r.CW}')" title="${pinTitle}">
-                            <i class="fa-solid fa-pin"></i> 📌
+                        <button class="pin-toggle-btn ${isPinnedHolding ? 'pinned' : ''}" onclick="toggleHolding(event, '${r.CW}')" title="${isPinnedHolding ? 'Xóa khỏi Nắm Giữ 📌' : 'Thêm vào Nắm Giữ 📌'}">
+                            📌
+                        </button>
+                        <button class="pin-toggle-btn ${isPinnedWatchlist ? 'pinned' : ''}" onclick="toggleWatchlist(event, '${r.CW}')" title="${isPinnedWatchlist ? 'Xóa khỏi Theo Dõi 👁️' : 'Thêm vào Theo Dõi 👁️'}">
+                            👁️
                         </button>
                         #${idx + 1}
                     </td>
@@ -1562,8 +1594,8 @@
                     <td>${Math.round(r.So_ngay_con_lai)} ngày</td>
                     <td>${Math.round(r.Tong_KL).toLocaleString()}</td>
                     <td><b>${r.Diem_TB.toFixed(1)} ⭐</b></td>
-                    ${currentTab === 'tab2' ? `<td><b>${r.Effective_Gearing.toFixed(2)}x</b></td>` : ''}
-                    ${currentTab === 'tab1' ? `<td><span class="badge ${badgeClass}">${r.Khuyen_nghi}</span></td>` : ''}
+                    ${currentTab === 'tab3' ? `<td><b>${r.Effective_Gearing.toFixed(2)}x</b></td>` : ''}
+                    ${(currentTab === 'tab1' || currentTab === 'tab2') ? `<td><span class="badge ${badgeClass}">${r.Khuyen_nghi}</span></td>` : ''}
                 </tr>
             `;
         }).join('');
@@ -1590,9 +1622,20 @@
                     <span style="font-weight: 700; font-size: 14px; color: #f59e0b;"><i class="fa-solid fa-list-check"></i> Quản Lý Danh Mục Nắm Giữ:</span>
                     <input type="text" id="addHoldingInput" placeholder="Nhập Mã CW (VD: CVPB2615)..." onkeydown="if(event.key==='Enter') addManualHolding()" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; width: 220px;">
                     <button onclick="addManualHolding()" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-                        <i class="fa-solid fa-plus"></i> Thêm Mã CW
+                        <i class="fa-solid fa-plus"></i> Thêm Nắm Giữ
                     </button>
-                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Ở 3 module khác, <b>click chuột phải vào dòng bất kỳ</b> hoặc <b>bấm nút 📌</b> để thêm/bớt nhanh!</span>
+                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Bấm 📌/👁️ hoặc <b>click chuột phải vào dòng bất kỳ</b> để quản lý nhanh!</span>
+                </div>
+            `;
+        } else if (currentTab === 'tab2') {
+            holdingsControlHtml = `
+                <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <span style="font-weight: 700; font-size: 14px; color: #10b981;"><i class="fa-solid fa-eye"></i> Quản Lý Danh Sách Theo Dõi (Watchlist):</span>
+                    <input type="text" id="addWatchlistInput" placeholder="Nhập Mã CW (VD: CFPT2501)..." onkeydown="if(event.key==='Enter') addManualWatchlist()" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; width: 220px;">
+                    <button onclick="addManualWatchlist()" style="background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-plus"></i> Thêm Theo Dõi
+                    </button>
+                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Bấm 👁️ hoặc <b>click chuột phải vào dòng bất kỳ</b> để lưu mã quan sát!</span>
                 </div>
             `;
         }
