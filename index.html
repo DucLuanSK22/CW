@@ -987,7 +987,10 @@
                 const sJson = await staticRes.json();
                 if (sJson.data && sJson.data.length > 0) {
                     lastUpdateStr = sJson.updated_at || '';
-                    return sJson.data;
+                    return sJson.data.map(item => ({
+                        ...item,
+                        Pct_Change_CW: item.Pct_Change_CW !== undefined ? parseFloat(item.Pct_Change_CW) : 0.0
+                    }));
                 }
             }
         } catch(e) { console.log("Static JSON fetch fallback:", e); }
@@ -1047,11 +1050,12 @@
                     }
 
                     const refPrice = item.refPrice || item.priorClosePrice || 0;
-                    let pctChangeCW = 0.0;
-                    if (!isBefore9AM) {
-                        pctChangeCW = (item.priceChangePercent !== undefined && item.priceChangePercent !== null) ? item.priceChangePercent : item.changePercent;
-                        if (pctChangeCW === undefined || pctChangeCW === null) {
-                            pctChangeCW = (refPrice > 0 && giaCW > 0) ? ((giaCW - refPrice) / refPrice) * 100 : 0.0;
+                    let pctChangeCW = (item.priceChangePercent !== undefined && item.priceChangePercent !== null) ? item.priceChangePercent : item.changePercent;
+                    if (pctChangeCW === undefined || pctChangeCW === null) {
+                        if (refPrice > 0 && giaCW > 0 && giaCW !== refPrice) {
+                            pctChangeCW = ((giaCW - refPrice) / refPrice) * 100;
+                        } else {
+                            pctChangeCW = 0.0;
                         }
                     }
 

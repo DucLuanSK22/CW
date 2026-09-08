@@ -53,11 +53,21 @@ def update_cw_json():
                     except Exception:
                         pass
 
+                ref_price = float(item.get('refPrice', 0) or item.get('priorClosePrice', 0) or 0)
+                raw_pct = item.get('priceChangePercent', None) if item.get('priceChangePercent', None) is not None else item.get('changePercent', None)
+                if raw_pct is not None:
+                    pct_cw = float(raw_pct)
+                elif ref_price > 0 and gia_cw > 0:
+                    pct_cw = ((gia_cw - ref_price) / ref_price) * 100.0
+                else:
+                    pct_cw = 0.0
+
                 records.append({
                     'CW': cw_code,
                     'TCPH': issuer,
                     'CK_co_so': underlying,
                     'Gia_CW': gia_cw,
+                    'Pct_Change_CW': round(pct_cw, 2),
                     'Tong_KL': tong_kl,
                     'Gia_hien_tai': gia_hien_tai,
                     'Gia_TH': gia_th,
