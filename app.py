@@ -368,41 +368,90 @@ if not cw_df.empty:
         st.subheader(title)
         st.caption(desc)
 
-        # Multi-Column & Universal Search Controls
-        with st.expander("🔍 **CÔNG CỤ TÌM KIẾM TẤT CẢ CÁC CỘT & LỌC CHI TIẾT**", expanded=True):
-            f1, f2, f3, f4 = st.columns([2, 1, 1, 1])
-            with f1:
-                search_query = st.text_input("🔎 Tìm kiếm tất cả các cột (Mã, Giá, TCPH, Điểm...):", key=f"global_search_{tab_key}").strip().upper()
-            with f2:
+        # Multi-Column & Universal Search Controls Panel
+        with st.expander("🎛️ **BỘ LỌC CHI TIẾT TỪNG CỘT & TÌM KIẾM TOÀN BỘ BẢNG**", expanded=True):
+            # Row 1: Universal Search + Text/Select Filters
+            r1_1, r1_2, r1_3, r1_4 = st.columns([2, 1, 1, 1])
+            with r1_1:
+                search_query = st.text_input("🔎 Tìm kiếm TẤT CẢ các cột:", key=f"global_search_{tab_key}", placeholder="Nhập Mã, Giá, TCPH, Điểm...").strip().upper()
+            with r1_2:
+                f_cw = st.text_input("🏷️ Lọc Mã CW:", key=f"fcw_{tab_key}", placeholder="Mã CW...").strip().upper()
+            with r1_3:
                 issuers = ["Tất cả"] + sorted(list(subset_df['TCPH'].unique())) if not subset_df.empty else ["Tất cả"]
-                sel_issuer = st.selectbox("🏢 Lọc theo TCPH:", issuers, key=f"filter_tcph_{tab_key}")
-            with f3:
+                f_tcph = st.selectbox("🏢 Lọc TCPH:", issuers, key=f"ftcph_{tab_key}")
+            with r1_4:
                 underlyings = ["Tất cả"] + sorted(list(subset_df['CK_co_so'].unique())) if not subset_df.empty else ["Tất cả"]
-                sel_ck = st.selectbox("📈 Lọc theo CK Cơ Sở:", underlyings, key=f"filter_ck_{tab_key}")
-            with f4:
-                sel_status = st.selectbox("💰 Moneyness:", ["Tất cả", "ITM (Có lãi)", "OTM (Chưa lãi)"], key=f"filter_itm_{tab_key}")
+                f_ck = st.selectbox("📈 Lọc CK Cơ Sở:", underlyings, key=f"fck_{tab_key}")
 
-        # Apply Filters
+            # Row 2: Price & Moneyness Numeric Filters
+            r2_1, r2_2, r2_3, r2_4 = st.columns(4)
+            with r2_1:
+                f_mon_status = st.selectbox("💰 % Moneyness:", ["Tất cả", "ITM (Có lãi > 0%)", "OTM (Chưa lãi <= 0%)"], key=f"fmon_{tab_key}")
+            with r2_2:
+                f_min_gcw = st.number_input("💵 Giá CW Min (đ):", value=0, step=100, key=f"fmin_gcw_{tab_key}")
+            with r2_3:
+                f_max_gcw = st.number_input("💵 Giá CW Max (đ):", value=0, step=100, key=f"fmax_gcw_{tab_key}")
+            with r2_4:
+                f_min_score = st.slider("⭐ Điểm TB Min:", 1.0, 5.0, 1.0, 0.1, key=f"fscore_{tab_key}")
+
+            # Row 3: Runway, Volume & Conversion Ratio Filters
+            r3_1, r3_2, r3_3, r3_4 = st.columns(4)
+            with r3_1:
+                f_min_days = st.number_input("⏳ Ngày Còn Lai Min:", value=0, step=5, key=f"fdays_{tab_key}")
+            with r3_2:
+                f_min_vol = st.number_input("📊 Tổng KL Min:", value=0, step=50000, key=f"fvol_{tab_key}")
+            with r3_3:
+                f_max_ratio = st.number_input("🔄 Tỉ lệ CĐ Max:", value=0.0, step=0.5, key=f"fratio_{tab_key}")
+            with r3_4:
+                f_min_gcs = st.number_input("🏛️ Giá Cơ Sở Min (đ):", value=0, step=1000, key=f"fgcs_{tab_key}")
+
+        # Apply All Filters
         filtered_df = subset_df.copy()
 
+        # Universal Search
         if search_query:
             def matches_all_cols(row):
                 row_str = " ".join([str(val) for val in row.values]).upper()
                 return search_query in row_str
             filtered_df = filtered_df[filtered_df.apply(matches_all_cols, axis=1)]
 
-        if sel_issuer != "Tất cả":
-            filtered_df = filtered_df[filtered_df['TCPH'] == sel_issuer]
+        # Individual Column Filters
+        if f_cw:
+            filtered_df = filtered_df[filtered_df['CW'].str.contains(f_cw, na=False)]
 
-        if sel_ck != "Tất cả":
-            filtered_df = filtered_df[filtered_df['CK_co_so'] == sel_ck]
+        if f_tcph != "Tất cả":
+            filtered_df = filtered_df[filtered_df['TCPH'] == f_tcph]
 
-        if sel_status == "ITM (Có lãi)":
+        if f_ck != "Tất cả":
+            filtered_df = filtered_df[filtered_df['CK_co_so'] == f_ck]
+
+        if f_mon_status == "ITM (Có lãi > 0%)":
             filtered_df = filtered_df[filtered_df['Pct_to_ITM'] > 0]
-        elif sel_status == "OTM (Chưa lãi)":
+        elif f_mon_status == "OTM (Chưa lãi <= 0%)":
             filtered_df = filtered_df[filtered_df['Pct_to_ITM'] <= 0]
 
-        st.markdown(f"**Hiển thị:** `{len(filtered_df)}` / `{len(subset_df)}` kết quả")
+        if f_min_gcw > 0:
+            filtered_df = filtered_df[filtered_df['Gia_CW'] >= f_min_gcw]
+
+        if f_max_gcw > 0:
+            filtered_df = filtered_df[filtered_df['Gia_CW'] <= f_max_gcw]
+
+        if f_min_gcs > 0:
+            filtered_df = filtered_df[filtered_df['Gia_hien_tai'] >= f_min_gcs]
+
+        if f_min_days > 0:
+            filtered_df = filtered_df[filtered_df['So_ngay_con_lai'] >= f_min_days]
+
+        if f_min_vol > 0:
+            filtered_df = filtered_df[filtered_df['Tong_KL'] >= f_min_vol]
+
+        if f_max_ratio > 0:
+            filtered_df = filtered_df[filtered_df['Ti_le_CD_num'] <= f_max_ratio]
+
+        if f_min_score > 1.0:
+            filtered_df = filtered_df[filtered_df['Diem_TB'] >= f_min_score]
+
+        st.markdown(f"**Kết Quả Hiển Thị:** `{len(filtered_df)}` / `{len(subset_df)}` mã chứng quyền")
 
         # Formatted Display Table
         disp = pd.DataFrame()

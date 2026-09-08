@@ -609,11 +609,16 @@
             subset = [...allWarrantsData].sort((a, b) => b.Diem_TB - a.Diem_TB || b.Tong_KL - a.Tong_KL);
         }
 
-        // Apply Universal Search & Filters
+        // Apply Universal Search & Column Filters
         const searchVal = (document.getElementById('searchInput')?.value || '').toUpperCase().trim();
+        const cwVal = (document.getElementById('cwInput')?.value || '').toUpperCase().trim();
         const issuerVal = document.getElementById('issuerSelect')?.value || 'Tất cả';
         const ckVal = document.getElementById('ckSelect')?.value || 'Tất cả';
         const statusVal = document.getElementById('statusSelect')?.value || 'Tất cả';
+        const minDaysVal = parseInt(document.getElementById('minDaysInput')?.value || '0');
+        const minScoreVal = parseFloat(document.getElementById('minScoreInput')?.value || '1.0');
+        const minVolVal = parseInt(document.getElementById('minVolInput')?.value || '0');
+        const maxPriceVal = parseInt(document.getElementById('maxPriceInput')?.value || '0');
 
         if (searchVal) {
             subset = subset.filter(d => {
@@ -621,29 +626,43 @@
                 return fullStr.includes(searchVal);
             });
         }
+        if (cwVal) subset = subset.filter(d => d.CW.includes(cwVal));
         if (issuerVal !== 'Tất cả') subset = subset.filter(d => d.TCPH === issuerVal);
         if (ckVal !== 'Tất cả') subset = subset.filter(d => d.CK_co_so === ckVal);
         if (statusVal === 'ITM') subset = subset.filter(d => d.Pct_to_ITM > 0);
         else if (statusVal === 'OTM') subset = subset.filter(d => d.Pct_to_ITM <= 0);
+        if (minDaysVal > 0) subset = subset.filter(d => d.So_ngay_con_lai >= minDaysVal);
+        if (minScoreVal > 1.0) subset = subset.filter(d => d.Diem_TB >= minScoreVal);
+        if (minVolVal > 0) subset = subset.filter(d => d.Tong_KL >= minVolVal);
+        if (maxPriceVal > 0) subset = subset.filter(d => d.Gia_CW <= maxPriceVal);
 
         const issuers = ['Tất cả', ...new Set(allWarrantsData.map(d => d.TCPH))].sort();
         const cks = ['Tất cả', ...new Set(allWarrantsData.map(d => d.CK_co_so))].sort();
         const filterHtml = `
-            <div class="filter-panel">
-                <input type="text" id="searchInput" placeholder="🔎 Tìm kiếm TẤT CẢ các cột (Mã, Giá, TCPH, Điểm...)" oninput="renderCurrentTab()" value="${document.getElementById('searchInput')?.value || ''}" style="flex: 2; min-width: 260px;">
-                <select id="issuerSelect" onchange="renderCurrentTab()">
-                    ${issuers.map(i => `<option value="${i}" ${i === issuerVal ? 'selected' : ''}>TCPH: ${i}</option>`).join('')}
-                </select>
-                <select id="ckSelect" onchange="renderCurrentTab()">
-                    ${cks.map(c => `<option value="${c}" ${c === ckVal ? 'selected' : ''}>CK: ${c}</option>`).join('')}
-                </select>
-                <select id="statusSelect" onchange="renderCurrentTab()">
-                    <option value="Tất cả" ${statusVal === 'Tất cả' ? 'selected' : ''}>Moneyness: Tất cả</option>
-                    <option value="ITM" ${statusVal === 'ITM' ? 'selected' : ''}>ITM (Có lãi)</option>
-                    <option value="OTM" ${statusVal === 'OTM' ? 'selected' : ''}>OTM (Lỗ)</option>
-                </select>
+            <div class="filter-panel" style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; gap: 10px; width: 100%; flex-wrap: wrap;">
+                    <input type="text" id="searchInput" placeholder="🔎 Tìm kiếm TẤT CẢ các cột (Mã, Giá, TCPH, Điểm...)" oninput="renderCurrentTab()" value="${document.getElementById('searchInput')?.value || ''}" style="flex: 2; min-width: 260px;">
+                    <input type="text" id="cwInput" placeholder="🏷️ Lọc Mã CW..." oninput="renderCurrentTab()" value="${document.getElementById('cwInput')?.value || ''}" style="flex: 1; min-width: 140px;">
+                    <select id="issuerSelect" onchange="renderCurrentTab()" style="flex: 1; min-width: 140px;">
+                        ${issuers.map(i => `<option value="${i}" ${i === issuerVal ? 'selected' : ''}>TCPH: ${i}</option>`).join('')}
+                    </select>
+                    <select id="ckSelect" onchange="renderCurrentTab()" style="flex: 1; min-width: 140px;">
+                        ${cks.map(c => `<option value="${c}" ${c === ckVal ? 'selected' : ''}>CK: ${c}</option>`).join('')}
+                    </select>
+                    <select id="statusSelect" onchange="renderCurrentTab()" style="flex: 1; min-width: 140px;">
+                        <option value="Tất cả" ${statusVal === 'Tất cả' ? 'selected' : ''}>Moneyness: Tất cả</option>
+                        <option value="ITM" ${statusVal === 'ITM' ? 'selected' : ''}>ITM (Có lãi > 0%)</option>
+                        <option value="OTM" ${statusVal === 'OTM' ? 'selected' : ''}>OTM (Lỗ <= 0%)</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px; width: 100%; flex-wrap: wrap;">
+                    <input type="number" id="maxPriceInput" placeholder="💵 Giá CW Max (đ)..." oninput="renderCurrentTab()" value="${document.getElementById('maxPriceInput')?.value || ''}" style="flex: 1; min-width: 140px;">
+                    <input type="number" id="minDaysInput" placeholder="⏳ Ngày còn lại Min..." oninput="renderCurrentTab()" value="${document.getElementById('minDaysInput')?.value || ''}" style="flex: 1; min-width: 140px;">
+                    <input type="number" id="minVolInput" placeholder="📊 Tổng KL Min..." oninput="renderCurrentTab()" value="${document.getElementById('minVolInput')?.value || ''}" style="flex: 1; min-width: 140px;">
+                    <input type="number" step="0.1" min="1" max="5" id="minScoreInput" placeholder="⭐ Điểm TB Min (1-5)..." oninput="renderCurrentTab()" value="${document.getElementById('minScoreInput')?.value || ''}" style="flex: 1; min-width: 140px;">
+                </div>
             </div>
-            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Hiển thị: <b>${subset.length}</b> mã</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Kết Quả Hiển Thị: <b>${subset.length}</b> mã chứng quyền</div>
         `;
 
         const tsvText = generateTSV(subset);
