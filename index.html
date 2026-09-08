@@ -483,6 +483,173 @@
             opacity: 1;
         }
 
+        /* GEMINI AI CHATBOT WIDGET STYLES */
+        .ai-chat-toggle-btn {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 2500;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .ai-chat-toggle-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.6);
+        }
+
+        .ai-chat-window {
+            position: fixed;
+            bottom: 85px;
+            left: 24px;
+            z-index: 2500;
+            width: 380px;
+            height: 520px;
+            background: #131b2e;
+            border: 1px solid #3b82f6;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .ai-chat-window.show { display: flex; }
+
+        .ai-chat-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 12px 16px;
+            border-bottom: 1px solid #23314d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .ai-chat-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+        }
+        .icon-btn:hover { color: #ffffff; }
+
+        .ai-chat-body {
+            flex: 1;
+            padding: 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #0b0e14;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.45;
+            white-space: pre-wrap;
+        }
+        .user-msg {
+            align-self: flex-end;
+            background: #2563eb;
+            color: #ffffff;
+            border-bottom-right-radius: 2px;
+        }
+        .bot-msg {
+            align-self: flex-start;
+            background: #1e293b;
+            border: 1px solid #2d3d5e;
+            color: #e0e6ed;
+            border-bottom-left-radius: 2px;
+        }
+
+        .chat-prompts {
+            padding: 8px 12px;
+            background: #111827;
+            border-top: 1px solid #1f293d;
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+        }
+        .prompt-chip {
+            background: #1e293b;
+            color: #38ef7d;
+            border: 1px solid #2d3d5e;
+            border-radius: 12px;
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .prompt-chip:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        .ai-chat-footer {
+            padding: 10px 14px;
+            background: #131b2e;
+            border-top: 1px solid #23314d;
+            display: flex;
+            gap: 8px;
+        }
+        .ai-chat-footer input {
+            flex: 1;
+            background: #0b0e14;
+            border: 1px solid #23314d;
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #ffffff;
+            font-size: 13px;
+            outline: none;
+        }
+        .send-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 14px;
+            cursor: pointer;
+        }
+
+        .ai-settings-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.7);
+            z-index: 3500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .ai-settings-modal.show { display: flex; }
+        .modal-content {
+            background: #131b2e;
+            border: 1px solid #3b82f6;
+            border-radius: 14px;
+            width: 440px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
         /* Export Container */
         .export-section {
             background: var(--card-bg);
@@ -629,7 +796,166 @@
     <span id="toastMessage">Thông báo</span>
 </div>
 
+<!-- Floating Chatbot Trigger Button -->
+<button class="ai-chat-toggle-btn" onclick="toggleAiChatWindow()">
+    <i class="fa-solid fa-robot"></i> <span>💬 Gemini AI Tư Vấn CW</span>
+</button>
+
+<!-- AI Chatbot Window Popup -->
+<div class="ai-chat-window" id="aiChatWindow">
+    <div class="ai-chat-header">
+        <div class="ai-chat-title">
+            <i class="fa-solid fa-brain" style="color: #38ef7d; font-size: 18px;"></i>
+            <div>
+                <div style="font-weight: 800; font-size: 13.5px; color: #ffffff;">Gemini AI CW Analyst</div>
+                <div style="font-size: 11px; color: #94a3b8;">Tư vấn chứng quyền SSI Realtime</div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 6px; align-items: center;">
+            <button class="icon-btn" onclick="toggleChatSettings()" title="Cấu hình Worker Proxy / Key"><i class="fa-solid fa-gear"></i></button>
+            <button class="icon-btn" onclick="toggleAiChatWindow()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+    </div>
+    <div class="ai-chat-body" id="aiChatBody">
+        <div class="chat-msg bot-msg">
+            👋 Xin chào! Tôi là <b>Gemini AI CW Analyst</b>.<br>Tôi hỗ trợ phân tích danh mục, so sánh đòn bẩy thực tế & khuyến nghị mua/bán chứng quyền real-time. Bạn cần hỏi gì hôm nay?
+        </div>
+    </div>
+    <div class="chat-prompts">
+        <button class="prompt-chip" onclick="sendQuickPrompt('Phân tích cho tôi các mã trong Danh mục nắm giữ')">💡 Phân tích danh mục</button>
+        <button class="prompt-chip" onclick="sendQuickPrompt('Gợi ý Top 3 mã CW đòn bẩy thực tế cao nhất')">⚡ Top CW đòn bẩy cao</button>
+        <button class="prompt-chip" onclick="sendQuickPrompt('Những mã CW nào an toàn có điểm ⭐ cao nhất?')">🛡️ CW an toàn điểm cao</button>
+    </div>
+    <div class="ai-chat-footer">
+        <input type="text" id="chatInput" placeholder="Hỏi AI về chứng quyền..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button class="send-btn" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<!-- Gemini AI Proxy Settings Modal -->
+<div class="ai-settings-modal" id="aiSettingsModal">
+    <div class="modal-content">
+        <h3 style="color: #38ef7d; font-size: 16px; margin-bottom: 6px;"><i class="fa-solid fa-gear"></i> Cấu Hình Gemini AI Proxy & API</h3>
+        <p style="font-size: 12px; color: #94a3b8; margin-bottom: 14px;">Bảo mật API Key 100% phía Server theo Phương án 1 (Cloudflare Workers)</p>
+        
+        <label style="font-weight: 600; font-size: 12.5px; display: block; margin-bottom: 4px; color: #60a5fa;">1. URL Cloudflare Worker Proxy (Bảo mật 100% - Khuyên dùng):</label>
+        <input type="text" id="proxyUrlInput" placeholder="https://cw-gemini-proxy.yourname.workers.dev/api/chat" style="width: 100%; padding: 8px 12px; border-radius: 6px; background: #0b0e14; border: 1px solid #334155; color: white; margin-bottom: 12px; font-size: 12px; outline: none;">
+
+        <label style="font-weight: 600; font-size: 12.5px; display: block; margin-bottom: 4px; color: #f59e0b;">2. Hoặc Nhập Trực Tiếp Gemini API Key (Dùng thử nhanh):</label>
+        <input type="password" id="directApiKeyInput" placeholder="AIzaSy..." style="width: 100%; padding: 8px 12px; border-radius: 6px; background: #0b0e14; border: 1px solid #334155; color: white; margin-bottom: 14px; font-size: 12px; outline: none;">
+
+        <div style="display: flex; gap: 8px; justify-content: flex-end;">
+            <button onclick="toggleChatSettings()" style="background: #475569; color: white; border: none; padding: 7px 14px; border-radius: 6px; font-size: 12.5px; cursor: pointer;">Đóng</button>
+            <button onclick="saveChatSettings()" style="background: #2563eb; color: white; border: none; padding: 7px 16px; border-radius: 6px; font-weight: 700; font-size: 12.5px; cursor: pointer;">Lưu Cấu Hình</button>
+        </div>
+    </div>
+</div>
+
 <script>
+    // --- GEMINI AI CHATBOT LOGIC ---
+    let aiConfig = JSON.parse(localStorage.getItem('cw_gemini_config') || '{}');
+
+    function toggleAiChatWindow() {
+        const win = document.getElementById('aiChatWindow');
+        win.classList.toggle('show');
+    }
+
+    function toggleChatSettings() {
+        const modal = document.getElementById('aiSettingsModal');
+        modal.classList.toggle('show');
+        if (modal.classList.contains('show')) {
+            document.getElementById('proxyUrlInput').value = aiConfig.proxyUrl || '';
+            document.getElementById('directApiKeyInput').value = aiConfig.apiKey || '';
+        }
+    }
+
+    function saveChatSettings() {
+        const proxyUrl = document.getElementById('proxyUrlInput').value.trim();
+        const apiKey = document.getElementById('directApiKeyInput').value.trim();
+        aiConfig = { proxyUrl, apiKey };
+        localStorage.setItem('cw_gemini_config', JSON.stringify(aiConfig));
+        toggleChatSettings();
+        showToast('Đã lưu cấu hình Gemini AI Chatbot thành công!', 'success');
+    }
+
+    function sendQuickPrompt(promptText) {
+        document.getElementById('chatInput').value = promptText;
+        sendChatMessage();
+    }
+
+    async function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim();
+        if (!text) return;
+
+        const bodyContainer = document.getElementById('aiChatBody');
+
+        // Append user message
+        const userDiv = document.createElement('div');
+        userDiv.className = 'chat-msg user-msg';
+        userDiv.innerText = text;
+        bodyContainer.appendChild(userDiv);
+        input.value = '';
+        bodyContainer.scrollTop = bodyContainer.scrollHeight;
+
+        // Append bot typing placeholder
+        const botDiv = document.createElement('div');
+        botDiv.className = 'chat-msg bot-msg';
+        botDiv.innerHTML = '<i class="fa-solid fa-spinner spinner"></i> Gemini đang suy nghĩ và đọc dữ liệu thị trường...';
+        bodyContainer.appendChild(botDiv);
+        bodyContainer.scrollTop = bodyContainer.scrollHeight;
+
+        // Prepare context data subset
+        const contextSubset = allWarrantsData.slice(0, 35).map(r => ({
+            CW: r.CW,
+            TCPH: r.TCPH,
+            CK_co_so: r.CK_co_so,
+            Gia_CW: r.Gia_CW,
+            Gia_hien_tai: r.Gia_hien_tai,
+            Gia_TH: r.Gia_TH,
+            Pct_to_ITM: `${r.Pct_to_ITM.toFixed(2)}%`,
+            Phan_loai: r.Phan_loai_Moneyness,
+            Effective_Gearing: `${r.Effective_Gearing.toFixed(2)}x`,
+            So_ngay_con_lai: r.So_ngay_con_lai,
+            Diem_TB: `${r.Diem_TB.toFixed(1)} ⭐`,
+            Khuyen_nghi: r.Khuyen_nghi
+        }));
+
+        try {
+            let replyText = "";
+            if (aiConfig.proxyUrl) {
+                // Option 1: Call Cloudflare Worker Proxy
+                const res = await fetch(aiConfig.proxyUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text, cw_context: contextSubset })
+                });
+                if (!res.ok) throw new Error(`Proxy error status ${res.status}`);
+                const data = await res.json();
+                replyText = data.reply || data.error || "Không có phản hồi từ Worker Proxy.";
+            } else if (aiConfig.apiKey) {
+                // Direct Gemini API Call fallback
+                const systemPrompt = `Bạn là Antigravity CW AI Analyst. Dữ liệu chứng quyền real-time:\n${JSON.stringify(contextSubset, null, 2)}\n\nCâu hỏi: ${text}`;
+                const gUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${aiConfig.apiKey}`;
+                const res = await fetch(gUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }] })
+                });
+                if (!res.ok) throw new Error(`Gemini API error status ${res.status}`);
+                const data = await res.json();
+                replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Không nhận được phản hồi từ Gemini API.";
+            } else {
+                replyText = "⚠️ **Chưa cấu hình Gemini Proxy hoặc API Key!**\n\nVui lòng bấm biểu tượng ⚙️ góc trên bên phải khung chat để điền **URL Cloudflare Worker Proxy** (Phương án 1) hoặc dán tạm **Gemini API Key** để dùng thử!";
+            }
+
+            botDiv.innerHTML = replyText.replace(/\n/g, '<br>');
+        } catch (err) {
+            botDiv.innerHTML = `🚨 **Lỗi kết nối AI:** ${err.message}\n\nVui lòng kiểm tra lại cấu hình ⚙️ Worker Proxy URL hoặc Gemini API Key!`;
+        }
+
+        bodyContainer.scrollTop = bodyContainer.scrollHeight;
+    }
     let USER_HOLDINGS = JSON.parse(localStorage.getItem('cw_user_holdings') || 'null') || ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607'];
     
     function saveUserHoldings() {
