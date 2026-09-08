@@ -531,7 +531,27 @@ if not cw_df.empty:
         if 'Khuyen_nghi' in filtered_df.columns:
             disp['Khuyến Nghị'] = filtered_df['Khuyen_nghi']
 
-        st.dataframe(disp, use_container_width=True, hide_index=True)
+        st.dataframe(
+            disp,
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "STT": st.column_config.TextColumn(width="small"),
+                "Mã CW": st.column_config.TextColumn(width="small"),
+                "TCPH": st.column_config.TextColumn(width="small"),
+                "CK Cơ Sở": st.column_config.TextColumn(width="small"),
+                "Giá CW": st.column_config.TextColumn(width="small"),
+                "% Tăng/Giảm CW": st.column_config.TextColumn(width="small"),
+                "Giá Cơ Sở": st.column_config.TextColumn(width="small"),
+                "Giá TH": st.column_config.TextColumn(width="small"),
+                "% Moneyness": st.column_config.TextColumn(width="small"),
+                "Phân Loại": st.column_config.TextColumn(width="medium"),
+                "Tỉ lệ CĐ": st.column_config.TextColumn(width="small"),
+                "Ngày Còn Lai": st.column_config.TextColumn(width="small"),
+                "Tổng KL": st.column_config.TextColumn(width="small"),
+                "Điểm TB ⭐": st.column_config.TextColumn(width="small"),
+            }
+        )
 
         # Export & Copy Options Section
         st.markdown("---")

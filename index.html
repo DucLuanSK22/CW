@@ -235,19 +235,32 @@
         th {
             background: #17223b;
             color: #cbd5e1;
-            padding: 12px 14px;
+            padding: 9px 8px;
             font-weight: 600;
             border-bottom: 1px solid var(--card-border);
             white-space: nowrap;
             user-select: none;
             position: relative;
+            font-size: 13px;
         }
 
         .th-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 8px;
+            gap: 4px;
+        }
+
+        /* Compact Column Auto-Fit Utility */
+        th.col-compact, td.col-compact {
+            padding-left: 6px !important;
+            padding-right: 6px !important;
+            width: 1%;
+            white-space: nowrap;
+        }
+        th.col-compact .th-content {
+            gap: 3px;
+            justify-content: space-between;
         }
 
         /* Excel-Style Header Filter Icon Button */
@@ -256,14 +269,15 @@
             border: 1px solid #334466;
             color: #94a3b8;
             border-radius: 4px;
-            width: 22px;
-            height: 22px;
+            width: 19px;
+            height: 19px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
 
         .excel-filter-icon:hover, .excel-filter-icon.active {
@@ -273,7 +287,7 @@
         }
 
         td {
-            padding: 11px 14px;
+            padding: 8px 8px;
             border-bottom: 1px solid #1e2d4a;
             white-space: nowrap;
         }
@@ -1566,24 +1580,24 @@
         }
 
         const columnsHeader = [
-            { key: 'STT', name: 'STT' },
-            { key: 'CW', name: 'Mã CW' },
-            { key: 'TCPH', name: 'TCPH' },
-            { key: 'CK_co_so', name: 'CK Cơ Sở' },
-            { key: 'Gia_CW', name: 'Giá CW' },
-            { key: 'Pct_Change_CW', name: '% Tăng/Giảm CW' },
-            { key: 'Gia_hien_tai', name: 'Giá Cơ Sở' },
-            { key: 'Gia_TH', name: 'Giá TH' },
-            { key: 'Pct_to_ITM', name: '% Moneyness' },
-            { key: 'Phan_loai_Moneyness', name: 'Phân Loại' },
-            { key: 'Ti_le_CD_str', name: 'Tỉ lệ CĐ' },
-            { key: 'So_ngay_con_lai', name: 'Ngày Còn Lai' },
-            { key: 'Tong_KL', name: 'Tổng KL' },
-            { key: 'Diem_TB', name: 'Điểm TB ⭐' }
+            { key: 'STT', name: 'STT', cls: 'col-compact' },
+            { key: 'CW', name: 'Mã CW', cls: 'col-compact' },
+            { key: 'TCPH', name: 'TCPH', cls: 'col-compact' },
+            { key: 'CK_co_so', name: 'CK Cơ Sở', cls: 'col-compact' },
+            { key: 'Gia_CW', name: 'Giá CW', cls: 'col-compact' },
+            { key: 'Pct_Change_CW', name: '% Tăng/Giảm CW', cls: 'col-compact' },
+            { key: 'Gia_hien_tai', name: 'Giá Cơ Sở', cls: 'col-compact' },
+            { key: 'Gia_TH', name: 'Giá TH', cls: 'col-compact' },
+            { key: 'Pct_to_ITM', name: '% Moneyness', cls: 'col-compact' },
+            { key: 'Phan_loai_Moneyness', name: 'Phân Loại', cls: 'col-compact' },
+            { key: 'Ti_le_CD_str', name: 'Tỉ lệ CĐ', cls: 'col-compact' },
+            { key: 'So_ngay_con_lai', name: 'Ngày Còn Lai', cls: 'col-compact' },
+            { key: 'Tong_KL', name: 'Tổng KL', cls: 'col-compact' },
+            { key: 'Diem_TB', name: 'Điểm TB ⭐', cls: 'col-compact' }
         ];
 
-        if (currentTab === 'tab3') columnsHeader.push({ key: 'Effective_Gearing', name: 'Đòn Bẩy Thực (Ω)' });
-        if (currentTab === 'tab1' || currentTab === 'tab2') columnsHeader.push({ key: 'Khuyen_nghi', name: 'Khuyến Nghị' });
+        if (currentTab === 'tab3') columnsHeader.push({ key: 'Effective_Gearing', name: 'Đòn Bẩy Thực (Ω)', cls: 'col-compact' });
+        if (currentTab === 'tab1' || currentTab === 'tab2') columnsHeader.push({ key: 'Khuyen_nghi', name: 'Khuyến Nghị', cls: 'col-compact' });
 
         const tsvText = generateTSV(subset);
 
@@ -1610,7 +1624,7 @@
 
             return `
                 <tr oncontextmenu="openContextMenu(event, '${r.CW}')" data-cw="${r.CW}">
-                    <td>
+                    <td class="col-compact">
                         <button class="pin-toggle-btn ${isPinnedHolding ? 'pinned' : ''}" onclick="toggleHolding(event, '${r.CW}')" title="${isPinnedHolding ? 'Xóa khỏi Nắm Giữ 📌' : 'Thêm vào Nắm Giữ 📌'}">
                             📌
                         </button>
@@ -1619,21 +1633,21 @@
                         </button>
                         #${idx + 1}
                     </td>
-                    <td><b>${r.CW}</b></td>
-                    <td>${r.TCPH}</td>
-                    <td>${r.CK_co_so}</td>
-                    <td>${Math.round(r.Gia_CW).toLocaleString()}đ</td>
-                    <td style="color: ${pctCwColor}; font-weight: 700;">${pctCwText}</td>
-                    <td>${Math.round(r.Gia_hien_tai).toLocaleString()}đ</td>
-                    <td>${Math.round(r.Gia_TH).toLocaleString()}đ</td>
-                    <td style="color: ${pctColor}; font-weight: 700;">${pctText}</td>
-                    <td><span class="badge ${plBadgeClass}">${r.Phan_loai_Moneyness}</span></td>
-                    <td>${r.Ti_le_CD_str}</td>
-                    <td>${Math.round(r.So_ngay_con_lai)} ngày</td>
-                    <td>${Math.round(r.Tong_KL).toLocaleString()}</td>
-                    <td><b>${r.Diem_TB.toFixed(1)} ⭐</b></td>
-                    ${currentTab === 'tab3' ? `<td><b>${r.Effective_Gearing.toFixed(2)}x</b></td>` : ''}
-                    ${(currentTab === 'tab1' || currentTab === 'tab2') ? `<td><span class="badge ${badgeClass}">${r.Khuyen_nghi}</span></td>` : ''}
+                    <td class="col-compact"><b>${r.CW}</b></td>
+                    <td class="col-compact">${r.TCPH}</td>
+                    <td class="col-compact"><b>${r.CK_co_so}</b></td>
+                    <td class="col-compact">${Math.round(r.Gia_CW).toLocaleString()}đ</td>
+                    <td class="col-compact" style="color: ${pctCwColor}; font-weight: 700;">${pctCwText}</td>
+                    <td class="col-compact">${Math.round(r.Gia_hien_tai).toLocaleString()}đ</td>
+                    <td class="col-compact">${Math.round(r.Gia_TH).toLocaleString()}đ</td>
+                    <td class="col-compact" style="color: ${pctColor}; font-weight: 700;">${pctText}</td>
+                    <td class="col-compact"><span class="badge ${plBadgeClass}">${r.Phan_loai_Moneyness}</span></td>
+                    <td class="col-compact">${r.Ti_le_CD_str}</td>
+                    <td class="col-compact">${Math.round(r.So_ngay_con_lai)} ngày</td>
+                    <td class="col-compact">${Math.round(r.Tong_KL).toLocaleString()}</td>
+                    <td class="col-compact"><b>${r.Diem_TB.toFixed(1)} ⭐</b></td>
+                    ${currentTab === 'tab3' ? `<td class="col-compact"><b>${r.Effective_Gearing.toFixed(2)}x</b></td>` : ''}
+                    ${(currentTab === 'tab1' || currentTab === 'tab2') ? `<td class="col-compact"><span class="badge ${badgeClass}">${r.Khuyen_nghi}</span></td>` : ''}
                 </tr>
             `;
         }).join('');
@@ -1641,8 +1655,9 @@
         let thsHtml = columnsHeader.map(col => {
             const isFiltered = !!activeColFilters[col.key];
             const iconClass = isFiltered ? 'active' : '';
+            const cls = col.cls || '';
             return `
-                <th>
+                <th class="${cls}">
                     <div class="th-content">
                         <span>${col.name}</span>
                         <button class="excel-filter-icon ${iconClass}" title="Lọc cột ${col.name}" onclick="toggleExcelFilterPopup(event, '${col.key}')">
