@@ -41,7 +41,7 @@
         }
 
         .container {
-            max-width: 1500px;
+            max-width: 1550px;
             margin: 0 auto;
         }
 
@@ -95,10 +95,6 @@
         .refresh-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
-        }
-
-        .refresh-btn:active {
-            transform: translateY(0);
         }
 
         /* KPI Analytics Bar */
@@ -168,7 +164,7 @@
             box-shadow: 0 -2px 10px rgba(37, 99, 235, 0.3);
         }
 
-        /* Universal Search & Clear Controls */
+        /* Universal Search & Controls */
         .search-panel {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -226,6 +222,7 @@
             border: 1px solid var(--card-border);
             margin-bottom: 24px;
             background: var(--card-bg);
+            position: relative;
         }
 
         table {
@@ -238,25 +235,45 @@
         th {
             background: #17223b;
             color: #cbd5e1;
-            padding: 12px 10px;
+            padding: 12px 14px;
             font-weight: 600;
             border-bottom: 1px solid var(--card-border);
             white-space: nowrap;
-            vertical-align: top;
             user-select: none;
+            position: relative;
         }
 
-        .sortable-th {
+        .th-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        /* Excel-Style Header Filter Icon Button */
+        .excel-filter-icon {
+            background: #202d46;
+            border: 1px solid #334466;
+            color: #94a3b8;
+            border-radius: 4px;
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: all 0.2s;
         }
 
-        .sortable-th:hover {
-            color: #38ef7d;
+        .excel-filter-icon:hover, .excel-filter-icon.active {
+            background: var(--accent-blue);
+            color: #ffffff;
+            border-color: #60a5fa;
         }
 
         td {
-            padding: 11px 12px;
+            padding: 11px 14px;
             border-bottom: 1px solid #1e2d4a;
             white-space: nowrap;
         }
@@ -265,23 +282,115 @@
             background-color: #1a2744;
         }
 
-        /* Excel-Style Column Header Filter Inputs */
-        .hdr-input, .hdr-select {
-            width: 100%;
-            background: #0b0e14;
-            border: 1px solid #2a3857;
+        /* 1-to-1 Excel Filter Dropdown Popup Menu */
+        .excel-dropdown-popup {
+            position: absolute;
+            z-index: 1000;
+            background: #151d30;
+            border: 1px solid #3b82f6;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            width: 260px;
+            padding: 12px;
+            font-size: 13px;
             color: #e0e6ed;
-            padding: 5px 6px;
-            border-radius: 4px;
-            font-size: 11.5px;
-            outline: none;
-            margin-top: 6px;
-            font-weight: 400;
+            display: none;
         }
 
-        .hdr-input:focus, .hdr-select:focus {
-            border-color: var(--accent-blue);
-            background: #101624;
+        .excel-dropdown-popup.show {
+            display: block;
+        }
+
+        .popup-sort-btn {
+            background: #1e293b;
+            color: #e0e6ed;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 8px 12px;
+            width: 100%;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .popup-sort-btn:hover {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .popup-divider {
+            height: 1px;
+            background: #263552;
+            margin: 10px 0;
+        }
+
+        .popup-search-input {
+            width: 100%;
+            background: #0b0e14;
+            border: 1px solid #2e3e5e;
+            color: #e0e6ed;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        .popup-checklist {
+            max-height: 160px;
+            overflow-y: auto;
+            border: 1px solid #263552;
+            border-radius: 6px;
+            background: #0d1322;
+            padding: 6px 10px;
+            margin-bottom: 12px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            font-size: 12.5px;
+            cursor: pointer;
+        }
+
+        .checklist-item input {
+            cursor: pointer;
+            accent-color: #2563eb;
+        }
+
+        .popup-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-pop-apply {
+            flex: 1;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 7px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-pop-clear {
+            flex: 1;
+            background: #475569;
+            color: white;
+            border: none;
+            padding: 7px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         /* Badges */
@@ -415,15 +524,34 @@
     </div>
 </div>
 
+<!-- 1-to-1 Excel Filter Popup Menu Overlay -->
+<div class="excel-dropdown-popup" id="excelPopup">
+    <button class="popup-sort-btn" onclick="applyPopupSort(true)"><i class="fa-solid fa-arrow-down-a-z"></i> Sắp xếp A ➔ Z (Tăng dần)</button>
+    <button class="popup-sort-btn" onclick="applyPopupSort(false)"><i class="fa-solid fa-arrow-up-z-a"></i> Sắp xếp Z ➔ A (Giảm dần)</button>
+    <div class="popup-divider"></div>
+    <input type="text" class="popup-search-input" id="popupSearchInput" placeholder="🔍 Tìm giá trị..." oninput="filterChecklistItems()">
+    <div class="popup-checklist" id="popupChecklist">
+        <!-- Checkbox items rendered dynamically -->
+    </div>
+    <div class="popup-actions">
+        <button class="btn-pop-apply" onclick="applyPopupFilter()">OK (Áp dụng)</button>
+        <button class="btn-pop-clear" onclick="clearPopupFilterCol()">Xóa Lọc Cột Này</button>
+    </div>
+</div>
+
 <script>
     const USER_HOLDINGS = ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607'];
     let allWarrantsData = [];
     let currentTab = 'tab1';
     let lastUpdateStr = '';
 
-    // Stateful Column Sorting A-Z / Z-A
+    // Column Sorting State
     let sortColumn = 'Tong_KL';
     let sortAsc = false;
+
+    // Excel Column Filters State: Map colKey -> Set of selected raw values
+    let activeColFilters = {};
+    let activePopupCol = null;
 
     async function fetchSSIData() {
         try {
@@ -577,37 +705,157 @@
         renderCurrentTab();
     }
 
-    function handleSort(colKey) {
-        if (sortColumn === colKey) {
-            sortAsc = !sortAsc;
-        } else {
-            sortColumn = colKey;
-            sortAsc = (colKey === 'CW' || colKey === 'TCPH' || colKey === 'CK_co_so');
-        }
-        renderCurrentTab();
-    }
-
     function clearAllFilters() {
         const gs = document.getElementById('globalSearch');
         if (gs) gs.value = '';
-        const f_cw = document.getElementById('f_cw'); if (f_cw) f_cw.value = '';
-        const f_tcph = document.getElementById('f_tcph'); if (f_tcph) f_tcph.value = 'ALL';
-        const f_ck = document.getElementById('f_ck'); if (f_ck) f_ck.value = 'ALL';
-        const f_gcw = document.getElementById('f_gcw'); if (f_gcw) f_gcw.value = '';
-        const f_gcs = document.getElementById('f_gcs'); if (f_gcs) f_gcs.value = '';
-        const f_gth = document.getElementById('f_gth'); if (f_gth) f_gth.value = '';
-        const f_mon = document.getElementById('f_mon'); if (f_mon) f_mon.value = 'ALL';
-        const f_ratio = document.getElementById('f_ratio'); if (f_ratio) f_ratio.value = '';
-        const f_days = document.getElementById('f_days'); if (f_days) f_days.value = '';
-        const f_vol = document.getElementById('f_vol'); if (f_vol) f_vol.value = '';
-        const f_score = document.getElementById('f_score'); if (f_score) f_score.value = '';
-        const f_rec = document.getElementById('f_rec'); if (f_rec) f_rec.value = 'ALL';
-        const f_gearing = document.getElementById('f_gearing'); if (f_gearing) f_gearing.value = '';
-
+        activeColFilters = {};
         sortColumn = 'Tong_KL';
         sortAsc = false;
-
+        closePopup();
         renderCurrentTab();
+    }
+
+    // --- 1-to-1 EXCEL AUTO-FILTER POPUP MENU LOGIC ---
+    function toggleExcelFilterPopup(event, colKey) {
+        event.stopPropagation();
+        const popup = document.getElementById('excelPopup');
+        if (activePopupCol === colKey && popup.classList.contains('show')) {
+            closePopup();
+            return;
+        }
+
+        activePopupCol = colKey;
+        const rect = event.currentTarget.getBoundingClientRect();
+        popup.style.top = (rect.bottom + window.scrollY + 6) + 'px';
+        popup.style.left = Math.max(10, Math.min(rect.left + window.scrollX, window.innerWidth - 280)) + 'px';
+        
+        // Build checklist of unique values sorted naturally/numerically
+        const currentTabSubset = getTabBaseSubset();
+        const uniqueVals = [...new Set(currentTabSubset.map(item => formatColVal(item, colKey)))].sort((a, b) => {
+            const numA = parseFloat(a.replace(/[^0-9.-]/g, ''));
+            const numB = parseFloat(b.replace(/[^0-9.-]/g, ''));
+            if (!isNaN(numA) && !isNaN(numB) && !a.includes(':') && !b.includes(':')) {
+                return numA - numB;
+            }
+            return a.localeCompare(b, 'vi', { numeric: true });
+        });
+        
+        const popupSearch = document.getElementById('popupSearchInput');
+        popupSearch.value = '';
+
+        const selectedSet = activeColFilters[colKey];
+
+        let html = `
+            <label class="checklist-item" style="font-weight: 700; border-bottom: 1px solid #23314d; padding-bottom: 6px; margin-bottom: 6px;">
+                <input type="checkbox" id="chk_select_all" onchange="toggleSelectAllPopup(this)" ${!selectedSet ? 'checked' : ''}>
+                <span>(Chọn Tất Cả - Select All)</span>
+            </label>
+        `;
+
+        uniqueVals.forEach((val) => {
+            const isChecked = !selectedSet || selectedSet.has(String(val));
+            html += `
+                <label class="checklist-item chk-val-item">
+                    <input type="checkbox" class="chk-item-input" value="${val}" ${isChecked ? 'checked' : ''}>
+                    <span>${val}</span>
+                </label>
+            `;
+        });
+
+        document.getElementById('popupChecklist').innerHTML = html;
+        popup.classList.add('show');
+    }
+
+    function closePopup() {
+        const popup = document.getElementById('excelPopup');
+        if (popup) popup.classList.remove('show');
+        activePopupCol = null;
+    }
+
+    window.addEventListener('click', (e) => {
+        const popup = document.getElementById('excelPopup');
+        if (popup && !popup.contains(e.target) && !e.target.classList.contains('excel-filter-icon') && !e.target.closest('.excel-filter-icon')) {
+            closePopup();
+        }
+    });
+
+    function toggleSelectAllPopup(masterChk) {
+        document.querySelectorAll('.chk-item-input').forEach(chk => {
+            chk.checked = masterChk.checked;
+        });
+    }
+
+    function filterChecklistItems() {
+        const query = document.getElementById('popupSearchInput').value.toUpperCase();
+        document.querySelectorAll('.chk-val-item').forEach(item => {
+            const text = item.textContent.toUpperCase();
+            item.style.display = text.includes(query) ? 'flex' : 'none';
+        });
+    }
+
+    function applyPopupSort(asc) {
+        if (activePopupCol) {
+            sortColumn = activePopupCol;
+            sortAsc = asc;
+            closePopup();
+            renderCurrentTab();
+        }
+    }
+
+    function applyPopupFilter() {
+        if (!activePopupCol) return;
+        const allInputs = document.querySelectorAll('.chk-item-input');
+        const checkedVals = new Set();
+        let totalCount = allInputs.length;
+        
+        allInputs.forEach(input => {
+            if (input.checked) checkedVals.add(input.value);
+        });
+
+        if (checkedVals.size === totalCount) {
+            delete activeColFilters[activePopupCol];
+        } else {
+            activeColFilters[activePopupCol] = checkedVals;
+        }
+
+        closePopup();
+        renderCurrentTab();
+    }
+
+    function clearPopupFilterCol() {
+        if (activePopupCol) {
+            delete activeColFilters[activePopupCol];
+            closePopup();
+            renderCurrentTab();
+        }
+    }
+
+    function formatColVal(r, colKey) {
+        if (colKey === 'CW') return r.CW;
+        if (colKey === 'TCPH') return r.TCPH;
+        if (colKey === 'CK_co_so') return r.CK_co_so;
+        if (colKey === 'Gia_CW') return `${Math.round(r.Gia_CW)}đ`;
+        if (colKey === 'Gia_hien_tai') return `${Math.round(r.Gia_hien_tai)}đ`;
+        if (colKey === 'Gia_TH') return `${Math.round(r.Gia_TH)}đ`;
+        if (colKey === 'Pct_to_ITM') return (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
+        if (colKey === 'Ti_le_CD_str') return r.Ti_le_CD_str;
+        if (colKey === 'So_ngay_con_lai') return `${Math.round(r.So_ngay_con_lai)} ngày`;
+        if (colKey === 'Tong_KL') return Math.round(r.Tong_KL).toLocaleString();
+        if (colKey === 'Diem_TB') return `${r.Diem_TB.toFixed(1)} ⭐`;
+        if (colKey === 'Effective_Gearing') return `${r.Effective_Gearing.toFixed(2)}x`;
+        if (colKey === 'Khuyen_nghi') return r.Khuyen_nghi;
+        return String(r[colKey] || '');
+    }
+
+    function getTabBaseSubset() {
+        if (currentTab === 'tab1') {
+            return allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW));
+        } else if (currentTab === 'tab2') {
+            return allWarrantsData.filter(d => d.So_ngay_con_lai >= 50 && d.Tong_KL >= 100000 && d.Ti_le_CD_num <= 3.5 && d.Pct_to_ITM >= -8.0 && d.Diem_TB >= 3.4);
+        } else if (currentTab === 'tab3') {
+            return allWarrantsData.filter(d => d.So_ngay_con_lai >= 10 && d.Gia_CW > 0 && d.Tong_KL >= 10000);
+        }
+        return [...allWarrantsData];
     }
 
     function generateTSV(subset) {
@@ -670,83 +918,72 @@
 
     function renderCurrentTab() {
         const container = document.getElementById('tabContent');
-        let subset = [];
+        let subset = getTabBaseSubset();
         let title = "";
         let desc = "";
 
         if (currentTab === 'tab1') {
             title = "📌 1. ĐÁNH GIÁ DANH MỤC NẮM GIỮ";
             desc = "Chi tiết các mã chứng quyền monitored & cảnh báo quản trị rủi ro";
-            subset = allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW));
         } else if (currentTab === 'tab2') {
             title = "⚡ 2. TOP 10 TIỀM NĂNG TĂNG GIÁ (EFFECTIVE GEARING)";
             desc = "Bộ lọc: Ngày còn lại ≥ 50, Tổng KL ≥ 100,000, Tỉ lệ CĐ ≤ 3.5, Moneyness ≥ -8.0%, Điểm TB ≥ 3.4";
-            subset = allWarrantsData.filter(d => d.So_ngay_con_lai >= 50 && d.Tong_KL >= 100000 && d.Ti_le_CD_num <= 3.5 && d.Pct_to_ITM >= -8.0 && d.Diem_TB >= 3.4).slice(0, 10);
+            subset = subset.slice(0, 10);
         } else if (currentTab === 'tab3') {
             title = "🏆 3. TOP 50 CHỨNG QUYỀN HÀNG ĐẦU THỊ TRƯỜNG";
             desc = "Bộ lọc: Ngày còn lại ≥ 10, Giá CW > 0, Tổng KL ≥ 10,000";
-            subset = allWarrantsData.filter(d => d.So_ngay_con_lai >= 10 && d.Gia_CW > 0 && d.Tong_KL >= 10000).slice(0, 50);
+            subset = subset.slice(0, 50);
         } else if (currentTab === 'tab4') {
             title = "🌐 4. TOÀN BỘ CHỨNG QUYỀN NIÊM YẾT TRÊN SÀN";
             desc = "Tra cứu toàn bộ danh sách chứng quyền niêm yết";
-            subset = [...allWarrantsData];
         }
 
-        // Apply Universal & Excel-Style Direct Column AutoFilters
+        // Universal Search
         const searchVal = (document.getElementById('globalSearch')?.value || '').toUpperCase().trim();
-        const f_cw = (document.getElementById('f_cw')?.value || '').toUpperCase().trim();
-        const f_tcph = document.getElementById('f_tcph')?.value || 'ALL';
-        const f_ck = document.getElementById('f_ck')?.value || 'ALL';
-        const f_gcw = parseFloat(document.getElementById('f_gcw')?.value || '0');
-        const f_gcs = parseFloat(document.getElementById('f_gcs')?.value || '0');
-        const f_gth = parseFloat(document.getElementById('f_gth')?.value || '0');
-        const f_mon = document.getElementById('f_mon')?.value || 'ALL';
-        const f_ratio = (document.getElementById('f_ratio')?.value || '').trim();
-        const f_days = parseInt(document.getElementById('f_days')?.value || '0');
-        const f_vol = parseInt(document.getElementById('f_vol')?.value || '0');
-        const f_score = parseFloat(document.getElementById('f_score')?.value || '1.0');
-        const f_rec = document.getElementById('f_rec')?.value || 'ALL';
-
         if (searchVal) {
             subset = subset.filter(d => {
                 const fullStr = `${d.CW} ${d.TCPH} ${d.CK_co_so} ${d.Gia_CW} ${d.Gia_hien_tai} ${d.Gia_TH} ${d.Pct_to_ITM.toFixed(2)}% ${d.Diem_TB.toFixed(1)} ${d.Khuyen_nghi}`.toUpperCase();
                 return fullStr.includes(searchVal);
             });
         }
-        if (f_cw) subset = subset.filter(d => d.CW.includes(f_cw));
-        if (f_tcph !== 'ALL') subset = subset.filter(d => d.TCPH === f_tcph);
-        if (f_ck !== 'ALL') subset = subset.filter(d => d.CK_co_so === f_ck);
-        if (f_gcw > 0) subset = subset.filter(d => d.Gia_CW <= f_gcw);
-        if (f_gcs > 0) subset = subset.filter(d => d.Gia_hien_tai >= f_gcs);
-        if (f_gth > 0) subset = subset.filter(d => d.Gia_TH <= f_gth);
-        if (f_mon === 'ITM') subset = subset.filter(d => d.Pct_to_ITM > 0);
-        else if (f_mon === 'OTM') subset = subset.filter(d => d.Pct_to_ITM <= 0);
-        if (f_ratio) subset = subset.filter(d => d.Ti_le_CD_str.includes(f_ratio));
-        if (f_days > 0) subset = subset.filter(d => d.So_ngay_con_lai >= f_days);
-        if (f_vol > 0) subset = subset.filter(d => d.Tong_KL >= f_vol);
-        if (f_score > 1.0) subset = subset.filter(d => d.Diem_TB >= f_score);
-        if (f_rec !== 'ALL') subset = subset.filter(d => d.Khuyen_nghi.includes(f_rec));
 
-        // Column Sorting A-Z / Z-A (Numeric / Text)
-        subset.sort((a, b) => {
-            let valA = a[sortColumn];
-            let valB = b[sortColumn];
-            if (typeof valA === 'string') {
-                valA = valA.toUpperCase();
-                valB = valB.toUpperCase();
+        // Apply Active Excel Column Filters
+        Object.keys(activeColFilters).forEach(colKey => {
+            const allowedSet = activeColFilters[colKey];
+            if (allowedSet) {
+                subset = subset.filter(item => allowedSet.has(formatColVal(item, colKey)));
             }
-            if (valA < valB) return sortAsc ? -1 : 1;
-            if (valA > valB) return sortAsc ? 1 : -1;
-            return 0;
         });
 
-        const issuers = ['ALL', ...new Set(allWarrantsData.map(d => d.TCPH))].sort();
-        const cks = ['ALL', ...new Set(allWarrantsData.map(d => d.CK_co_so))].sort();
+        // Column Sorting A-Z / Z-A
+        subset.sort((a, b) => {
+            if (sortColumn === 'STT') return 0;
+            let valA = a[sortColumn];
+            let valB = b[sortColumn];
+            if (valA === undefined) return 0;
+            if (typeof valA === 'string') {
+                return sortAsc ? valA.localeCompare(valB, 'vi') : valB.localeCompare(valA, 'vi');
+            }
+            return sortAsc ? (valA - valB) : (valB - valA);
+        });
 
-        const getSortIndicator = (colKey) => {
-            if (sortColumn !== colKey) return ' <i class="fa-solid fa-sort" style="opacity:0.3; font-size:11px;"></i>';
-            return sortAsc ? ' <i class="fa-solid fa-sort-up" style="color:#38ef7d;"></i>' : ' <i class="fa-solid fa-sort-down" style="color:#38ef7d;"></i>';
-        };
+        const columnsHeader = [
+            { key: 'STT', name: 'STT' },
+            { key: 'CW', name: 'Mã CW' },
+            { key: 'TCPH', name: 'TCPH' },
+            { key: 'CK_co_so', name: 'CK Cơ Sở' },
+            { key: 'Gia_CW', name: 'Giá CW' },
+            { key: 'Gia_hien_tai', name: 'Giá Cơ Sở' },
+            { key: 'Gia_TH', name: 'Giá TH' },
+            { key: 'Pct_to_ITM', name: '% Moneyness' },
+            { key: 'Ti_le_CD_str', name: 'Tỉ lệ CĐ' },
+            { key: 'So_ngay_con_lai', name: 'Ngày Còn Lai' },
+            { key: 'Tong_KL', name: 'Tổng KL' },
+            { key: 'Diem_TB', name: 'Điểm TB ⭐' }
+        ];
+
+        if (currentTab === 'tab2') columnsHeader.push({ key: 'Effective_Gearing', name: 'Đòn Bẩy Thực (Ω)' });
+        if (currentTab === 'tab1') columnsHeader.push({ key: 'Khuyen_nghi', name: 'Khuyến Nghị' });
 
         const tsvText = generateTSV(subset);
 
@@ -778,6 +1015,21 @@
             `;
         }).join('');
 
+        let thsHtml = columnsHeader.map(col => {
+            const isFiltered = !!activeColFilters[col.key];
+            const iconClass = isFiltered ? 'active' : '';
+            return `
+                <th>
+                    <div class="th-content">
+                        <span>${col.name}</span>
+                        <button class="excel-filter-icon ${iconClass}" title="Lọc cột ${col.name}" onclick="toggleExcelFilterPopup(event, '${col.key}')">
+                            <i class="fa-solid fa-filter"></i>
+                        </button>
+                    </div>
+                </th>
+            `;
+        }).join('');
+
         container.innerHTML = `
             <h2>${title}</h2>
             <p style="color: var(--text-muted); margin-bottom: 12px;">${desc}</p>
@@ -795,37 +1047,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th class="sortable-th">STT</th>
-                            <th class="sortable-th" onclick="handleSort('CW')">Mã CW ${getSortIndicator('CW')}</th>
-                            <th class="sortable-th" onclick="handleSort('TCPH')">TCPH ${getSortIndicator('TCPH')}</th>
-                            <th class="sortable-th" onclick="handleSort('CK_co_so')">CK Cơ Sở ${getSortIndicator('CK_co_so')}</th>
-                            <th class="sortable-th" onclick="handleSort('Gia_CW')">Giá CW ${getSortIndicator('Gia_CW')}</th>
-                            <th class="sortable-th" onclick="handleSort('Gia_hien_tai')">Giá Cơ Sở ${getSortIndicator('Gia_hien_tai')}</th>
-                            <th class="sortable-th" onclick="handleSort('Gia_TH')">Giá TH ${getSortIndicator('Gia_TH')}</th>
-                            <th class="sortable-th" onclick="handleSort('Pct_to_ITM')">% Moneyness ${getSortIndicator('Pct_to_ITM')}</th>
-                            <th class="sortable-th" onclick="handleSort('Ti_le_CD_num')">Tỉ lệ CĐ ${getSortIndicator('Ti_le_CD_num')}</th>
-                            <th class="sortable-th" onclick="handleSort('So_ngay_con_lai')">Ngày Còn Lai ${getSortIndicator('So_ngay_con_lai')}</th>
-                            <th class="sortable-th" onclick="handleSort('Tong_KL')">Tổng KL ${getSortIndicator('Tong_KL')}</th>
-                            <th class="sortable-th" onclick="handleSort('Diem_TB')">Điểm TB ⭐ ${getSortIndicator('Diem_TB')}</th>
-                            ${currentTab === 'tab2' ? `<th class="sortable-th" onclick="handleSort('Effective_Gearing')">Đòn Bẩy Thực (Ω) ${getSortIndicator('Effective_Gearing')}</th>` : ''}
-                            ${currentTab === 'tab1' ? `<th class="sortable-th" onclick="handleSort('Khuyen_nghi')">Khuyến Nghị ${getSortIndicator('Khuyen_nghi')}</th>` : ''}
-                        </tr>
-                        <!-- Excel-Style AutoFilter Header Row -->
-                        <tr style="background: #111927;">
-                            <th><input type="text" id="f_stt" class="hdr-input" placeholder="Filter..." disabled style="opacity: 0.5;"></th>
-                            <th><input type="text" id="f_cw" class="hdr-input" placeholder="Lọc Mã..." oninput="renderCurrentTab()" value="${f_cw}"></th>
-                            <th><select id="f_tcph" class="hdr-select" onchange="renderCurrentTab()">${issuers.map(i => `<option value="${i}" ${i === f_tcph ? 'selected' : ''}>${i === 'ALL' ? 'Tất cả' : i}</option>`).join('')}</select></th>
-                            <th><select id="f_ck" class="hdr-select" onchange="renderCurrentTab()">${cks.map(c => `<option value="${c}" ${c === f_ck ? 'selected' : ''}>${c === 'ALL' ? 'Tất cả' : c}</option>`).join('')}</select></th>
-                            <th><input type="number" id="f_gcw" class="hdr-input" placeholder="Max Giá..." oninput="renderCurrentTab()" value="${f_gcw || ''}"></th>
-                            <th><input type="number" id="f_gcs" class="hdr-input" placeholder="Min Giá CS..." oninput="renderCurrentTab()" value="${f_gcs || ''}"></th>
-                            <th><input type="number" id="f_gth" class="hdr-input" placeholder="Max Giá TH..." oninput="renderCurrentTab()" value="${f_gth || ''}"></th>
-                            <th><select id="f_mon" class="hdr-select" onchange="renderCurrentTab()"><option value="ALL">Tất cả</option><option value="ITM" ${f_mon==='ITM'?'selected':''}>ITM (>0%)</option><option value="OTM" ${f_mon==='OTM'?'selected':''}>OTM (<=0%)</option></select></th>
-                            <th><input type="text" id="f_ratio" class="hdr-input" placeholder="Tỉ lệ..." oninput="renderCurrentTab()" value="${f_ratio}"></th>
-                            <th><input type="number" id="f_days" class="hdr-input" placeholder="Min Ngày..." oninput="renderCurrentTab()" value="${f_days || ''}"></th>
-                            <th><input type="number" id="f_vol" class="hdr-input" placeholder="Min KL..." oninput="renderCurrentTab()" value="${f_vol || ''}"></th>
-                            <th><input type="number" step="0.1" id="f_score" class="hdr-input" placeholder="Min Điểm..." oninput="renderCurrentTab()" value="${f_score > 1.0 ? f_score : ''}"></th>
-                            ${currentTab === 'tab2' ? `<th><input type="number" step="0.1" id="f_gearing" class="hdr-input" placeholder="Min Ω..." disabled style="opacity: 0.5;"></th>` : ''}
-                            ${currentTab === 'tab1' ? `<th><select id="f_rec" class="hdr-select" onchange="renderCurrentTab()"><option value="ALL">Tất cả</option><option value="Chốt lời" ${f_rec==='Chốt lời'?'selected':''}>Chốt lời</option><option value="Cắt lỗ" ${f_rec==='Cắt lỗ'?'selected':''}>Cắt lỗ</option><option value="An toàn" ${f_rec==='An toàn'?'selected':''}>An toàn</option></select></th>` : ''}
+                            ${thsHtml}
                         </tr>
                     </thead>
                     <tbody>
