@@ -1033,11 +1033,18 @@
                         }
                     }
 
+                    const refPrice = item.refPrice || item.priorClosePrice || 0;
+                    let pctChangeCW = (item.priceChangePercent !== undefined && item.priceChangePercent !== null) ? item.priceChangePercent : item.changePercent;
+                    if (pctChangeCW === undefined || pctChangeCW === null) {
+                        pctChangeCW = (refPrice > 0 && giaCW > 0) ? ((giaCW - refPrice) / refPrice) * 100 : 0.0;
+                    }
+
                     return {
                         CW: item.stockSymbol,
                         TCPH: item.issuerName || 'N/A',
                         CK_co_so: item.underlyingSymbol || 'N/A',
                         Gia_CW: giaCW,
+                        Pct_Change_CW: parseFloat(pctChangeCW || 0),
                         Tong_KL: tongKL,
                         Gia_hien_tai: giaHienTai,
                         Gia_TH: giaTH,
@@ -1051,13 +1058,13 @@
         } catch(e) { console.warn("API direct fetch failed, fallback mock data used:", e); }
 
         return [
-            {CW: 'CMBB2614', TCPH: 'KIS', CK_co_so: 'MBB', Gia_CW: 760, Tong_KL: 1600500, Gia_hien_tai: 20200, Gia_TH: 20825, So_ngay_con_lai: 45, Ti_le_CD_str: '2:1', Ti_le_CD_num: 2.0},
-            {CW: 'CVPB2615', TCPH: 'SSI', CK_co_so: 'VPB', Gia_CW: 1200, Tong_KL: 850000, Gia_hien_tai: 19500, Gia_TH: 18000, So_ngay_con_lai: 110, Ti_le_CD_str: '2.5:1', Ti_le_CD_num: 2.5},
-            {CW: 'CACB2511', TCPH: 'SSI', CK_co_so: 'ACB', Gia_CW: 1450, Tong_KL: 345000, Gia_hien_tai: 22300, Gia_TH: 19832, So_ngay_con_lai: 13, Ti_le_CD_str: '1.7245:1', Ti_le_CD_num: 1.7245},
-            {CW: 'CTCB2611', TCPH: 'VCSC', CK_co_so: 'TCB', Gia_CW: 2100, Tong_KL: 1250000, Gia_hien_tai: 24000, Gia_TH: 21000, So_ngay_con_lai: 190, Ti_le_CD_str: '2:1', Ti_le_CD_num: 2.0},
-            {CW: 'CACB2606', TCPH: 'HSC', CK_co_so: 'ACB', Gia_CW: 890, Tong_KL: 1424200, Gia_hien_tai: 22300, Gia_TH: 24000, So_ngay_con_lai: 120, Ti_le_CD_str: '3.4491:1', Ti_le_CD_num: 3.4491},
-            {CW: 'CMWG2616', TCPH: 'KIS', CK_co_so: 'MWG', Gia_CW: 1850, Tong_KL: 2100000, Gia_hien_tai: 68000, Gia_TH: 62000, So_ngay_con_lai: 95, Ti_le_CD_str: '4:1', Ti_le_CD_num: 4.0},
-            {CW: 'CHPG2607', TCPH: 'MBS', CK_co_so: 'HPG', Gia_CW: 310, Tong_KL: 450000, Gia_hien_tai: 27000, Gia_TH: 31000, So_ngay_con_lai: 15, Ti_le_CD_str: '3:1', Ti_le_CD_num: 3.0}
+            {CW: 'CMBB2614', TCPH: 'KIS', CK_co_so: 'MBB', Gia_CW: 760, Pct_Change_CW: 4.11, Tong_KL: 1600500, Gia_hien_tai: 20200, Gia_TH: 20825, So_ngay_con_lai: 45, Ti_le_CD_str: '2:1', Ti_le_CD_num: 2.0},
+            {CW: 'CVPB2615', TCPH: 'SSI', CK_co_so: 'VPB', Gia_CW: 1200, Pct_Change_CW: -2.44, Tong_KL: 850000, Gia_hien_tai: 19500, Gia_TH: 18000, So_ngay_con_lai: 110, Ti_le_CD_str: '2.5:1', Ti_le_CD_num: 2.5},
+            {CW: 'CACB2511', TCPH: 'SSI', CK_co_so: 'ACB', Gia_CW: 1450, Pct_Change_CW: 1.40, Tong_KL: 345000, Gia_hien_tai: 22300, Gia_TH: 19832, So_ngay_con_lai: 13, Ti_le_CD_str: '1.7245:1', Ti_le_CD_num: 1.7245},
+            {CW: 'CTCB2611', TCPH: 'VCSC', CK_co_so: 'TCB', Gia_CW: 2100, Pct_Change_CW: 7.69, Tong_KL: 1250000, Gia_hien_tai: 24000, Gia_TH: 21000, So_ngay_con_lai: 190, Ti_le_CD_str: '2:1', Ti_le_CD_num: 2.0},
+            {CW: 'CACB2606', TCPH: 'HSC', CK_co_so: 'ACB', Gia_CW: 890, Pct_Change_CW: -5.32, Tong_KL: 1424200, Gia_hien_tai: 22300, Gia_TH: 24000, So_ngay_con_lai: 120, Ti_le_CD_str: '3.4491:1', Ti_le_CD_num: 3.4491},
+            {CW: 'CMWG2616', TCPH: 'KIS', CK_co_so: 'MWG', Gia_CW: 1850, Pct_Change_CW: 2.78, Tong_KL: 2100000, Gia_hien_tai: 68000, Gia_TH: 62000, So_ngay_con_lai: 95, Ti_le_CD_str: '4:1', Ti_le_CD_num: 4.0},
+            {CW: 'CHPG2607', TCPH: 'MBS', CK_co_so: 'HPG', Gia_CW: 310, Pct_Change_CW: -8.82, Tong_KL: 450000, Gia_hien_tai: 27000, Gia_TH: 31000, So_ngay_con_lai: 15, Ti_le_CD_str: '3:1', Ti_le_CD_num: 3.0}
         ];
     }
 
@@ -1395,6 +1402,7 @@
         if (colKey === 'TCPH') return r.TCPH;
         if (colKey === 'CK_co_so') return r.CK_co_so;
         if (colKey === 'Gia_CW') return `${Math.round(r.Gia_CW)}đ`;
+        if (colKey === 'Pct_Change_CW') return (r.Pct_Change_CW > 0 ? '+' : '') + (r.Pct_Change_CW || 0).toFixed(2) + '%';
         if (colKey === 'Gia_hien_tai') return `${Math.round(r.Gia_hien_tai)}đ`;
         if (colKey === 'Gia_TH') return `${Math.round(r.Gia_TH)}đ`;
         if (colKey === 'Pct_to_ITM') return (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
@@ -1423,17 +1431,19 @@
     }
 
     function generateTSV(subset) {
-        let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\t% Moneyness\tPhân Loại\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
+        let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\t% Tăng/Giảm CW\tTrạng thái (Moneyness)\t% Moneyness\tPhân Loại\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
         subset.forEach((r, idx) => {
             const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
             const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
             const pctStr = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
+            const pctCwStr = (r.Pct_Change_CW > 0 ? '+' : '') + (r.Pct_Change_CW || 0).toFixed(2) + '%';
             const row = [
                 `TOP ${idx + 1}`,
                 r.CW,
                 r.TCPH,
                 `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`,
                 `${Math.round(r.Gia_CW)}đ`,
+                pctCwStr,
                 mStr,
                 pctStr,
                 r.Phan_loai_Moneyness,
@@ -1453,12 +1463,14 @@
             const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
             const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
             const pctStr = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
+            const pctCwStr = (r.Pct_Change_CW > 0 ? '+' : '') + (r.Pct_Change_CW || 0).toFixed(2) + '%';
             return {
                 "Xếp hạng": `TOP ${idx + 1}`,
                 "Mã CW": r.CW,
                 "TCPH": r.TCPH,
                 "Cơ sở (Giá TT)": `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`,
                 "Thị giá CW": `${Math.round(r.Gia_CW)}đ`,
+                "% Tăng/Giảm CW": pctCwStr,
                 "Trạng thái": mStr,
                 "% Moneyness": pctStr,
                 "Phân Loại": r.Phan_loai_Moneyness,
@@ -1507,7 +1519,7 @@
         const searchVal = (document.getElementById('globalSearch')?.value || '').toUpperCase().trim();
         if (searchVal) {
             subset = subset.filter(d => {
-                const fullStr = `${d.CW} ${d.TCPH} ${d.CK_co_so} ${d.Gia_CW} ${d.Gia_hien_tai} ${d.Gia_TH} ${d.Pct_to_ITM.toFixed(2)}% ${d.Phan_loai_Moneyness} ${d.Diem_TB.toFixed(1)} ${d.Khuyen_nghi}`.toUpperCase();
+                const fullStr = `${d.CW} ${d.TCPH} ${d.CK_co_so} ${d.Gia_CW} ${(d.Pct_Change_CW||0).toFixed(2)}% ${d.Gia_hien_tai} ${d.Gia_TH} ${d.Pct_to_ITM.toFixed(2)}% ${d.Phan_loai_Moneyness} ${d.Diem_TB.toFixed(1)} ${d.Khuyen_nghi}`.toUpperCase();
                 return fullStr.includes(searchVal);
             });
         }
@@ -1539,6 +1551,7 @@
             { key: 'TCPH', name: 'TCPH' },
             { key: 'CK_co_so', name: 'CK Cơ Sở' },
             { key: 'Gia_CW', name: 'Giá CW' },
+            { key: 'Pct_Change_CW', name: '% Tăng/Giảm CW' },
             { key: 'Gia_hien_tai', name: 'Giá Cơ Sở' },
             { key: 'Gia_TH', name: 'Giá TH' },
             { key: 'Pct_to_ITM', name: '% Moneyness' },
@@ -1561,6 +1574,10 @@
             
             const pctColor = r.Pct_to_ITM > 0 ? '#10b981' : (r.Pct_to_ITM < 0 ? '#ef4444' : '#94a3b8');
             const pctText = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
+
+            const pctCwVal = r.Pct_Change_CW || 0;
+            const pctCwColor = pctCwVal > 0 ? '#10b981' : (pctCwVal < 0 ? '#ef4444' : '#94a3b8');
+            const pctCwText = (pctCwVal > 0 ? '+' : '') + pctCwVal.toFixed(2) + '%';
 
             let plBadgeClass = "badge-atm";
             if (r.Phan_loai_Moneyness.includes("1.")) plBadgeClass = "badge-itm-sau";
@@ -1586,6 +1603,7 @@
                     <td>${r.TCPH}</td>
                     <td>${r.CK_co_so}</td>
                     <td>${Math.round(r.Gia_CW).toLocaleString()}đ</td>
+                    <td style="color: ${pctCwColor}; font-weight: 700;">${pctCwText}</td>
                     <td>${Math.round(r.Gia_hien_tai).toLocaleString()}đ</td>
                     <td>${Math.round(r.Gia_TH).toLocaleString()}đ</td>
                     <td style="color: ${pctColor}; font-weight: 700;">${pctText}</td>

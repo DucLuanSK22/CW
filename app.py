@@ -169,11 +169,21 @@ def fetch_ssi_data():
                     except Exception:
                         pass
 
+                ref_price = float(item.get('refPrice', 0) or item.get('priorClosePrice', 0) or 0)
+                raw_pct = item.get('priceChangePercent', None) if item.get('priceChangePercent', None) is not None else item.get('changePercent', None)
+                if raw_pct is not None:
+                    pct_cw = float(raw_pct)
+                elif ref_price > 0 and gia_cw > 0:
+                    pct_cw = ((gia_cw - ref_price) / ref_price) * 100.0
+                else:
+                    pct_cw = 0.0
+
                 records.append({
                     'CW': cw_code,
                     'TCPH': issuer,
                     'CK_co_so': underlying,
                     'Gia_CW': gia_cw,
+                    'Pct_Change_CW': pct_cw,
                     'Tong_KL': tong_kl,
                     'Gia_hien_tai': gia_hien_tai,
                     'Gia_TH': gia_th,
@@ -189,13 +199,13 @@ def fetch_ssi_data():
 
     # Mock Data Fallback
     mock_records = [
-        {'CW': 'CMBB2614', 'TCPH': 'KIS', 'CK_co_so': 'MBB', 'Gia_CW': 760, 'Tong_KL': 1600500, 'Gia_hien_tai': 20200, 'Gia_TH': 20825, 'So_ngay_con_lai': 45, 'Ti_le_CD_str': '2:1', 'Ti_le_CD_num': 2.0},
-        {'CW': 'CVPB2615', 'TCPH': 'SSI', 'CK_co_so': 'VPB', 'Gia_CW': 1200, 'Tong_KL': 850000, 'Gia_hien_tai': 19500, 'Gia_TH': 18000, 'So_ngay_con_lai': 110, 'Ti_le_CD_str': '2.5:1', 'Ti_le_CD_num': 2.5},
-        {'CW': 'CACB2511', 'TCPH': 'SSI', 'CK_co_so': 'ACB', 'Gia_CW': 1450, 'Tong_KL': 345000, 'Gia_hien_tai': 22300, 'Gia_TH': 19832, 'So_ngay_con_lai': 13, 'Ti_le_CD_str': '1.7245:1', 'Ti_le_CD_num': 1.7245},
-        {'CW': 'CTCB2611', 'TCPH': 'VCSC', 'CK_co_so': 'TCB', 'Gia_CW': 2100, 'Tong_KL': 1250000, 'Gia_hien_tai': 24000, 'Gia_TH': 21000, 'So_ngay_con_lai': 190, 'Ti_le_CD_str': '2:1', 'Ti_le_CD_num': 2.0},
-        {'CW': 'CACB2606', 'TCPH': 'HSC', 'CK_co_so': 'ACB', 'Gia_CW': 890, 'Tong_KL': 1424200, 'Gia_hien_tai': 22300, 'Gia_TH': 24000, 'So_ngay_con_lai': 120, 'Ti_le_CD_str': '3.4491:1', 'Ti_le_CD_num': 3.4491},
-        {'CW': 'CMWG2616', 'TCPH': 'KIS', 'CK_co_so': 'MWG', 'Gia_CW': 1850, 'Tong_KL': 2100000, 'Gia_hien_tai': 68000, 'Gia_TH': 62000, 'So_ngay_con_lai': 95, 'Ti_le_CD_str': '4:1', 'Ti_le_CD_num': 4.0},
-        {'CW': 'CHPG2607', 'TCPH': 'MBS', 'CK_co_so': 'HPG', 'Gia_CW': 310, 'Tong_KL': 450000, 'Gia_hien_tai': 27000, 'Gia_TH': 31000, 'So_ngay_con_lai': 15, 'Ti_le_CD_str': '3:1', 'Ti_le_CD_num': 3.0},
+        {'CW': 'CMBB2614', 'TCPH': 'KIS', 'CK_co_so': 'MBB', 'Gia_CW': 760, 'Pct_Change_CW': 4.11, 'Tong_KL': 1600500, 'Gia_hien_tai': 20200, 'Gia_TH': 20825, 'So_ngay_con_lai': 45, 'Ti_le_CD_str': '2:1', 'Ti_le_CD_num': 2.0},
+        {'CW': 'CVPB2615', 'TCPH': 'SSI', 'CK_co_so': 'VPB', 'Gia_CW': 1200, 'Pct_Change_CW': -2.44, 'Tong_KL': 850000, 'Gia_hien_tai': 19500, 'Gia_TH': 18000, 'So_ngay_con_lai': 110, 'Ti_le_CD_str': '2.5:1', 'Ti_le_CD_num': 2.5},
+        {'CW': 'CACB2511', 'TCPH': 'SSI', 'CK_co_so': 'ACB', 'Gia_CW': 1450, 'Pct_Change_CW': 1.40, 'Tong_KL': 345000, 'Gia_hien_tai': 22300, 'Gia_TH': 19832, 'So_ngay_con_lai': 13, 'Ti_le_CD_str': '1.7245:1', 'Ti_le_CD_num': 1.7245},
+        {'CW': 'CTCB2611', 'TCPH': 'VCSC', 'CK_co_so': 'TCB', 'Gia_CW': 2100, 'Pct_Change_CW': 7.69, 'Tong_KL': 1250000, 'Gia_hien_tai': 24000, 'Gia_TH': 21000, 'So_ngay_con_lai': 190, 'Ti_le_CD_str': '2:1', 'Ti_le_CD_num': 2.0},
+        {'CW': 'CACB2606', 'TCPH': 'HSC', 'CK_co_so': 'ACB', 'Gia_CW': 890, 'Pct_Change_CW': -5.32, 'Tong_KL': 1424200, 'Gia_hien_tai': 22300, 'Gia_TH': 24000, 'So_ngay_con_lai': 120, 'Ti_le_CD_str': '3.4491:1', 'Ti_le_CD_num': 3.4491},
+        {'CW': 'CMWG2616', 'TCPH': 'KIS', 'CK_co_so': 'MWG', 'Gia_CW': 1850, 'Pct_Change_CW': 2.78, 'Tong_KL': 2100000, 'Gia_hien_tai': 68000, 'Gia_TH': 62000, 'So_ngay_con_lai': 95, 'Ti_le_CD_str': '4:1', 'Ti_le_CD_num': 4.0},
+        {'CW': 'CHPG2607', 'TCPH': 'MBS', 'CK_co_so': 'HPG', 'Gia_CW': 310, 'Pct_Change_CW': -8.82, 'Tong_KL': 450000, 'Gia_hien_tai': 27000, 'Gia_TH': 31000, 'So_ngay_con_lai': 15, 'Ti_le_CD_str': '3:1', 'Ti_le_CD_num': 3.0},
     ]
     return pd.DataFrame(mock_records)
 
@@ -263,17 +273,20 @@ def evaluate_cw(df):
 
 def to_tsv(df_subset):
     """Original TSV string format specification for Excel copy-paste."""
-    lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\t% Moneyness\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"]
+    lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\t% Tăng/Giảm CW\tTrạng thái (Moneyness)\t% Moneyness\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"]
     for idx, r in df_subset.reset_index(drop=True).iterrows():
         diff = (r['Gia_hien_tai'] - r['Gia_TH']) / 1000.0
         m_str = f"ITM (+{diff:.2f}k)" if diff > 0 else (f"OTM ({diff:.2f}k)" if diff < 0 else "ATM (0.00k)")
         pct_itm_str = f"{r['Pct_to_ITM']:+.2f}%"
+        pct_cw = r.get('Pct_Change_CW', 0.0)
+        pct_cw_str = f"+{pct_cw:.2f}%" if pct_cw > 0 else f"{pct_cw:.2f}%"
         row_vals = [
             f"TOP {idx + 1}",
             str(r['CW']),
             str(r['TCPH']),
             f"{r['CK_co_so']} ({r['Gia_hien_tai']/1000:.2f}k)",
             f"{r['Gia_CW']:.0f}đ",
+            pct_cw_str,
             m_str,
             pct_itm_str,
             f"{r['Gia_TH']:.0f}đ",
@@ -292,12 +305,15 @@ def to_excel_bytes(df_subset, tab_name="CW_Analysis"):
         diff = (r['Gia_hien_tai'] - r['Gia_TH']) / 1000.0
         m_str = f"ITM (+{diff:.2f}k)" if diff > 0 else (f"OTM ({diff:.2f}k)" if diff < 0 else "ATM (0.00k)")
         pct_itm_str = f"{r['Pct_to_ITM']:+.2f}%"
+        pct_cw = r.get('Pct_Change_CW', 0.0)
+        pct_cw_str = f"+{pct_cw:.2f}%" if pct_cw > 0 else f"{pct_cw:.2f}%"
         export_df = pd.concat([export_df, pd.DataFrame([{
             'Xếp hạng': f"TOP {idx + 1}",
             'Mã CW': str(r['CW']),
             'TCPH': str(r['TCPH']),
             'Cơ sở (Giá TT)': f"{r['CK_co_so']} ({r['Gia_hien_tai']/1000:.2f}k)",
             'Thị giá CW': f"{r['Gia_CW']:.0f}đ",
+            '% Tăng/Giảm CW': pct_cw_str,
             'Trạng thái (Moneyness)': m_str,
             '% Moneyness': pct_itm_str,
             'Giá TH': f"{r['Gia_TH']:.0f}đ",
@@ -485,6 +501,7 @@ if not cw_df.empty:
         disp['TCPH'] = filtered_df['TCPH']
         disp['CK Cơ Sở'] = filtered_df['CK_co_so']
         disp['Giá CW'] = filtered_df['Gia_CW'].apply(lambda p: f"{p:,.0f}đ")
+        disp['% Tăng/Giảm CW'] = filtered_df['Pct_Change_CW'].apply(lambda p: f"+{p:.2f}%" if p > 0 else f"{p:.2f}%")
         disp['Giá Cơ Sở'] = filtered_df['Gia_hien_tai'].apply(lambda p: f"{p:,.0f}đ")
         disp['Giá TH'] = filtered_df['Gia_TH'].apply(lambda p: f"{p:,.0f}đ")
         disp['% Moneyness'] = filtered_df['Pct_to_ITM'].apply(lambda p: f"+{p:.2f}%" if p > 0 else f"{p:.2f}%")
