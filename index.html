@@ -366,8 +366,22 @@
     const USER_HOLDINGS = ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607'];
     let allWarrantsData = [];
     let currentTab = 'tab1';
+    let lastUpdateStr = '';
 
     async function fetchSSIData() {
+        // 1. Try static JSON first (Zero CORS issues on GitHub Pages!)
+        try {
+            const staticRes = await fetch('./cw_data.json?t=' + new Date().getTime());
+            if (staticRes.ok) {
+                const sJson = await staticRes.json();
+                if (sJson.data && sJson.data.length > 0) {
+                    lastUpdateStr = sJson.updated_at || '';
+                    return sJson.data;
+                }
+            }
+        } catch(e) { console.log("Static JSON fetch fallback:", e); }
+
+        // 2. Direct fetch from SSI API
         const url = "https://iboard-query.ssi.com.vn/stock/cw/hose";
         try {
             const res = await fetch(url);
@@ -504,7 +518,8 @@
         document.getElementById('kpiTopVol').innerText = allWarrantsData[0]?.CW || 'N/A';
 
         const now = new Date();
-        document.getElementById('lastUpdateText').innerText = `Lần cập nhật: ${now.toLocaleTimeString()} - ${now.toLocaleDateString()}`;
+        const displayTime = lastUpdateStr || `${now.toLocaleTimeString()} - ${now.toLocaleDateString()}`;
+        document.getElementById('lastUpdateText').innerText = `Lần cập nhật: ${displayTime}`;
         
         icon.classList.remove('spinner');
         renderCurrentTab();
