@@ -366,6 +366,7 @@ if not cw_df.empty:
 
         # Formatted Display Table
         disp = pd.DataFrame()
+        disp['STT'] = [f"#{i+1}" for i in range(len(subset_df))]
         disp['Mã CW'] = subset_df['CW']
         disp['TCPH'] = subset_df['TCPH']
         disp['CK Cơ Sở'] = subset_df['CK_co_so']
@@ -383,7 +384,7 @@ if not cw_df.empty:
         if 'Khuyen_nghi' in subset_df.columns:
             disp['Khuyến Nghị'] = subset_df['Khuyen_nghi']
 
-        st.dataframe(disp, use_container_width=True)
+        st.dataframe(disp, use_container_width=True, hide_index=True)
 
         # Export & Copy Options Section
         st.markdown("---")
