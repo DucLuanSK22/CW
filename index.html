@@ -406,6 +406,83 @@
         .badge-warn { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
         .badge-danger { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
 
+        /* 5-Tier Moneyness Badges */
+        .badge-itm-sau { background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid #10b981; }
+        .badge-itm-nhe { background: rgba(52, 211, 153, 0.15); color: #6ee7b7; border: 1px solid #34d399; }
+        .badge-atm { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; border: 1px solid #64748b; }
+        .badge-otm-nhe { background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid #f59e0b; }
+        .badge-otm-sau { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; }
+
+        /* Pin Toggle Button */
+        .pin-toggle-btn {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .pin-toggle-btn:hover, .pin-toggle-btn.pinned {
+            color: #f59e0b;
+            transform: scale(1.2);
+        }
+
+        /* Right Click Custom Context Menu */
+        .context-menu {
+            position: fixed;
+            z-index: 2000;
+            background: #151d30;
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            width: 220px;
+            padding: 6px 0;
+            display: none;
+        }
+        .context-menu-item {
+            padding: 9px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #e0e6ed;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.15s;
+        }
+        .context-menu-item:hover {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 3000;
+            background: #1e293b;
+            border: 1px solid #10b981;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .toast-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
         /* Export Container */
         .export-section {
             background: var(--card-bg);
@@ -539,8 +616,26 @@
     </div>
 </div>
 
+<!-- Custom Context Menu for Row Right-Click Selection -->
+<div class="context-menu" id="rowContextMenu">
+    <div class="context-menu-item" id="ctxToggleHolding" onclick="toggleHoldingFromCtx()"><i class="fa-solid fa-bookmark"></i> <span>Thêm vào Danh Mục</span></div>
+    <div class="context-menu-item" onclick="copyCWFromCtx()"><i class="fa-solid fa-copy"></i> Copy Mã CW</div>
+    <div class="context-menu-item" onclick="filterCWFromCtx()"><i class="fa-solid fa-magnifying-glass"></i> Lọc nhanh mã này</div>
+</div>
+
+<!-- Toast Notification Popup -->
+<div class="toast-notification" id="toastNotification">
+    <i class="fa-solid fa-circle-check" style="color: #10b981;" id="toastIcon"></i>
+    <span id="toastMessage">Thông báo</span>
+</div>
+
 <script>
-    const USER_HOLDINGS = ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607'];
+    let USER_HOLDINGS = JSON.parse(localStorage.getItem('cw_user_holdings') || 'null') || ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607'];
+    
+    function saveUserHoldings() {
+        localStorage.setItem('cw_user_holdings', JSON.stringify(USER_HOLDINGS));
+    }
+
     let allWarrantsData = [];
     let currentTab = 'tab1';
     let lastUpdateStr = '';
@@ -641,6 +736,14 @@
             const pctITM = (r.Gia_hien_tai - r.Gia_TH) / Math.max(r.Gia_hien_tai, 1.0) * 100;
             const gearing = r.Gia_hien_tai / Math.max(r.Gia_CW * r.Ti_le_CD_num, 1.0);
 
+            // 5-Tier Moneyness Classification
+            let phanLoai = "ATM";
+            if (pctITM > 5.0) phanLoai = "ITM sâu";
+            else if (pctITM > 0.0) phanLoai = "ITM nhẹ";
+            else if (pctITM === 0.0) phanLoai = "ATM";
+            else if (pctITM >= -5.0) phanLoai = "OTM nhẹ";
+            else phanLoai = "OTM sâu";
+
             let delta = 0.10;
             if (pctITM >= 10) delta = 0.85;
             else if (pctITM >= 5) delta = 0.75;
@@ -668,6 +771,7 @@
                 Diem_hoa_von_vnd: diemHoaVon,
                 Pct_to_breakeven: pctBreakeven,
                 Pct_to_ITM: pctITM,
+                Phan_loai_Moneyness: phanLoai,
                 Gearing: gearing,
                 Delta_Est: delta,
                 Effective_Gearing: effectiveGearing,
@@ -713,6 +817,99 @@
         sortAsc = false;
         closePopup();
         renderCurrentTab();
+    }
+
+    // --- HOLDINGS MANAGEMENT FUNCTIONS ---
+    function toggleHolding(event, cwCode) {
+        if (event) event.stopPropagation();
+        const idx = USER_HOLDINGS.indexOf(cwCode);
+        if (idx >= 0) {
+            USER_HOLDINGS.splice(idx, 1);
+            showToast(`Đã xóa ${cwCode} khỏi Danh Mục Nắm Giữ`, 'warn');
+        } else {
+            USER_HOLDINGS.push(cwCode);
+            showToast(`Đã thêm ${cwCode} vào Danh Mục Nắm Giữ ⭐`, 'success');
+        }
+        saveUserHoldings();
+        renderCurrentTab();
+    }
+
+    function addManualHolding() {
+        const input = document.getElementById('addHoldingInput');
+        if (!input) return;
+        const val = input.value.trim().toUpperCase();
+        if (!val) return;
+        if (!USER_HOLDINGS.includes(val)) {
+            USER_HOLDINGS.push(val);
+            saveUserHoldings();
+            showToast(`Đã thêm ${val} vào Danh Mục Nắm Giữ ⭐`, 'success');
+            input.value = '';
+            renderCurrentTab();
+        } else {
+            showToast(`${val} đã có sẵn trong Danh Mục Nắm Giữ!`, 'warn');
+        }
+    }
+
+    // --- RIGHT CLICK CONTEXT MENU HANDLERS ---
+    let selectedCtxCW = null;
+    function openContextMenu(e, cwCode) {
+        e.preventDefault();
+        selectedCtxCW = cwCode;
+        const menu = document.getElementById('rowContextMenu');
+        const isPinned = USER_HOLDINGS.includes(cwCode);
+        document.getElementById('ctxToggleHolding').innerHTML = isPinned ?
+            '<i class="fa-solid fa-trash" style="color:#ef4444;"></i> <span>Xóa khỏi Danh Mục Nắm Giữ</span>' :
+            '<i class="fa-solid fa-bookmark" style="color:#f59e0b;"></i> <span>Thêm vào Danh Mục Nắm Giữ</span>';
+        
+        menu.style.top = Math.min(e.clientY, window.innerHeight - 150) + 'px';
+        menu.style.left = Math.min(e.clientX, window.innerWidth - 230) + 'px';
+        menu.style.display = 'block';
+    }
+
+    function closeContextMenu() {
+        const menu = document.getElementById('rowContextMenu');
+        if (menu) menu.style.display = 'none';
+    }
+
+    window.addEventListener('click', closeContextMenu);
+
+    function toggleHoldingFromCtx() {
+        if (selectedCtxCW) toggleHolding(null, selectedCtxCW);
+        closeContextMenu();
+    }
+
+    function copyCWFromCtx() {
+        if (selectedCtxCW) {
+            navigator.clipboard.writeText(selectedCtxCW);
+            showToast(`Đã copy mã ${selectedCtxCW} vào bộ nhớ tạm!`, 'success');
+        }
+        closeContextMenu();
+    }
+
+    function filterCWFromCtx() {
+        if (selectedCtxCW) {
+            const gs = document.getElementById('globalSearch');
+            if (gs) gs.value = selectedCtxCW;
+            renderCurrentTab();
+        }
+        closeContextMenu();
+    }
+
+    function showToast(msg, type = 'success') {
+        const toast = document.getElementById('toastNotification');
+        const icon = document.getElementById('toastIcon');
+        document.getElementById('toastMessage').innerText = msg;
+        if (type === 'warn' || type === 'error') {
+            icon.className = 'fa-solid fa-circle-exclamation';
+            icon.style.color = '#ef4444';
+            toast.style.borderColor = '#ef4444';
+        } else {
+            icon.className = 'fa-solid fa-circle-check';
+            icon.style.color = '#10b981';
+            toast.style.borderColor = '#10b981';
+        }
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2800);
     }
 
     // --- 1-to-1 EXCEL AUTO-FILTER POPUP MENU LOGIC ---
@@ -838,6 +1035,7 @@
         if (colKey === 'Gia_hien_tai') return `${Math.round(r.Gia_hien_tai)}đ`;
         if (colKey === 'Gia_TH') return `${Math.round(r.Gia_TH)}đ`;
         if (colKey === 'Pct_to_ITM') return (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
+        if (colKey === 'Phan_loai_Moneyness') return r.Phan_loai_Moneyness;
         if (colKey === 'Ti_le_CD_str') return r.Ti_le_CD_str;
         if (colKey === 'So_ngay_con_lai') return `${Math.round(r.So_ngay_con_lai)} ngày`;
         if (colKey === 'Tong_KL') return Math.round(r.Tong_KL).toLocaleString();
@@ -859,7 +1057,7 @@
     }
 
     function generateTSV(subset) {
-        let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\t% Moneyness\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
+        let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\tTrạng thái (Moneyness)\t% Moneyness\tPhân Loại\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
         subset.forEach((r, idx) => {
             const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
             const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
@@ -872,6 +1070,7 @@
                 `${Math.round(r.Gia_CW)}đ`,
                 mStr,
                 pctStr,
+                r.Phan_loai_Moneyness,
                 `${Math.round(r.Gia_TH)}đ`,
                 r.Ti_le_CD_str,
                 `${Math.round(r.So_ngay_con_lai)} ngày`,
@@ -896,6 +1095,7 @@
                 "Thị giá CW": `${Math.round(r.Gia_CW)}đ`,
                 "Trạng thái": mStr,
                 "% Moneyness": pctStr,
+                "Phân Loại": r.Phan_loai_Moneyness,
                 "Giá TH": `${Math.round(r.Gia_TH)}đ`,
                 "Tỉ lệ CĐ": r.Ti_le_CD_str,
                 "Thời gian còn lại": `${Math.round(r.So_ngay_con_lai)} ngày`,
@@ -942,7 +1142,7 @@
         const searchVal = (document.getElementById('globalSearch')?.value || '').toUpperCase().trim();
         if (searchVal) {
             subset = subset.filter(d => {
-                const fullStr = `${d.CW} ${d.TCPH} ${d.CK_co_so} ${d.Gia_CW} ${d.Gia_hien_tai} ${d.Gia_TH} ${d.Pct_to_ITM.toFixed(2)}% ${d.Diem_TB.toFixed(1)} ${d.Khuyen_nghi}`.toUpperCase();
+                const fullStr = `${d.CW} ${d.TCPH} ${d.CK_co_so} ${d.Gia_CW} ${d.Gia_hien_tai} ${d.Gia_TH} ${d.Pct_to_ITM.toFixed(2)}% ${d.Phan_loai_Moneyness} ${d.Diem_TB.toFixed(1)} ${d.Khuyen_nghi}`.toUpperCase();
                 return fullStr.includes(searchVal);
             });
         }
@@ -976,6 +1176,7 @@
             { key: 'Gia_hien_tai', name: 'Giá Cơ Sở' },
             { key: 'Gia_TH', name: 'Giá TH' },
             { key: 'Pct_to_ITM', name: '% Moneyness' },
+            { key: 'Phan_loai_Moneyness', name: 'Phân Loại' },
             { key: 'Ti_le_CD_str', name: 'Tỉ lệ CĐ' },
             { key: 'So_ngay_con_lai', name: 'Ngày Còn Lai' },
             { key: 'Tong_KL', name: 'Tổng KL' },
@@ -995,9 +1196,24 @@
             const pctColor = r.Pct_to_ITM > 0 ? '#10b981' : (r.Pct_to_ITM < 0 ? '#ef4444' : '#94a3b8');
             const pctText = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
 
+            let plBadgeClass = "badge-atm";
+            if (r.Phan_loai_Moneyness === "ITM sâu") plBadgeClass = "badge-itm-sau";
+            else if (r.Phan_loai_Moneyness === "ITM nhẹ") plBadgeClass = "badge-itm-nhe";
+            else if (r.Phan_loai_Moneyness === "OTM nhẹ") plBadgeClass = "badge-otm-nhe";
+            else if (r.Phan_loai_Moneyness === "OTM sâu") plBadgeClass = "badge-otm-sau";
+
+            const isPinned = USER_HOLDINGS.includes(r.CW);
+            const pinClass = isPinned ? 'pinned' : '';
+            const pinTitle = isPinned ? 'Bấm để XÓA khỏi Danh Mục Nắm Giữ' : 'Bấm để THÊM vào Danh Mục Nắm Giữ';
+
             return `
-                <tr>
-                    <td>#${idx + 1}</td>
+                <tr oncontextmenu="openContextMenu(event, '${r.CW}')" data-cw="${r.CW}">
+                    <td>
+                        <button class="pin-toggle-btn ${pinClass}" onclick="toggleHolding(event, '${r.CW}')" title="${pinTitle}">
+                            <i class="fa-solid fa-pin"></i> 📌
+                        </button>
+                        #${idx + 1}
+                    </td>
                     <td><b>${r.CW}</b></td>
                     <td>${r.TCPH}</td>
                     <td>${r.CK_co_so}</td>
@@ -1005,6 +1221,7 @@
                     <td>${Math.round(r.Gia_hien_tai).toLocaleString()}đ</td>
                     <td>${Math.round(r.Gia_TH).toLocaleString()}đ</td>
                     <td style="color: ${pctColor}; font-weight: 700;">${pctText}</td>
+                    <td><span class="badge ${plBadgeClass}">${r.Phan_loai_Moneyness}</span></td>
                     <td>${r.Ti_le_CD_str}</td>
                     <td>${Math.round(r.So_ngay_con_lai)} ngày</td>
                     <td>${Math.round(r.Tong_KL).toLocaleString()}</td>
@@ -1030,13 +1247,29 @@
             `;
         }).join('');
 
+        let holdingsControlHtml = '';
+        if (currentTab === 'tab1') {
+            holdingsControlHtml = `
+                <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <span style="font-weight: 700; font-size: 14px; color: #f59e0b;"><i class="fa-solid fa-list-check"></i> Quản Lý Danh Mục Nắm Giữ:</span>
+                    <input type="text" id="addHoldingInput" placeholder="Nhập Mã CW (VD: CVPB2615)..." onkeydown="if(event.key==='Enter') addManualHolding()" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; width: 220px;">
+                    <button onclick="addManualHolding()" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-plus"></i> Thêm Mã CW
+                    </button>
+                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Ở 3 module khác, <b>click chuột phải vào dòng bất kỳ</b> hoặc <b>bấm nút 📌</b> để thêm/bớt nhanh!</span>
+                </div>
+            `;
+        }
+
         container.innerHTML = `
             <h2>${title}</h2>
             <p style="color: var(--text-muted); margin-bottom: 12px;">${desc}</p>
             
+            ${holdingsControlHtml}
+
             <div class="search-panel">
                 <i class="fa-solid fa-magnifying-glass" style="color: var(--accent-blue);"></i>
-                <input type="text" id="globalSearch" placeholder="🔎 Tìm kiếm TẤT CẢ các cột (Mã, Giá, TCPH, Điểm...)" oninput="renderCurrentTab()" value="${document.getElementById('globalSearch')?.value || ''}">
+                <input type="text" id="globalSearch" placeholder="🔎 Tìm kiếm TẤT CẢ các cột (Mã, Giá, TCPH, Điểm, Phân loại...)" oninput="renderCurrentTab()" value="${document.getElementById('globalSearch')?.value || ''}">
                 <button class="btn-clear" onclick="clearAllFilters()">
                     <i class="fa-solid fa-broom"></i> Xóa Tất Cả Bộ Lọc
                 </button>
@@ -1051,7 +1284,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${tableRows.length > 0 ? tableRows : '<tr><td colspan="13" style="text-align:center; padding: 24px; color: var(--text-muted);">Không tìm thấy dữ liệu phù hợp với bộ lọc</td></tr>'}
+                        ${tableRows.length > 0 ? tableRows : '<tr><td colspan="14" style="text-align:center; padding: 24px; color: var(--text-muted);">Không tìm thấy dữ liệu phù hợp với bộ lọc</td></tr>'}
                     </tbody>
                 </table>
             </div>

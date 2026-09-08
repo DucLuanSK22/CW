@@ -208,6 +208,14 @@ def evaluate_cw(df):
     df['Pct_to_breakeven'] = (df['Diem_hoa_von_vnd'] - df['Gia_hien_tai']) / np.maximum(df['Gia_hien_tai'], 1.0) * 100
     df['Pct_to_ITM'] = (df['Gia_hien_tai'] - df['Gia_TH']) / np.maximum(df['Gia_hien_tai'], 1.0) * 100
 
+    def get_phan_loai(p):
+        if p > 5.0: return "ITM sâu"
+        elif p > 0.0: return "ITM nhẹ"
+        elif p == 0.0: return "ATM"
+        elif p >= -5.0: return "OTM nhẹ"
+        return "OTM sâu"
+
+    df['Phan_loai_Moneyness'] = df['Pct_to_ITM'].apply(get_phan_loai)
     df['Gearing'] = df['Gia_hien_tai'] / np.maximum(df['Gia_CW'] * df['Ti_le_CD_num'], 1.0)
 
     def get_delta(p):
@@ -469,6 +477,7 @@ if not cw_df.empty:
         disp['Giá Cơ Sở'] = filtered_df['Gia_hien_tai'].apply(lambda p: f"{p:,.0f}đ")
         disp['Giá TH'] = filtered_df['Gia_TH'].apply(lambda p: f"{p:,.0f}đ")
         disp['% Moneyness'] = filtered_df['Pct_to_ITM'].apply(lambda p: f"+{p:.2f}%" if p > 0 else f"{p:.2f}%")
+        disp['Phân Loại'] = filtered_df['Phan_loai_Moneyness']
         disp['Tỉ lệ CĐ'] = filtered_df['Ti_le_CD_str']
         disp['Ngày Còn Lai'] = filtered_df['So_ngay_con_lai'].apply(lambda d: f"{d:.0f} ngày")
         disp['Tổng KL'] = filtered_df['Tong_KL'].apply(lambda k: f"{k:,.0f}")
@@ -516,7 +525,22 @@ if not cw_df.empty:
             )
 
     with tab1:
-        hold_df = unique_cw[unique_cw['CW'].isin(USER_HOLDINGS)].sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False])
+        if 'user_holdings' not in st.session_state:
+            st.session_state['user_holdings'] = USER_HOLDINGS.copy()
+
+        st.markdown("### 📌 Quản Lý Danh Mục Chứng Quyền Nắm Giữ")
+        all_available_cw = sorted(list(unique_cw['CW'].unique()))
+        selected_holdings = st.multiselect(
+            "➕ **Thêm / Bớt Mã CW Trong Danh Mục Nắm Giữ:**",
+            options=all_available_cw,
+            default=[cw for cw in st.session_state['user_holdings'] if cw in all_available_cw],
+            key="holdings_multiselect"
+        )
+        if selected_holdings != st.session_state['user_holdings']:
+            st.session_state['user_holdings'] = selected_holdings
+            st.rerun()
+
+        hold_df = unique_cw[unique_cw['CW'].isin(st.session_state['user_holdings'])].sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False])
         render_tab_content(
             hold_df,
             "📌 1. Danh Mục Chứng Quyền Đang Nắm Giữ",
