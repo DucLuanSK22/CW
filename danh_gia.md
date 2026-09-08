@@ -19,9 +19,9 @@ $$\% \text{Moneyness} = \frac{\text{Giá Cơ Sở} - \text{Giá Thực Hiện}}{
 | :---: | :--- | :--- | :--- |
 | **5 ⭐** | $\% \text{Moneyness} > +5.0\%$ | `1. ITM sâu` | Vượt xa giá thực hiện, chứng quyền có nội giá (intrinsic value) rất cao, rủi ro thấp. |
 | **4 ⭐** | $0.0\% < \% \text{Moneyness} \le +5.0\%$ | `2. ITM nhẹ` | Vừa chớm vượt giá thực hiện, chứng quyền đang có lãi nhẹ. |
-| **3 ⭐** | $-5.0\% \le \% \text{Moneyness} \le 0.0\%$ | `3. ATM` / `4. OTM nhẹ` | Xấp xỉ hòa vốn hoặc lỗ nhẹ dưới 5%. |
-| **2 ⭐** | $-10.0\% \le \% \text{Moneyness} < -5.0\%$ | OTM Trung bình | Giá cơ sở còn kém giá thực hiện từ 5% - 10%. |
-| **1 ⭐** | $\% \text{Moneyness} < -10.0\%$ | `5. OTM sâu` | Lỗ sâu trên 10%, giá cơ sở còn xa giá thực hiện, áp lực mất giá cao. |
+| **3 ⭐** | $\% \text{Moneyness} == 0.0\%$ | `3. ATM` | Giá cơ sở xấp xỉ bằng giá thực hiện. |
+| **3 ⭐** | $-5.0\% \le \% \text{Moneyness} < 0.0\%$ | `4. OTM nhẹ` | Trạng thái lỗ nhẹ dưới 5%. |
+| **1-2 ⭐** | $\% \text{Moneyness} < -5.0\%$ | `5. OTM sâu` | Lỗ sâu trên 5%, giá cơ sở còn xa giá thực hiện, áp lực mất giá cao. |
 
 ---
 

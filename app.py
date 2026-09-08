@@ -565,7 +565,7 @@ if not cw_df.empty:
 
     with tab3:
         viable = unique_cw[(unique_cw['So_ngay_con_lai'] >= 10) & (unique_cw['Gia_CW'] > 0) & (unique_cw['Tong_KL'] >= 10000)]
-        top50_df = viable.sort_values(by=['Diem_TB', 'Tong_KL', 'Pct_to_breakeven'], ascending=[False, False, True]).head(50)
+        top50_df = viable.sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False]).head(50)
         render_tab_content(
             top50_df,
             "🏆 3. Top 50 Chứng Quyền Tốt Nhất Toàn Thị Trường",

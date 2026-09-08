@@ -1373,13 +1373,16 @@
 
     function getTabBaseSubset() {
         if (currentTab === 'tab1') {
-            return allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW));
+            const sub = allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW));
+            return sub.sort((a, b) => b.Diem_TB !== a.Diem_TB ? b.Diem_TB - a.Diem_TB : b.Tong_KL - a.Tong_KL);
         } else if (currentTab === 'tab2') {
-            return allWarrantsData.filter(d => d.So_ngay_con_lai >= 50 && d.Tong_KL >= 100000 && d.Ti_le_CD_num <= 3.5 && d.Pct_to_ITM >= -8.0 && d.Diem_TB >= 3.4);
+            const sub = allWarrantsData.filter(d => d.So_ngay_con_lai >= 50 && d.Tong_KL >= 100000 && d.Ti_le_CD_num <= 3.5 && d.Pct_to_ITM >= -8.0 && d.Diem_TB >= 3.4);
+            return sub.sort((a, b) => b.Effective_Gearing !== a.Effective_Gearing ? b.Effective_Gearing - a.Effective_Gearing : b.Tong_KL - a.Tong_KL);
         } else if (currentTab === 'tab3') {
-            return allWarrantsData.filter(d => d.So_ngay_con_lai >= 10 && d.Gia_CW > 0 && d.Tong_KL >= 10000);
+            const sub = allWarrantsData.filter(d => d.So_ngay_con_lai >= 10 && d.Gia_CW > 0 && d.Tong_KL >= 10000);
+            return sub.sort((a, b) => b.Diem_TB !== a.Diem_TB ? b.Diem_TB - a.Diem_TB : b.Tong_KL - a.Tong_KL);
         }
-        return [...allWarrantsData];
+        return [...allWarrantsData].sort((a, b) => b.Diem_TB !== a.Diem_TB ? b.Diem_TB - a.Diem_TB : b.Tong_KL - a.Tong_KL);
     }
 
     function generateTSV(subset) {
