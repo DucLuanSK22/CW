@@ -431,16 +431,29 @@
         .pin-toggle-btn {
             background: transparent;
             border: none;
-            color: #64748b;
             cursor: pointer;
-            font-size: 14px;
-            padding: 2px 6px;
+            font-size: 13px;
+            padding: 2px 4px;
             border-radius: 4px;
-            transition: all 0.2s;
+            transition: all 0.25s ease;
+            opacity: 0.28; /* Mờ mặc định khi chưa thêm vào danh mục */
+            filter: grayscale(100%);
         }
-        .pin-toggle-btn:hover, .pin-toggle-btn.pinned {
-            color: #f59e0b;
+        .pin-toggle-btn:hover {
+            opacity: 0.85;
+            filter: grayscale(0%);
             transform: scale(1.2);
+        }
+        .pin-toggle-btn.pinned {
+            opacity: 1.0; /* Sáng rõ 100% khi đã thêm vào danh mục 1 hoặc 2 */
+            filter: grayscale(0%);
+            transform: scale(1.25);
+        }
+        .pin-toggle-btn.pinned.holding-btn {
+            filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.9));
+        }
+        .pin-toggle-btn.pinned.watchlist-btn {
+            filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.9));
         }
 
         /* Right Click Custom Context Menu */
@@ -1625,10 +1638,10 @@
             return `
                 <tr oncontextmenu="openContextMenu(event, '${r.CW}')" data-cw="${r.CW}">
                     <td class="col-compact">
-                        <button class="pin-toggle-btn ${isPinnedHolding ? 'pinned' : ''}" onclick="toggleHolding(event, '${r.CW}')" title="${isPinnedHolding ? 'Xóa khỏi Nắm Giữ 📌' : 'Thêm vào Nắm Giữ 📌'}">
+                        <button class="pin-toggle-btn holding-btn ${isPinnedHolding ? 'pinned' : ''}" onclick="toggleHolding(event, '${r.CW}')" title="${isPinnedHolding ? 'Xóa khỏi Nắm Giữ 📌' : 'Thêm vào Nắm Giữ 📌'}">
                             📌
                         </button>
-                        <button class="pin-toggle-btn ${isPinnedWatchlist ? 'pinned' : ''}" onclick="toggleWatchlist(event, '${r.CW}')" title="${isPinnedWatchlist ? 'Xóa khỏi Theo Dõi 👁️' : 'Thêm vào Theo Dõi 👁️'}">
+                        <button class="pin-toggle-btn watchlist-btn ${isPinnedWatchlist ? 'pinned' : ''}" onclick="toggleWatchlist(event, '${r.CW}')" title="${isPinnedWatchlist ? 'Xóa khỏi Theo Dõi 👁️' : 'Thêm vào Theo Dõi 👁️'}">
                             👁️
                         </button>
                         #${idx + 1}
