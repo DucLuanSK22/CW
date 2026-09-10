@@ -1030,6 +1030,9 @@
                 const cwList = json.data?.coveredWarrantData || [];
                 const underlyingList = json.data?.underlyingData || [];
 
+                const now = new Date();
+                lastUpdateStr = `${now.toLocaleTimeString()} - ${now.toLocaleDateString()}`;
+
                 const today = new Date();
                 const currentHour = today.getHours();
                 const isBefore9AM = (currentHour < 9);
