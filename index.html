@@ -427,6 +427,54 @@
         .badge-otm-nhe { background: rgba(245, 158, 11, 0.2); color: #fde68a; border: 1px solid #f59e0b; }
         .badge-otm-sau { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; }
 
+        /* Autocomplete Suggestions Popup Box */
+        .search-autocomplete-box {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            z-index: 3500;
+            background: #111827;
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85);
+            max-height: 280px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .search-autocomplete-item {
+            padding: 9px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #1f2937;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #e5e7eb;
+            transition: background 0.15s;
+        }
+
+        .search-autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-autocomplete-item:hover,
+        .search-autocomplete-item.selected {
+            background: #1e3a8a;
+            color: #ffffff;
+        }
+
+        .search-autocomplete-item .cw-code {
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        .search-autocomplete-item .cw-info {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
         /* Pin Toggle Button */
         .pin-toggle-btn {
             background: transparent;
@@ -1214,8 +1262,166 @@
         sortColumn = 'Tong_KL';
         sortAsc = false;
         closePopup();
+        const box = document.getElementById('autocompleteBox');
+        if (box) box.style.display = 'none';
         renderCurrentTab();
     }
+
+    // --- AUTOCOMPLETE SUGGESTIONS ENGINE (SEARCH & INPUTS) ---
+    let selectedSuggestIndex = -1;
+
+    function renderAutocompleteSuggestions(inputEl, boxEl, onSelectCallback) {
+        if (!inputEl || !boxEl) return;
+        const query = inputEl.value.trim().toUpperCase();
+
+        if (!query || query.length < 1) {
+            boxEl.style.display = 'none';
+            selectedSuggestIndex = -1;
+            return;
+        }
+
+        const matches = allWarrantsData.filter(d =>
+            d.CW.toUpperCase().includes(query) ||
+            d.CK_co_so.toUpperCase().includes(query) ||
+            d.TCPH.toUpperCase().includes(query)
+        ).slice(0, 8);
+
+        if (matches.length === 0) {
+            boxEl.style.display = 'none';
+            selectedSuggestIndex = -1;
+            return;
+        }
+
+        selectedSuggestIndex = -1;
+
+        boxEl.innerHTML = matches.map((m, idx) => {
+            const pctCwVal = m.Pct_Change_CW || 0;
+            const pctColor = pctCwVal > 0 ? '#10b981' : (pctCwVal < 0 ? '#ef4444' : '#9ca3af');
+            const pctText = (pctCwVal > 0 ? '+' : '') + pctCwVal.toFixed(2) + '%';
+            return `
+                <div class="search-autocomplete-item" data-index="${idx}" data-cw="${m.CW}">
+                    <div>
+                        <span class="cw-code">${m.CW}</span>
+                        <span style="font-weight:600; color:#e0e6ed; margin-left: 5px;">(${m.CK_co_so})</span>
+                        <span class="cw-info"> - ${m.TCPH}</span>
+                    </div>
+                    <div style="font-size:12px;">
+                        <span style="color:#e2e8f0;">${Math.round(m.Gia_CW).toLocaleString()}đ</span>
+                        <span style="color:${pctColor}; font-weight:700; margin-left:6px;">${pctText}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        boxEl.querySelectorAll('.search-autocomplete-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const cw = item.getAttribute('data-cw');
+                inputEl.value = cw;
+                boxEl.style.display = 'none';
+                selectedSuggestIndex = -1;
+                if (onSelectCallback) onSelectCallback(cw);
+            });
+        });
+
+        boxEl.style.display = 'block';
+    }
+
+    function handleKeydownAutocomplete(e, inputEl, boxEl, onSelectCallback) {
+        if (!boxEl || boxEl.style.display === 'none') return;
+        const items = boxEl.querySelectorAll('.search-autocomplete-item');
+        if (items.length === 0) return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            selectedSuggestIndex++;
+            if (selectedSuggestIndex >= items.length) selectedSuggestIndex = 0;
+            updateSuggestHighlight(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            selectedSuggestIndex--;
+            if (selectedSuggestIndex < 0) selectedSuggestIndex = items.length - 1;
+            updateSuggestHighlight(items);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (selectedSuggestIndex >= 0 && selectedSuggestIndex < items.length) {
+                const cw = items[selectedSuggestIndex].getAttribute('data-cw');
+                inputEl.value = cw;
+                boxEl.style.display = 'none';
+                selectedSuggestIndex = -1;
+                if (onSelectCallback) onSelectCallback(cw);
+            } else {
+                boxEl.style.display = 'none';
+                if (onSelectCallback) onSelectCallback(inputEl.value.trim().toUpperCase());
+            }
+        } else if (e.key === 'Escape') {
+            boxEl.style.display = 'none';
+            selectedSuggestIndex = -1;
+        }
+    }
+
+    function updateSuggestHighlight(items) {
+        items.forEach((item, idx) => {
+            if (idx === selectedSuggestIndex) {
+                item.classList.add('selected');
+                item.scrollIntoView({ block: 'nearest' });
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+
+    function handleSearchInput(e) {
+        renderCurrentTab();
+        const box = document.getElementById('autocompleteBox');
+        if (box) renderAutocompleteSuggestions(e.target, box, (cw) => {
+            renderCurrentTab();
+        });
+    }
+
+    function handleSearchKeydown(e) {
+        const box = document.getElementById('autocompleteBox');
+        if (box) handleKeydownAutocomplete(e, e.target, box, (cw) => {
+            renderCurrentTab();
+        });
+    }
+
+    function handleHoldingInput(e) {
+        const box = document.getElementById('holdingAutocompleteBox');
+        if (box) renderAutocompleteSuggestions(e.target, box, (cw) => {
+            addManualHolding();
+        });
+    }
+
+    function handleHoldingKeydown(e) {
+        const box = document.getElementById('holdingAutocompleteBox');
+        if (box) handleKeydownAutocomplete(e, e.target, box, (cw) => {
+            addManualHolding();
+        });
+    }
+
+    function handleWatchlistInput(e) {
+        const box = document.getElementById('watchlistAutocompleteBox');
+        if (box) renderAutocompleteSuggestions(e.target, box, (cw) => {
+            addManualWatchlist();
+        });
+    }
+
+    function handleWatchlistKeydown(e) {
+        const box = document.getElementById('watchlistAutocompleteBox');
+        if (box) handleKeydownAutocomplete(e, e.target, box, (cw) => {
+            addManualWatchlist();
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        ['autocompleteBox', 'holdingAutocompleteBox', 'watchlistAutocompleteBox'].forEach(id => {
+            const box = document.getElementById(id);
+            if (box && !box.contains(e.target) && e.target.id !== id.replace('Box', 'Input') && e.target.id !== 'globalSearch') {
+                box.style.display = 'none';
+            }
+        });
+    });
 
     // --- HOLDINGS & WATCHLIST MANAGEMENT FUNCTIONS ---
     function toggleHolding(event, cwCode) {
@@ -1691,22 +1897,28 @@
             holdingsControlHtml = `
                 <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                     <span style="font-weight: 700; font-size: 14px; color: #f59e0b;"><i class="fa-solid fa-list-check"></i> Quản Lý Danh Mục Nắm Giữ:</span>
-                    <input type="text" id="addHoldingInput" placeholder="Nhập Mã CW (VD: CVPB2615)..." onkeydown="if(event.key==='Enter') addManualHolding()" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; width: 220px;">
+                    <div style="position: relative; width: 230px;">
+                        <input type="text" id="addHoldingInput" placeholder="Nhập Mã CW (VD: CVPB2615)..." autocomplete="off" oninput="handleHoldingInput(event)" onkeydown="handleHoldingKeydown(event)" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; width: 100%;">
+                        <div id="holdingAutocompleteBox" class="search-autocomplete-box"></div>
+                    </div>
                     <button onclick="addManualHolding()" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
                         <i class="fa-solid fa-plus"></i> Thêm Nắm Giữ
                     </button>
-                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Bấm 📌/👁️ hoặc <b>click chuột phải vào dòng bất kỳ</b> để quản lý nhanh!</span>
+                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Dùng ⬆️⬇️ để chọn gợi ý hoặc 📌/👁️ để ghim nhanh!</span>
                 </div>
             `;
         } else if (currentTab === 'tab2') {
             holdingsControlHtml = `
                 <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                     <span style="font-weight: 700; font-size: 14px; color: #10b981;"><i class="fa-solid fa-eye"></i> Quản Lý Danh Sách Theo Dõi (Watchlist):</span>
-                    <input type="text" id="addWatchlistInput" placeholder="Nhập Mã CW (VD: CFPT2501)..." onkeydown="if(event.key==='Enter') addManualWatchlist()" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; width: 220px;">
+                    <div style="position: relative; width: 230px;">
+                        <input type="text" id="addWatchlistInput" placeholder="Nhập Mã CW (VD: CFPT2501)..." autocomplete="off" oninput="handleWatchlistInput(event)" onkeydown="handleWatchlistKeydown(event)" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; width: 100%;">
+                        <div id="watchlistAutocompleteBox" class="search-autocomplete-box"></div>
+                    </div>
                     <button onclick="addManualWatchlist()" style="background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
                         <i class="fa-solid fa-plus"></i> Thêm Theo Dõi
                     </button>
-                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Bấm 👁️ hoặc <b>click chuột phải vào dòng bất kỳ</b> để lưu mã quan sát!</span>
+                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Dùng ⬆️⬇️ để chọn gợi ý hoặc 👁️ để ghim nhanh!</span>
                 </div>
             `;
         }
@@ -1719,7 +1931,10 @@
 
             <div class="search-panel">
                 <i class="fa-solid fa-magnifying-glass" style="color: var(--accent-blue);"></i>
-                <input type="text" id="globalSearch" placeholder="🔎 Tìm kiếm TẤT CẢ các cột (Mã, Giá, TCPH, Điểm, Phân loại...)" oninput="renderCurrentTab()" value="${document.getElementById('globalSearch')?.value || ''}">
+                <div style="position: relative; flex: 1;">
+                    <input type="text" id="globalSearch" placeholder="🔎 Gõ mã CW (VD: CVPB, CMBB...) - Dùng mũi tên ⬆️ ⬇️ để chọn gợi ý..." autocomplete="off" oninput="handleSearchInput(event)" onkeydown="handleSearchKeydown(event)" value="${document.getElementById('globalSearch')?.value || ''}">
+                    <div id="autocompleteBox" class="search-autocomplete-box"></div>
+                </div>
                 <button class="btn-clear" onclick="clearAllFilters()">
                     <i class="fa-solid fa-broom"></i> Xóa Tất Cả Bộ Lọc
                 </button>
