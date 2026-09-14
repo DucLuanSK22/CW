@@ -754,7 +754,7 @@
             <p>Mô hình định giá 5-sao & Đòn bẩy thực tế (Effective Gearing) | Nguồn dữ liệu: <b>SSI iBoard API</b></p>
         </div>
         <div>
-            <button class="refresh-btn" id="refreshBtn" onclick="loadMarketData()">
+            <button class="refresh-btn" id="refreshBtn" onclick="loadMarketData(true)">
                 <i class="fa-solid fa-rotate" id="refreshIcon"></i> CẬP NHẬT DỮ LIỆU TỪ SÀN (SSI)
             </button>
             <div class="status-badge" style="margin-top: 6px; text-align: right;" id="lastUpdateText">Đang tải...</div>
@@ -1007,20 +1007,22 @@
     let activeColFilters = {};
     let activePopupCol = null;
 
-    async function fetchSSIData() {
-        try {
-            const staticRes = await fetch('./cw_data.json?t=' + new Date().getTime());
-            if (staticRes.ok) {
-                const sJson = await staticRes.json();
-                if (sJson.data && sJson.data.length > 0) {
-                    lastUpdateStr = sJson.updated_at || '';
-                    return sJson.data.map(item => ({
-                        ...item,
-                        Pct_Change_CW: item.Pct_Change_CW !== undefined ? parseFloat(item.Pct_Change_CW) : 0.0
-                    }));
+    async function fetchSSIData(forceLive = false) {
+        if (!forceLive) {
+            try {
+                const staticRes = await fetch('./cw_data.json?t=' + new Date().getTime());
+                if (staticRes.ok) {
+                    const sJson = await staticRes.json();
+                    if (sJson.data && sJson.data.length > 0) {
+                        lastUpdateStr = sJson.updated_at || '';
+                        return sJson.data.map(item => ({
+                            ...item,
+                            Pct_Change_CW: item.Pct_Change_CW !== undefined ? parseFloat(item.Pct_Change_CW) : 0.0
+                        }));
+                    }
                 }
-            }
-        } catch(e) { console.log("Static JSON fetch fallback:", e); }
+            } catch(e) { console.log("Static JSON fetch fallback:", e); }
+        }
 
         const url = "https://iboard-query.ssi.com.vn/stock/cw/hose";
         try {
@@ -1177,11 +1179,11 @@
         });
     }
 
-    async function loadMarketData() {
+    async function loadMarketData(forceLive = false) {
         const icon = document.getElementById('refreshIcon');
-        icon.classList.add('spinner');
+        if (icon) icon.classList.add('spinner');
         
-        const raw = await fetchSSIData();
+        const raw = await fetchSSIData(forceLive);
         allWarrantsData = evaluateCW(raw);
 
         const map = new Map();

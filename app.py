@@ -366,6 +366,11 @@ with ctrl_col1:
             raw_df = fetch_ssi_data()
             st.session_state['cw_df'] = evaluate_cw(raw_df)
             st.session_state['last_updated'] = datetime.datetime.now().strftime("%H:%M:%S - %d/%m/%Y")
+            try:
+                from fetch_data import update_cw_json
+                update_cw_json()
+            except Exception:
+                pass
             st.toast("✅ Đã cập nhật thành công dữ liệu trực tiếp từ Sàn!", icon="🎉")
 
 with ctrl_col2:
