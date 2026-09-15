@@ -1754,6 +1754,14 @@
 
     function renderCurrentTab() {
         const container = document.getElementById('tabContent');
+        if (!container) return;
+
+        // Save active element focus state
+        const activeEl = document.activeElement;
+        const activeId = activeEl ? activeEl.id : null;
+        const selStart = (activeEl && activeEl.selectionStart !== undefined) ? activeEl.selectionStart : null;
+        const selEnd = (activeEl && activeEl.selectionEnd !== undefined) ? activeEl.selectionEnd : null;
+
         let subset = getTabBaseSubset();
         let title = "";
         let desc = "";
@@ -1774,7 +1782,8 @@
         }
 
         // Universal Search
-        const searchVal = (document.getElementById('globalSearch')?.value || '').toUpperCase().trim();
+        const searchInputEl = document.getElementById('globalSearch');
+        const searchVal = (searchInputEl ? searchInputEl.value : '').toUpperCase().trim();
         if (searchVal) {
             subset = subset.filter(d => {
                 const fullStr = `${d.CW} ${d.TCPH} ${d.CK_co_so} ${d.Gia_CW} ${(d.Pct_Change_CW||0).toFixed(2)}% ${d.Gia_hien_tai} ${d.Gia_TH} ${d.Pct_to_ITM.toFixed(2)}% ${d.Phan_loai_Moneyness} ${d.Diem_TB.toFixed(1)} ${d.Khuyen_nghi}`.toUpperCase();
@@ -1892,6 +1901,22 @@
             `;
         }).join('');
 
+        // Efficient Partial Update (Input Node is NEVER destroyed!)
+        const existingTableBody = document.getElementById('cwTableBody');
+        if (existingTableBody && container.getAttribute('data-rendered-tab') === currentTab) {
+            const thRow = document.getElementById('tableHeaderRow');
+            if (thRow) thRow.innerHTML = thsHtml;
+            existingTableBody.innerHTML = tableRows.length > 0 ? tableRows : '<tr><td colspan="14" style="text-align:center; padding: 24px; color: var(--text-muted);">Không tìm thấy dữ liệu phù hợp với bộ lọc</td></tr>';
+            const countNumEl = document.getElementById('resultCountNum');
+            if (countNumEl) countNumEl.innerText = subset.length;
+            const tsvEl = document.getElementById('tsvTextArea');
+            if (tsvEl) tsvEl.value = tsvText;
+            return;
+        }
+
+        // Full Structure Render when switching tabs
+        container.setAttribute('data-rendered-tab', currentTab);
+
         let holdingsControlHtml = '';
         if (currentTab === 'tab1') {
             holdingsControlHtml = `
@@ -1932,23 +1957,23 @@
             <div class="search-panel">
                 <i class="fa-solid fa-magnifying-glass" style="color: var(--accent-blue);"></i>
                 <div style="position: relative; flex: 1;">
-                    <input type="text" id="globalSearch" placeholder="🔎 Gõ mã CW (VD: CVPB, CMBB...) - Dùng mũi tên ⬆️ ⬇️ để chọn gợi ý..." autocomplete="off" oninput="handleSearchInput(event)" onkeydown="handleSearchKeydown(event)" value="${document.getElementById('globalSearch')?.value || ''}">
+                    <input type="text" id="globalSearch" placeholder="🔎 Gõ mã CW (VD: CVPB, CMBB...) - Dùng mũi tên ⬆️ ⬇️ để chọn gợi ý..." autocomplete="off" oninput="handleSearchInput(event)" onkeydown="handleSearchKeydown(event)" value="${searchVal}">
                     <div id="autocompleteBox" class="search-autocomplete-box"></div>
                 </div>
                 <button class="btn-clear" onclick="clearAllFilters()">
                     <i class="fa-solid fa-broom"></i> Xóa Tất Cả Bộ Lọc
                 </button>
-                <span style="font-size: 13px; color: var(--text-muted); white-space: nowrap;">Kết quả: <b>${subset.length}</b> mã</span>
+                <span style="font-size: 13px; color: var(--text-muted); white-space: nowrap;">Kết quả: <b id="resultCountNum">${subset.length}</b> mã</span>
             </div>
 
             <div class="table-responsive">
                 <table>
                     <thead>
-                        <tr>
+                        <tr id="tableHeaderRow">
                             ${thsHtml}
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="cwTableBody">
                         ${tableRows.length > 0 ? tableRows : '<tr><td colspan="14" style="text-align:center; padding: 24px; color: var(--text-muted);">Không tìm thấy dữ liệu phù hợp với bộ lọc</td></tr>'}
                     </tbody>
                 </table>
@@ -1957,7 +1982,7 @@
             <div class="export-section">
                 <div>
                     <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-copy"></i> 1-Click Copy TSV (Cho Excel)</h3>
-                    <textarea class="tsv-area" readonly onclick="this.select()">${tsvText}</textarea>
+                    <textarea class="tsv-area" id="tsvTextArea" readonly onclick="this.select()">${tsvText}</textarea>
                 </div>
                 <div>
                     <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-file-export"></i> Xuất File Trực Tiếp</h3>
@@ -1967,6 +1992,17 @@
                 </div>
             </div>
         `;
+
+        // Restore focus and selection range if element was recreated
+        if (activeId) {
+            const newEl = document.getElementById(activeId);
+            if (newEl) {
+                newEl.focus();
+                if (selStart !== null && selEnd !== null && newEl.setSelectionRange) {
+                    try { newEl.setSelectionRange(selStart, selEnd); } catch(e){}
+                }
+            }
+        }
     }
 
     // Initialize Page
