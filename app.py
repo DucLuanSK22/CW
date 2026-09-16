@@ -209,9 +209,19 @@ def fetch_ssi_data():
             if records:
                 return pd.DataFrame(records)
     except Exception as e:
-        st.warning(f"Không thể gọi SSI API trực tiếp: {e}. Đang dùng dữ liệu dự phòng.")
+        st.warning(f"Không thể kết nối trực tiếp SSI API: {e}. Đang dùng dữ liệu từ file cache cw_data.json.")
 
-    # Mock Data Fallback
+    # Try local cw_data.json cache fallback first (contains all 319 market CWs)
+    if os.path.exists('cw_data.json'):
+        try:
+            with open('cw_data.json', 'r', encoding='utf-8') as f:
+                cdata = json.load(f).get('data', [])
+                if cdata:
+                    return pd.DataFrame(cdata)
+        except Exception:
+            pass
+
+    # Mock Data Fallback (Last resort)
     mock_records = [
         {'CW': 'CMBB2614', 'TCPH': 'KIS', 'CK_co_so': 'MBB', 'Gia_CW': 760, 'Pct_Change_CW': 4.11, 'Tong_KL': 1600500, 'Gia_hien_tai': 20200, 'Gia_TH': 20825, 'So_ngay_con_lai': 45, 'Ti_le_CD_str': '2:1', 'Ti_le_CD_num': 2.0},
         {'CW': 'CVPB2615', 'TCPH': 'SSI', 'CK_co_so': 'VPB', 'Gia_CW': 1200, 'Pct_Change_CW': -2.44, 'Tong_KL': 850000, 'Gia_hien_tai': 19500, 'Gia_TH': 18000, 'So_ngay_con_lai': 110, 'Ti_le_CD_str': '2.5:1', 'Ti_le_CD_num': 2.5},
