@@ -368,7 +368,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Top Bar Controls: Refresh Button & Status
-ctrl_col1, ctrl_col2 = st.columns([1, 2])
+ctrl_col1, ctrl_col2, ctrl_col3 = st.columns([1.2, 1.3, 1.0])
 
 with ctrl_col1:
     if st.button("🔄 CẬP NHẬT DỮ LIỆU TỪ SÀN (SSI)", type="primary", use_container_width=True):
@@ -384,7 +384,10 @@ with ctrl_col1:
             st.toast("✅ Đã cập nhật thành công dữ liệu trực tiếp từ Sàn!", icon="🎉")
 
 with ctrl_col2:
-    st.info(f"🕒 **Lần cập nhật gần nhất:** `{st.session_state['last_updated']}` *(Chỉ gọi API khi bấm nút Cập nhật để tránh lag/treo)*")
+    st.info(f"🕒 **Lần cập nhật gần nhất:** `{st.session_state['last_updated']}`")
+
+with ctrl_col3:
+    auto_refresh = st.checkbox("⏱️ Tự động làm mới (30s)", value=False, help="Bật tùy chọn này để hệ thống tự động cập nhật giá từ sàn SSI mỗi 30 giây trong phiên giao dịch.")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -672,3 +675,13 @@ if not cw_df.empty:
             "Tra cứu toàn bộ danh sách chứng quyền niêm yết với công cụ tìm kiếm tất cả các cột",
             "All_CW"
         )
+
+    # Auto-refresh logic (Wait 30s & Refresh API if enabled)
+    if auto_refresh:
+        import time
+        time.sleep(30)
+        raw_df = fetch_ssi_data()
+        st.session_state['cw_df'] = evaluate_cw(raw_df)
+        st.session_state['last_updated'] = datetime.datetime.now().strftime("%H:%M:%S - %d/%m/%Y")
+        st.rerun()
+
