@@ -1,5 +1,5 @@
 {
-  "updated_at": "22:16:10 - 18/09/2026",
+  "updated_at": "00:56:54 - 19/09/2026",
   "source": "SSI iBoard API",
   "count": 318,
   "data": [
@@ -12,7 +12,7 @@
       "Tong_KL": 647000.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 19832.0,
-      "So_ngay_con_lai": 4,
+      "So_ngay_con_lai": 3,
       "Ti_le_CD_str": "1.7245:1",
       "Ti_le_CD_num": 1.7245
     },
@@ -25,7 +25,7 @@
       "Tong_KL": 6300.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 27420.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "1.7245:1",
       "Ti_le_CD_num": 1.7245
     },
@@ -38,7 +38,7 @@
       "Tong_KL": 14300.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 24575.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "3.4491:1",
       "Ti_le_CD_num": 3.4491
     },
@@ -51,7 +51,7 @@
       "Tong_KL": 224300.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 25006.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "3.4491:1",
       "Ti_le_CD_num": 3.4491
     },
@@ -64,7 +64,7 @@
       "Tong_KL": 8200.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 22419.0,
-      "So_ngay_con_lai": 93,
+      "So_ngay_con_lai": 92,
       "Ti_le_CD_str": "1.7245:1",
       "Ti_le_CD_num": 1.7245
     },
@@ -77,7 +77,7 @@
       "Tong_KL": 185500.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 22419.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "1.7245:1",
       "Ti_le_CD_num": 1.7245
     },
@@ -90,7 +90,7 @@
       "Tong_KL": 812000.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 21557.0,
-      "So_ngay_con_lai": 111,
+      "So_ngay_con_lai": 110,
       "Ti_le_CD_str": "3.4491:1",
       "Ti_le_CD_num": 3.4491
     },
@@ -103,7 +103,7 @@
       "Tong_KL": 49600.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 21384.0,
-      "So_ngay_con_lai": 145,
+      "So_ngay_con_lai": 144,
       "Ti_le_CD_str": "1.7245:1",
       "Ti_le_CD_num": 1.7245
     },
@@ -116,7 +116,7 @@
       "Tong_KL": 195100.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 21125.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "1.7245:1",
       "Ti_le_CD_num": 1.7245
     },
@@ -129,7 +129,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 24909.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "4.3113:1",
       "Ti_le_CD_num": 4.3113
     },
@@ -142,7 +142,7 @@
       "Tong_KL": 3700.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 25964.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "4.3113:1",
       "Ti_le_CD_num": 4.3113
     },
@@ -155,7 +155,7 @@
       "Tong_KL": 34600.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 23000.0,
-      "So_ngay_con_lai": 88,
+      "So_ngay_con_lai": 87,
       "Ti_le_CD_str": "1:1",
       "Ti_le_CD_num": 1.0
     },
@@ -168,7 +168,7 @@
       "Tong_KL": 4300.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 21900.0,
-      "So_ngay_con_lai": 222,
+      "So_ngay_con_lai": 221,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -181,7 +181,7 @@
       "Tong_KL": 111200.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 23500.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -194,7 +194,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 23000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -207,7 +207,7 @@
       "Tong_KL": 2400.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 23500.0,
-      "So_ngay_con_lai": 195,
+      "So_ngay_con_lai": 194,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -220,7 +220,7 @@
       "Tong_KL": 1000.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 21000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -233,7 +233,7 @@
       "Tong_KL": 500.0,
       "Gia_hien_tai": 21900.0,
       "Gia_TH": 25000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -246,7 +246,7 @@
       "Tong_KL": 25800.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 104449.0,
-      "So_ngay_con_lai": 4,
+      "So_ngay_con_lai": 3,
       "Ti_le_CD_str": "8.4918:1",
       "Ti_le_CD_num": 8.4918
     },
@@ -259,7 +259,7 @@
       "Tong_KL": 318500.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 104362.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "7.81:1",
       "Ti_le_CD_num": 7.81
     },
@@ -272,7 +272,7 @@
       "Tong_KL": 72200.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 99578.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "11.715:1",
       "Ti_le_CD_num": 11.715
     },
@@ -285,7 +285,7 @@
       "Tong_KL": 153400.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 103483.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "11.715:1",
       "Ti_le_CD_num": 11.715
     },
@@ -298,7 +298,7 @@
       "Tong_KL": 195100.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 100614.0,
-      "So_ngay_con_lai": 93,
+      "So_ngay_con_lai": 92,
       "Ti_le_CD_str": "9.8641:1",
       "Ti_le_CD_num": 9.8641
     },
@@ -311,7 +311,7 @@
       "Tong_KL": 1300.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 94696.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "9.8641:1",
       "Ti_le_CD_num": 9.8641
     },
@@ -324,7 +324,7 @@
       "Tong_KL": 400.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 100614.0,
-      "So_ngay_con_lai": 11,
+      "So_ngay_con_lai": 10,
       "Ti_le_CD_str": "9.8641:1",
       "Ti_le_CD_num": 9.8641
     },
@@ -337,7 +337,7 @@
       "Tong_KL": 28100.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 94696.0,
-      "So_ngay_con_lai": 10,
+      "So_ngay_con_lai": 9,
       "Ti_le_CD_str": "4.9321:1",
       "Ti_le_CD_num": 4.9321
     },
@@ -350,7 +350,7 @@
       "Tong_KL": 35500.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 97162.0,
-      "So_ngay_con_lai": 111,
+      "So_ngay_con_lai": 110,
       "Ti_le_CD_str": "15.7826:1",
       "Ti_le_CD_num": 15.7826
     },
@@ -363,7 +363,7 @@
       "Tong_KL": 776000.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 83845.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "11.837:1",
       "Ti_le_CD_num": 11.837
     },
@@ -376,7 +376,7 @@
       "Tong_KL": 52500.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 79899.0,
-      "So_ngay_con_lai": 201,
+      "So_ngay_con_lai": 200,
       "Ti_le_CD_str": "19.7283:1",
       "Ti_le_CD_num": 19.7283
     },
@@ -389,7 +389,7 @@
       "Tong_KL": 194800.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 75954.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "22.6875:1",
       "Ti_le_CD_num": 22.6875
     },
@@ -402,7 +402,7 @@
       "Tong_KL": 196800.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 77927.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "9.8641:1",
       "Ti_le_CD_num": 9.8641
     },
@@ -415,7 +415,7 @@
       "Tong_KL": 5800.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 78913.0,
-      "So_ngay_con_lai": 145,
+      "So_ngay_con_lai": 144,
       "Ti_le_CD_str": "9.8641:1",
       "Ti_le_CD_num": 9.8641
     },
@@ -428,7 +428,7 @@
       "Tong_KL": 55200.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 73981.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "9.8641:1",
       "Ti_le_CD_num": 9.8641
     },
@@ -441,7 +441,7 @@
       "Tong_KL": 300.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 82456.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "16:1",
       "Ti_le_CD_num": 16.0
     },
@@ -454,7 +454,7 @@
       "Tong_KL": 3200.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 85678.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "16:1",
       "Ti_le_CD_num": 16.0
     },
@@ -467,7 +467,7 @@
       "Tong_KL": 347400.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 70500.0,
-      "So_ngay_con_lai": 88,
+      "So_ngay_con_lai": 87,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -480,7 +480,7 @@
       "Tong_KL": 196400.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 72000.0,
-      "So_ngay_con_lai": 178,
+      "So_ngay_con_lai": 177,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -493,7 +493,7 @@
       "Tong_KL": 566200.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 70100.0,
-      "So_ngay_con_lai": 102,
+      "So_ngay_con_lai": 101,
       "Ti_le_CD_str": "12:1",
       "Ti_le_CD_num": 12.0
     },
@@ -506,7 +506,7 @@
       "Tong_KL": 10700.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 77000.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "12:1",
       "Ti_le_CD_num": 12.0
     },
@@ -519,7 +519,7 @@
       "Tong_KL": 10600.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 74000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -532,7 +532,7 @@
       "Tong_KL": 31700.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 74500.0,
-      "So_ngay_con_lai": 195,
+      "So_ngay_con_lai": 194,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -545,7 +545,7 @@
       "Tong_KL": 10600.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 68700.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -558,7 +558,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 75800.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -571,7 +571,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 82000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -584,7 +584,7 @@
       "Tong_KL": 258300.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 76000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -597,7 +597,7 @@
       "Tong_KL": 13100.0,
       "Gia_hien_tai": 71700.0,
       "Gia_TH": 72000.0,
-      "So_ngay_con_lai": 219,
+      "So_ngay_con_lai": 218,
       "Ti_le_CD_str": "12:1",
       "Ti_le_CD_num": 12.0
     },
@@ -610,7 +610,7 @@
       "Tong_KL": 39700.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 28682.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "2.3131:1",
       "Ti_le_CD_num": 2.3131
     },
@@ -623,7 +623,7 @@
       "Tong_KL": 455300.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 28000.0,
-      "So_ngay_con_lai": 11,
+      "So_ngay_con_lai": 10,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -636,7 +636,7 @@
       "Tong_KL": 93400.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 29000.0,
-      "So_ngay_con_lai": 233,
+      "So_ngay_con_lai": 232,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -649,7 +649,7 @@
       "Tong_KL": 154900.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 27300.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -662,7 +662,7 @@
       "Tong_KL": 70900.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 27800.0,
-      "So_ngay_con_lai": 145,
+      "So_ngay_con_lai": 144,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -675,7 +675,7 @@
       "Tong_KL": 3700.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 29999.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -688,7 +688,7 @@
       "Tong_KL": 1600.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 31999.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -701,7 +701,7 @@
       "Tong_KL": 257200.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 23800.0,
-      "So_ngay_con_lai": 102,
+      "So_ngay_con_lai": 101,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -714,7 +714,7 @@
       "Tong_KL": 1700.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 26300.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -727,7 +727,7 @@
       "Tong_KL": 75100.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 28000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -740,7 +740,7 @@
       "Tong_KL": 5700.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 27000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -753,7 +753,7 @@
       "Tong_KL": 39000.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 24100.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -766,7 +766,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 27200.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -779,7 +779,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 29000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -792,7 +792,7 @@
       "Tong_KL": 250400.0,
       "Gia_hien_tai": 27500.0,
       "Gia_TH": 26000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -805,7 +805,7 @@
       "Tong_KL": 261400.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 21555.0,
-      "So_ngay_con_lai": 4,
+      "So_ngay_con_lai": 3,
       "Ti_le_CD_str": "1.4865:1",
       "Ti_le_CD_num": 1.4865
     },
@@ -818,7 +818,7 @@
       "Tong_KL": 317200.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 30616.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "1.7852:1",
       "Ti_le_CD_num": 1.7852
     },
@@ -831,7 +831,7 @@
       "Tong_KL": 321200.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 27670.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "3.5704:1",
       "Ti_le_CD_num": 3.5704
     },
@@ -844,7 +844,7 @@
       "Tong_KL": 4700.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 29456.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "3.5704:1",
       "Ti_le_CD_num": 3.5704
     },
@@ -857,7 +857,7 @@
       "Tong_KL": 282100.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25885.0,
-      "So_ngay_con_lai": 93,
+      "So_ngay_con_lai": 92,
       "Ti_le_CD_str": "3.5704:1",
       "Ti_le_CD_num": 3.5704
     },
@@ -870,7 +870,7 @@
       "Tong_KL": 733400.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25885.0,
-      "So_ngay_con_lai": 37,
+      "So_ngay_con_lai": 36,
       "Ti_le_CD_str": "2.6778:1",
       "Ti_le_CD_num": 2.6778
     },
@@ -883,7 +883,7 @@
       "Tong_KL": 50600.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 24100.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "1.7852:1",
       "Ti_le_CD_num": 1.7852
     },
@@ -896,7 +896,7 @@
       "Tong_KL": 61500.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 23207.0,
-      "So_ngay_con_lai": 102,
+      "So_ngay_con_lai": 101,
       "Ti_le_CD_str": "2.6778:1",
       "Ti_le_CD_num": 2.6778
     },
@@ -909,7 +909,7 @@
       "Tong_KL": 141800.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 24993.0,
-      "So_ngay_con_lai": 10,
+      "So_ngay_con_lai": 9,
       "Ti_le_CD_str": "1.7852:1",
       "Ti_le_CD_num": 1.7852
     },
@@ -922,7 +922,7 @@
       "Tong_KL": 65900.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 24100.0,
-      "So_ngay_con_lai": 111,
+      "So_ngay_con_lai": 110,
       "Ti_le_CD_str": "3.5704:1",
       "Ti_le_CD_num": 3.5704
     },
@@ -935,7 +935,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 26331.0,
-      "So_ngay_con_lai": 117,
+      "So_ngay_con_lai": 116,
       "Ti_le_CD_str": "3.5704:1",
       "Ti_le_CD_num": 3.5704
     },
@@ -948,7 +948,7 @@
       "Tong_KL": 216000.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 26778.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "4.463:1",
       "Ti_le_CD_num": 4.463
     },
@@ -961,7 +961,7 @@
       "Tong_KL": 1400.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25439.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "3.5704:1",
       "Ti_le_CD_num": 3.5704
     },
@@ -974,7 +974,7 @@
       "Tong_KL": 3700.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25885.0,
-      "So_ngay_con_lai": 145,
+      "So_ngay_con_lai": 144,
       "Ti_le_CD_str": "3.5704:1",
       "Ti_le_CD_num": 3.5704
     },
@@ -987,7 +987,7 @@
       "Tong_KL": 145600.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 24100.0,
-      "So_ngay_con_lai": 101,
+      "So_ngay_con_lai": 100,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1000,7 +1000,7 @@
       "Tong_KL": 240100.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25400.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1013,7 +1013,7 @@
       "Tong_KL": 600.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 28888.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1026,7 +1026,7 @@
       "Tong_KL": 600.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 28333.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1039,7 +1039,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 26999.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1052,7 +1052,7 @@
       "Tong_KL": 200.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 27999.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1065,7 +1065,7 @@
       "Tong_KL": 1491500.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25000.0,
-      "So_ngay_con_lai": 151,
+      "So_ngay_con_lai": 150,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -1078,7 +1078,7 @@
       "Tong_KL": 83400.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 23000.0,
-      "So_ngay_con_lai": 88,
+      "So_ngay_con_lai": 87,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -1091,7 +1091,7 @@
       "Tong_KL": 51800.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 23500.0,
-      "So_ngay_con_lai": 178,
+      "So_ngay_con_lai": 177,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -1104,7 +1104,7 @@
       "Tong_KL": 38400.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 24600.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -1117,7 +1117,7 @@
       "Tong_KL": 58300.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25000.0,
-      "So_ngay_con_lai": 198,
+      "So_ngay_con_lai": 197,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -1130,7 +1130,7 @@
       "Tong_KL": 3500.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25300.0,
-      "So_ngay_con_lai": 229,
+      "So_ngay_con_lai": 228,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -1143,7 +1143,7 @@
       "Tong_KL": 120100.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 24500.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1156,7 +1156,7 @@
       "Tong_KL": 18400.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25000.0,
-      "So_ngay_con_lai": 195,
+      "So_ngay_con_lai": 194,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1169,7 +1169,7 @@
       "Tong_KL": 38400.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 25000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -1182,7 +1182,7 @@
       "Tong_KL": 2050200.0,
       "Gia_hien_tai": 21550.0,
       "Gia_TH": 21000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -1195,7 +1195,7 @@
       "Tong_KL": 116100.0,
       "Gia_hien_tai": 48000.0,
       "Gia_TH": 53400.0,
-      "So_ngay_con_lai": 101,
+      "So_ngay_con_lai": 100,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -1208,7 +1208,7 @@
       "Tong_KL": 283500.0,
       "Gia_hien_tai": 48000.0,
       "Gia_TH": 56200.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -1221,7 +1221,7 @@
       "Tong_KL": 188800.0,
       "Gia_hien_tai": 48000.0,
       "Gia_TH": 61999.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -1234,7 +1234,7 @@
       "Tong_KL": 1000.0,
       "Gia_hien_tai": 48000.0,
       "Gia_TH": 63979.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -1247,7 +1247,7 @@
       "Tong_KL": 209600.0,
       "Gia_hien_tai": 48000.0,
       "Gia_TH": 55000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -1260,7 +1260,7 @@
       "Tong_KL": 77400.0,
       "Gia_hien_tai": 48000.0,
       "Gia_TH": 60000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1273,7 +1273,7 @@
       "Tong_KL": 103000.0,
       "Gia_hien_tai": 48000.0,
       "Gia_TH": 50400.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1286,7 +1286,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 48000.0,
       "Gia_TH": 58300.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -1299,7 +1299,7 @@
       "Tong_KL": 568200.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 16219.0,
-      "So_ngay_con_lai": 4,
+      "So_ngay_con_lai": 3,
       "Ti_le_CD_str": "1.2014:1",
       "Ti_le_CD_num": 1.2014
     },
@@ -1312,7 +1312,7 @@
       "Tong_KL": 5800.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 25951.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "1.6019:1",
       "Ti_le_CD_num": 1.6019
     },
@@ -1325,7 +1325,7 @@
       "Tong_KL": 59500.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 23228.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "3.2038:1",
       "Ti_le_CD_num": 3.2038
     },
@@ -1338,7 +1338,7 @@
       "Tong_KL": 2000.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 24028.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "3.2038:1",
       "Ti_le_CD_num": 3.2038
     },
@@ -1351,7 +1351,7 @@
       "Tong_KL": 155500.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 21626.0,
-      "So_ngay_con_lai": 93,
+      "So_ngay_con_lai": 92,
       "Ti_le_CD_str": "1.6019:1",
       "Ti_le_CD_num": 1.6019
     },
@@ -1364,7 +1364,7 @@
       "Tong_KL": 1294400.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 21626.0,
-      "So_ngay_con_lai": 37,
+      "So_ngay_con_lai": 36,
       "Ti_le_CD_str": "2.4028:1",
       "Ti_le_CD_num": 2.4028
     },
@@ -1377,7 +1377,7 @@
       "Tong_KL": 409400.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 21626.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "1.6019:1",
       "Ti_le_CD_num": 1.6019
     },
@@ -1390,7 +1390,7 @@
       "Tong_KL": 71700.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 18422.0,
-      "So_ngay_con_lai": 11,
+      "So_ngay_con_lai": 10,
       "Ti_le_CD_str": "2.4028:1",
       "Ti_le_CD_num": 2.4028
     },
@@ -1403,7 +1403,7 @@
       "Tong_KL": 782000.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 20825.0,
-      "So_ngay_con_lai": 10,
+      "So_ngay_con_lai": 9,
       "Ti_le_CD_str": "1.6019:1",
       "Ti_le_CD_num": 1.6019
     },
@@ -1416,7 +1416,7 @@
       "Tong_KL": 46900.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 23628.0,
-      "So_ngay_con_lai": 111,
+      "So_ngay_con_lai": 110,
       "Ti_le_CD_str": "3.2038:1",
       "Ti_le_CD_num": 3.2038
     },
@@ -1429,7 +1429,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 24830.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "2.4028:1",
       "Ti_le_CD_num": 2.4028
     },
@@ -1442,7 +1442,7 @@
       "Tong_KL": 1021100.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 20825.0,
-      "So_ngay_con_lai": 151,
+      "So_ngay_con_lai": 150,
       "Ti_le_CD_str": "1.6019:1",
       "Ti_le_CD_num": 1.6019
     },
@@ -1455,7 +1455,7 @@
       "Tong_KL": 196800.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 19223.0,
-      "So_ngay_con_lai": 88,
+      "So_ngay_con_lai": 87,
       "Ti_le_CD_str": "1.6019:1",
       "Ti_le_CD_num": 1.6019
     },
@@ -1468,7 +1468,7 @@
       "Tong_KL": 54200.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 19624.0,
-      "So_ngay_con_lai": 178,
+      "So_ngay_con_lai": 177,
       "Ti_le_CD_str": "1.6019:1",
       "Ti_le_CD_num": 1.6019
     },
@@ -1481,7 +1481,7 @@
       "Tong_KL": 56400.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 18342.0,
-      "So_ngay_con_lai": 102,
+      "So_ngay_con_lai": 101,
       "Ti_le_CD_str": "3.2038:1",
       "Ti_le_CD_num": 3.2038
     },
@@ -1494,7 +1494,7 @@
       "Tong_KL": 23600.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 18422.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "3.2038:1",
       "Ti_le_CD_num": 3.2038
     },
@@ -1507,7 +1507,7 @@
       "Tong_KL": 3500.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 18822.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "3.2038:1",
       "Ti_le_CD_num": 3.2038
     },
@@ -1520,7 +1520,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 21225.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "3.2038:1",
       "Ti_le_CD_num": 3.2038
     },
@@ -1533,7 +1533,7 @@
       "Tong_KL": 20300.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 23000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -1546,7 +1546,7 @@
       "Tong_KL": 18800.0,
       "Gia_hien_tai": 19900.0,
       "Gia_TH": 22000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -1559,7 +1559,7 @@
       "Tong_KL": 140300.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 93900.0,
-      "So_ngay_con_lai": 80,
+      "So_ngay_con_lai": 79,
       "Ti_le_CD_str": "15:1",
       "Ti_le_CD_num": 15.0
     },
@@ -1572,7 +1572,7 @@
       "Tong_KL": 69200.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 80000.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -1585,7 +1585,7 @@
       "Tong_KL": 543900.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 79000.0,
-      "So_ngay_con_lai": 10,
+      "So_ngay_con_lai": 9,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -1598,7 +1598,7 @@
       "Tong_KL": 295900.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 85000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -1611,7 +1611,7 @@
       "Tong_KL": 1200.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 80000.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -1624,7 +1624,7 @@
       "Tong_KL": 19900.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 80200.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -1637,7 +1637,7 @@
       "Tong_KL": 21100.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 76200.0,
-      "So_ngay_con_lai": 101,
+      "So_ngay_con_lai": 100,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -1650,7 +1650,7 @@
       "Tong_KL": 2100.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 86789.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -1663,7 +1663,7 @@
       "Tong_KL": 500.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 89999.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -1676,7 +1676,7 @@
       "Tong_KL": 400.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 91789.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -1689,7 +1689,7 @@
       "Tong_KL": 456300.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 70000.0,
-      "So_ngay_con_lai": 178,
+      "So_ngay_con_lai": 177,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -1702,7 +1702,7 @@
       "Tong_KL": 220700.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 74400.0,
-      "So_ngay_con_lai": 222,
+      "So_ngay_con_lai": 221,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -1715,7 +1715,7 @@
       "Tong_KL": 46200.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 76000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -1728,7 +1728,7 @@
       "Tong_KL": 409200.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 67800.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -1741,7 +1741,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 76400.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -1754,7 +1754,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 79000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -1767,7 +1767,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 76000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -1780,7 +1780,7 @@
       "Tong_KL": 100300.0,
       "Gia_hien_tai": 68400.0,
       "Gia_TH": 69000.0,
-      "So_ngay_con_lai": 219,
+      "So_ngay_con_lai": 218,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -1793,7 +1793,7 @@
       "Tong_KL": 18600.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 80742.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "3.9387:1",
       "Ti_le_CD_num": 3.9387
     },
@@ -1806,7 +1806,7 @@
       "Tong_KL": 118300.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 89604.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "7.8773:1",
       "Ti_le_CD_num": 7.8773
     },
@@ -1819,7 +1819,7 @@
       "Tong_KL": 2100.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 93543.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "7.8773:1",
       "Ti_le_CD_num": 7.8773
     },
@@ -1832,7 +1832,7 @@
       "Tong_KL": 94600.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 86650.0,
-      "So_ngay_con_lai": 93,
+      "So_ngay_con_lai": 92,
       "Ti_le_CD_str": "4.9233:1",
       "Ti_le_CD_num": 4.9233
     },
@@ -1845,7 +1845,7 @@
       "Tong_KL": 211500.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 83696.0,
-      "So_ngay_con_lai": 37,
+      "So_ngay_con_lai": 36,
       "Ti_le_CD_str": "6.8926:1",
       "Ti_le_CD_num": 6.8926
     },
@@ -1858,7 +1858,7 @@
       "Tong_KL": 15800.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 88620.0,
-      "So_ngay_con_lai": 10,
+      "So_ngay_con_lai": 9,
       "Ti_le_CD_str": "4.9233:1",
       "Ti_le_CD_num": 4.9233
     },
@@ -1871,7 +1871,7 @@
       "Tong_KL": 19700.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 100436.0,
-      "So_ngay_con_lai": 111,
+      "So_ngay_con_lai": 110,
       "Ti_le_CD_str": "7.8773:1",
       "Ti_le_CD_num": 7.8773
     },
@@ -1884,7 +1884,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 99451.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "9.8466:1",
       "Ti_le_CD_num": 9.8466
     },
@@ -1897,7 +1897,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 82909.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "7.8773:1",
       "Ti_le_CD_num": 7.8773
     },
@@ -1910,7 +1910,7 @@
       "Tong_KL": 555800.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 80742.0,
-      "So_ngay_con_lai": 151,
+      "So_ngay_con_lai": 150,
       "Ti_le_CD_str": "6.8926:1",
       "Ti_le_CD_num": 6.8926
     },
@@ -1923,7 +1923,7 @@
       "Tong_KL": 274100.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 74342.0,
-      "So_ngay_con_lai": 88,
+      "So_ngay_con_lai": 87,
       "Ti_le_CD_str": "4.9233:1",
       "Ti_le_CD_num": 4.9233
     },
@@ -1936,7 +1936,7 @@
       "Tong_KL": 218900.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 75819.0,
-      "So_ngay_con_lai": 178,
+      "So_ngay_con_lai": 177,
       "Ti_le_CD_str": "5.908:1",
       "Ti_le_CD_num": 5.908
     },
@@ -1949,7 +1949,7 @@
       "Tong_KL": 42400.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 71093.0,
-      "So_ngay_con_lai": 102,
+      "So_ngay_con_lai": 101,
       "Ti_le_CD_str": "7.8773:1",
       "Ti_le_CD_num": 7.8773
     },
@@ -1962,7 +1962,7 @@
       "Tong_KL": 21300.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 72865.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "7.8773:1",
       "Ti_le_CD_num": 7.8773
     },
@@ -1975,7 +1975,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 86650.0,
-      "So_ngay_con_lai": 198,
+      "So_ngay_con_lai": 197,
       "Ti_le_CD_str": "7.8773:1",
       "Ti_le_CD_num": 7.8773
     },
@@ -1988,7 +1988,7 @@
       "Tong_KL": 32000.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 73456.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "9.8466:1",
       "Ti_le_CD_num": 9.8466
     },
@@ -2001,7 +2001,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 82712.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "9.8466:1",
       "Ti_le_CD_num": 9.8466
     },
@@ -2014,7 +2014,7 @@
       "Tong_KL": 144100.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 79000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2027,7 +2027,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 72500.0,
       "Gia_TH": 82000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2040,7 +2040,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 17000.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2053,7 +2053,7 @@
       "Tong_KL": 92700.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 15500.0,
-      "So_ngay_con_lai": 145,
+      "So_ngay_con_lai": 144,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2066,7 +2066,7 @@
       "Tong_KL": 8100.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 15300.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2079,7 +2079,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 16333.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2092,7 +2092,7 @@
       "Tong_KL": 300.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 15999.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2105,7 +2105,7 @@
       "Tong_KL": 10400.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 14999.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2118,7 +2118,7 @@
       "Tong_KL": 300.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 16789.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2131,7 +2131,7 @@
       "Tong_KL": 125000.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 13100.0,
-      "So_ngay_con_lai": 102,
+      "So_ngay_con_lai": 101,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2144,7 +2144,7 @@
       "Tong_KL": 83200.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 14000.0,
-      "So_ngay_con_lai": 222,
+      "So_ngay_con_lai": 221,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2157,7 +2157,7 @@
       "Tong_KL": 571500.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 15000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2170,7 +2170,7 @@
       "Tong_KL": 1007200.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 15000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2183,7 +2183,7 @@
       "Tong_KL": 900.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 15500.0,
-      "So_ngay_con_lai": 195,
+      "So_ngay_con_lai": 194,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2196,7 +2196,7 @@
       "Tong_KL": 10100.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 14000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2209,7 +2209,7 @@
       "Tong_KL": 2453200.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 13000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2222,7 +2222,7 @@
       "Tong_KL": 2400.0,
       "Gia_hien_tai": 11800.0,
       "Gia_TH": 12500.0,
-      "So_ngay_con_lai": 219,
+      "So_ngay_con_lai": 218,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2235,7 +2235,7 @@
       "Tong_KL": 3000.0,
       "Gia_hien_tai": 24100.0,
       "Gia_TH": 15763.0,
-      "So_ngay_con_lai": 233,
+      "So_ngay_con_lai": 232,
       "Ti_le_CD_str": "2.4888:1",
       "Ti_le_CD_num": 2.4888
     },
@@ -2248,7 +2248,7 @@
       "Tong_KL": 149600.0,
       "Gia_hien_tai": 24100.0,
       "Gia_TH": 17777.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2261,7 +2261,7 @@
       "Tong_KL": 35300.0,
       "Gia_hien_tai": 24100.0,
       "Gia_TH": 17111.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2274,7 +2274,7 @@
       "Tong_KL": 236000.0,
       "Gia_hien_tai": 24100.0,
       "Gia_TH": 15999.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2287,7 +2287,7 @@
       "Tong_KL": 181200.0,
       "Gia_hien_tai": 24100.0,
       "Gia_TH": 16888.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2300,7 +2300,7 @@
       "Tong_KL": 17400.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 71000.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -2313,7 +2313,7 @@
       "Tong_KL": 3800.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 64000.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2326,7 +2326,7 @@
       "Tong_KL": 38300.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 65000.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2339,7 +2339,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 51000.0,
-      "So_ngay_con_lai": 93,
+      "So_ngay_con_lai": 92,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2352,7 +2352,7 @@
       "Tong_KL": 110700.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 60000.0,
-      "So_ngay_con_lai": 37,
+      "So_ngay_con_lai": 36,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2365,7 +2365,7 @@
       "Tong_KL": 129700.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 66000.0,
-      "So_ngay_con_lai": 111,
+      "So_ngay_con_lai": 110,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2378,7 +2378,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 79000.0,
-      "So_ngay_con_lai": 201,
+      "So_ngay_con_lai": 200,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2391,7 +2391,7 @@
       "Tong_KL": 7600.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 66000.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2404,7 +2404,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 74700.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2417,7 +2417,7 @@
       "Tong_KL": 3300.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 71000.0,
-      "So_ngay_con_lai": 101,
+      "So_ngay_con_lai": 100,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2430,7 +2430,7 @@
       "Tong_KL": 28900.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 80888.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -2443,7 +2443,7 @@
       "Tong_KL": 380700.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 77777.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -2456,7 +2456,7 @@
       "Tong_KL": 608300.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 78888.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "8:1",
       "Ti_le_CD_num": 8.0
     },
@@ -2469,7 +2469,7 @@
       "Tong_KL": 18400.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 81888.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -2482,7 +2482,7 @@
       "Tong_KL": 1174800.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 79000.0,
-      "So_ngay_con_lai": 151,
+      "So_ngay_con_lai": 150,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2495,7 +2495,7 @@
       "Tong_KL": 200.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 70000.0,
-      "So_ngay_con_lai": 101,
+      "So_ngay_con_lai": 100,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2508,7 +2508,7 @@
       "Tong_KL": 10000.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 71500.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2521,7 +2521,7 @@
       "Tong_KL": 263800.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 69700.0,
-      "So_ngay_con_lai": 102,
+      "So_ngay_con_lai": 101,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2534,7 +2534,7 @@
       "Tong_KL": 33400.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 81000.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2547,7 +2547,7 @@
       "Tong_KL": 58300.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 80000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2560,7 +2560,7 @@
       "Tong_KL": 3000.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 80000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2573,7 +2573,7 @@
       "Tong_KL": 35000.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 71500.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2586,7 +2586,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 81100.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -2599,7 +2599,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 82000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2612,7 +2612,7 @@
       "Tong_KL": 9000.0,
       "Gia_hien_tai": 78200.0,
       "Gia_TH": 79000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2625,7 +2625,7 @@
       "Tong_KL": 153200.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 41723.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "1.9588:1",
       "Ti_le_CD_num": 1.9588
     },
@@ -2638,7 +2638,7 @@
       "Tong_KL": 400.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 43584.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "3.9176:1",
       "Ti_le_CD_num": 3.9176
     },
@@ -2651,7 +2651,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 44563.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "3.9176:1",
       "Ti_le_CD_num": 3.9176
     },
@@ -2664,7 +2664,7 @@
       "Tong_KL": 1401600.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 36238.0,
-      "So_ngay_con_lai": 37,
+      "So_ngay_con_lai": 36,
       "Ti_le_CD_str": "3.9176:1",
       "Ti_le_CD_num": 3.9176
     },
@@ -2677,7 +2677,7 @@
       "Tong_KL": 508200.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 35259.0,
-      "So_ngay_con_lai": 11,
+      "So_ngay_con_lai": 10,
       "Ti_le_CD_str": "2.9382:1",
       "Ti_le_CD_num": 2.9382
     },
@@ -2690,7 +2690,7 @@
       "Tong_KL": 203000.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 34279.0,
-      "So_ngay_con_lai": 10,
+      "So_ngay_con_lai": 9,
       "Ti_le_CD_str": "1.9588:1",
       "Ti_le_CD_num": 1.9588
     },
@@ -2703,7 +2703,7 @@
       "Tong_KL": 89600.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 38687.0,
-      "So_ngay_con_lai": 111,
+      "So_ngay_con_lai": 110,
       "Ti_le_CD_str": "3.9176:1",
       "Ti_le_CD_num": 3.9176
     },
@@ -2716,7 +2716,7 @@
       "Tong_KL": 600.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 35259.0,
-      "So_ngay_con_lai": 201,
+      "So_ngay_con_lai": 200,
       "Ti_le_CD_str": "3.9176:1",
       "Ti_le_CD_num": 3.9176
     },
@@ -2729,7 +2729,7 @@
       "Tong_KL": 1182700.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 34000.0,
-      "So_ngay_con_lai": 151,
+      "So_ngay_con_lai": 150,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -2742,7 +2742,7 @@
       "Tong_KL": 846500.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 30000.0,
-      "So_ngay_con_lai": 88,
+      "So_ngay_con_lai": 87,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2755,7 +2755,7 @@
       "Tong_KL": 334300.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 30500.0,
-      "So_ngay_con_lai": 178,
+      "So_ngay_con_lai": 177,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -2768,7 +2768,7 @@
       "Tong_KL": 1200.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 35500.0,
-      "So_ngay_con_lai": 222,
+      "So_ngay_con_lai": 221,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2781,7 +2781,7 @@
       "Tong_KL": 1284400.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 36000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -2794,7 +2794,7 @@
       "Tong_KL": 400.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 31700.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2807,7 +2807,7 @@
       "Tong_KL": 3400.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 35700.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2820,7 +2820,7 @@
       "Tong_KL": 15900.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 35000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -2833,7 +2833,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 31600.0,
       "Gia_TH": 32000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -2846,7 +2846,7 @@
       "Tong_KL": 619500.0,
       "Gia_hien_tai": 14100.0,
       "Gia_TH": 18000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2859,7 +2859,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 14100.0,
       "Gia_TH": 18000.0,
-      "So_ngay_con_lai": 233,
+      "So_ngay_con_lai": 232,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -2872,7 +2872,7 @@
       "Tong_KL": 291300.0,
       "Gia_hien_tai": 14100.0,
       "Gia_TH": 19399.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2885,7 +2885,7 @@
       "Tong_KL": 22200.0,
       "Gia_hien_tai": 14100.0,
       "Gia_TH": 18888.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2898,7 +2898,7 @@
       "Tong_KL": 34500.0,
       "Gia_hien_tai": 14100.0,
       "Gia_TH": 18000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2911,7 +2911,7 @@
       "Tong_KL": 303300.0,
       "Gia_hien_tai": 14100.0,
       "Gia_TH": 18000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -2924,7 +2924,7 @@
       "Tong_KL": 122600.0,
       "Gia_hien_tai": 14100.0,
       "Gia_TH": 15300.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2937,7 +2937,7 @@
       "Tong_KL": 4100.0,
       "Gia_hien_tai": 14100.0,
       "Gia_TH": 16900.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -2950,7 +2950,7 @@
       "Tong_KL": 5100.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 67408.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "3.8519:1",
       "Ti_le_CD_num": 3.8519
     },
@@ -2963,7 +2963,7 @@
       "Tong_KL": 2100.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 70778.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "3.8519:1",
       "Ti_le_CD_num": 3.8519
     },
@@ -2976,7 +2976,7 @@
       "Tong_KL": 9200.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 49111.0,
-      "So_ngay_con_lai": 93,
+      "So_ngay_con_lai": 92,
       "Ti_le_CD_str": "3.8519:1",
       "Ti_le_CD_num": 3.8519
     },
@@ -2989,7 +2989,7 @@
       "Tong_KL": 36200.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 51037.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "4.8148:1",
       "Ti_le_CD_num": 4.8148
     },
@@ -3002,7 +3002,7 @@
       "Tong_KL": 140800.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 65000.0,
-      "So_ngay_con_lai": 10,
+      "So_ngay_con_lai": 9,
       "Ti_le_CD_str": "2.4074:1",
       "Ti_le_CD_num": 2.4074
     },
@@ -3015,7 +3015,7 @@
       "Tong_KL": 68400.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 62593.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "4.3334:1",
       "Ti_le_CD_num": 4.3334
     },
@@ -3028,7 +3028,7 @@
       "Tong_KL": 151600.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 89556.0,
-      "So_ngay_con_lai": 101,
+      "So_ngay_con_lai": 100,
       "Ti_le_CD_str": "3.8519:1",
       "Ti_le_CD_num": 3.8519
     },
@@ -3041,7 +3041,7 @@
       "Tong_KL": 89100.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 91482.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "3.8519:1",
       "Ti_le_CD_num": 3.8519
     },
@@ -3054,7 +3054,7 @@
       "Tong_KL": 377400.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 81852.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "9.6297:1",
       "Ti_le_CD_num": 9.6297
     },
@@ -3067,7 +3067,7 @@
       "Tong_KL": 57800.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 83768.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "9.6297:1",
       "Ti_le_CD_num": 9.6297
     },
@@ -3080,7 +3080,7 @@
       "Tong_KL": 10500.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 85159.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "9.6297:1",
       "Ti_le_CD_num": 9.6297
     },
@@ -3093,7 +3093,7 @@
       "Tong_KL": 95100.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 90000.0,
-      "So_ngay_con_lai": 198,
+      "So_ngay_con_lai": 197,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -3106,7 +3106,7 @@
       "Tong_KL": 2700.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 75641.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "9.6297:1",
       "Ti_le_CD_num": 9.6297
     },
@@ -3119,7 +3119,7 @@
       "Tong_KL": 26400.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 85800.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "9.6297:1",
       "Ti_le_CD_num": 9.6297
     },
@@ -3132,7 +3132,7 @@
       "Tong_KL": 500.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 80000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -3145,7 +3145,7 @@
       "Tong_KL": 722900.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 68000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -3158,7 +3158,7 @@
       "Tong_KL": 28400.0,
       "Gia_hien_tai": 71000.0,
       "Gia_TH": 76000.0,
-      "So_ngay_con_lai": 219,
+      "So_ngay_con_lai": 218,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -3171,7 +3171,7 @@
       "Tong_KL": 553100.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 18185.0,
-      "So_ngay_con_lai": 80,
+      "So_ngay_con_lai": 79,
       "Ti_le_CD_str": "1.732:1",
       "Ti_le_CD_num": 1.732
     },
@@ -3184,7 +3184,7 @@
       "Tong_KL": 50300.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 15587.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "1.732:1",
       "Ti_le_CD_num": 1.732
     },
@@ -3197,7 +3197,7 @@
       "Tong_KL": 977200.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 16020.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "1.732:1",
       "Ti_le_CD_num": 1.732
     },
@@ -3210,7 +3210,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 17353.0,
-      "So_ngay_con_lai": 170,
+      "So_ngay_con_lai": 169,
       "Ti_le_CD_str": "1.8267:1",
       "Ti_le_CD_num": 1.8267
     },
@@ -3223,7 +3223,7 @@
       "Tong_KL": 84300.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 15983.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "1.8267:1",
       "Ti_le_CD_num": 1.8267
     },
@@ -3236,7 +3236,7 @@
       "Tong_KL": 350000.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 13974.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "3.6533:1",
       "Ti_le_CD_num": 3.6533
     },
@@ -3249,7 +3249,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 15527.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "3.6533:1",
       "Ti_le_CD_num": 3.6533
     },
@@ -3262,7 +3262,7 @@
       "Tong_KL": 20400.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 15527.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "1.8267:1",
       "Ti_le_CD_num": 1.8267
     },
@@ -3275,7 +3275,7 @@
       "Tong_KL": 2781900.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 14613.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "1.8267:1",
       "Ti_le_CD_num": 1.8267
     },
@@ -3288,7 +3288,7 @@
       "Tong_KL": 23900.0,
       "Gia_hien_tai": 13600.0,
       "Gia_TH": 13700.0,
-      "So_ngay_con_lai": 219,
+      "So_ngay_con_lai": 218,
       "Ti_le_CD_str": "1.8267:1",
       "Ti_le_CD_num": 1.8267
     },
@@ -3301,7 +3301,7 @@
       "Tong_KL": 2100.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 122500.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -3314,7 +3314,7 @@
       "Tong_KL": 1700.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 125000.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -3327,7 +3327,7 @@
       "Tong_KL": 245400.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 248888.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3340,7 +3340,7 @@
       "Tong_KL": 57400.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 250789.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3353,7 +3353,7 @@
       "Tong_KL": 192000.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 252789.0,
-      "So_ngay_con_lai": 131,
+      "So_ngay_con_lai": 130,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3366,7 +3366,7 @@
       "Tong_KL": 636200.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 244567.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3379,7 +3379,7 @@
       "Tong_KL": 112900.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 246789.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3392,7 +3392,7 @@
       "Tong_KL": 74400.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 250000.0,
-      "So_ngay_con_lai": 198,
+      "So_ngay_con_lai": 197,
       "Ti_le_CD_str": "12:1",
       "Ti_le_CD_num": 12.0
     },
@@ -3405,7 +3405,7 @@
       "Tong_KL": 2300.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 221200.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3418,7 +3418,7 @@
       "Tong_KL": 18600.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 244000.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3431,7 +3431,7 @@
       "Tong_KL": 3000.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 250000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -3444,7 +3444,7 @@
       "Tong_KL": 3700.0,
       "Gia_hien_tai": 241200.0,
       "Gia_TH": 240000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -3457,7 +3457,7 @@
       "Tong_KL": 82700.0,
       "Gia_hien_tai": 129000.0,
       "Gia_TH": 152252.0,
-      "So_ngay_con_lai": 39,
+      "So_ngay_con_lai": 38,
       "Ti_le_CD_str": "15.3838:1",
       "Ti_le_CD_num": 15.3838
     },
@@ -3470,7 +3470,7 @@
       "Tong_KL": 200.0,
       "Gia_hien_tai": 129000.0,
       "Gia_TH": 158205.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "15.3838:1",
       "Ti_le_CD_num": 15.3838
     },
@@ -3483,7 +3483,7 @@
       "Tong_KL": 2100.0,
       "Gia_hien_tai": 129000.0,
       "Gia_TH": 154606.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "15.3838:1",
       "Ti_le_CD_num": 15.3838
     },
@@ -3496,7 +3496,7 @@
       "Tong_KL": 14900.0,
       "Gia_hien_tai": 129000.0,
       "Gia_TH": 132500.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3509,7 +3509,7 @@
       "Tong_KL": 7900.0,
       "Gia_hien_tai": 129000.0,
       "Gia_TH": 153500.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "20:1",
       "Ti_le_CD_num": 20.0
     },
@@ -3522,7 +3522,7 @@
       "Tong_KL": 48400.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 58460.0,
-      "So_ngay_con_lai": 80,
+      "So_ngay_con_lai": 79,
       "Ti_le_CD_str": "9.2645:1",
       "Ti_le_CD_num": 9.2645
     },
@@ -3535,7 +3535,7 @@
       "Tong_KL": 105900.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 62024.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "4.8456:1",
       "Ti_le_CD_num": 4.8456
     },
@@ -3548,7 +3548,7 @@
       "Tong_KL": 11000.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 62024.0,
-      "So_ngay_con_lai": 111,
+      "So_ngay_con_lai": 110,
       "Ti_le_CD_str": "7.753:1",
       "Ti_le_CD_num": 7.753
     },
@@ -3561,7 +3561,7 @@
       "Tong_KL": 275100.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 62993.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "5.8148:1",
       "Ti_le_CD_num": 5.8148
     },
@@ -3574,7 +3574,7 @@
       "Tong_KL": 300.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 63962.0,
-      "So_ngay_con_lai": 201,
+      "So_ngay_con_lai": 200,
       "Ti_le_CD_str": "6.7839:1",
       "Ti_le_CD_num": 6.7839
     },
@@ -3587,7 +3587,7 @@
       "Tong_KL": 187100.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 60086.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "9.6913:1",
       "Ti_le_CD_num": 9.6913
     },
@@ -3600,7 +3600,7 @@
       "Tong_KL": 1000.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 64930.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "9.6913:1",
       "Ti_le_CD_num": 9.6913
     },
@@ -3613,7 +3613,7 @@
       "Tong_KL": 17600.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 67946.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "9.6913:1",
       "Ti_le_CD_num": 9.6913
     },
@@ -3626,7 +3626,7 @@
       "Tong_KL": 20500.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 56209.0,
-      "So_ngay_con_lai": 88,
+      "So_ngay_con_lai": 87,
       "Ti_le_CD_str": "2.9074:1",
       "Ti_le_CD_num": 2.9074
     },
@@ -3639,7 +3639,7 @@
       "Tong_KL": 39100.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 56209.0,
-      "So_ngay_con_lai": 178,
+      "So_ngay_con_lai": 177,
       "Ti_le_CD_str": "3.8765:1",
       "Ti_le_CD_num": 3.8765
     },
@@ -3652,7 +3652,7 @@
       "Tong_KL": 25000.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 54500.0,
-      "So_ngay_con_lai": 222,
+      "So_ngay_con_lai": 221,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -3665,7 +3665,7 @@
       "Tong_KL": 5900.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 60000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "10:1",
       "Ti_le_CD_num": 10.0
     },
@@ -3678,7 +3678,7 @@
       "Tong_KL": 8700.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 58000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -3691,7 +3691,7 @@
       "Tong_KL": 102100.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 68000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -3704,7 +3704,7 @@
       "Tong_KL": 16300.0,
       "Gia_hien_tai": 61200.0,
       "Gia_TH": 64000.0,
-      "So_ngay_con_lai": 219,
+      "So_ngay_con_lai": 218,
       "Ti_le_CD_str": "6:1",
       "Ti_le_CD_num": 6.0
     },
@@ -3717,7 +3717,7 @@
       "Tong_KL": 532300.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 36649.0,
-      "So_ngay_con_lai": 80,
+      "So_ngay_con_lai": 79,
       "Ti_le_CD_str": "2.9476:1",
       "Ti_le_CD_num": 2.9476
     },
@@ -3730,7 +3730,7 @@
       "Tong_KL": 8500.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 33407.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "3.9302:1",
       "Ti_le_CD_num": 3.9302
     },
@@ -3743,7 +3743,7 @@
       "Tong_KL": 23100.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 34389.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "3.9302:1",
       "Ti_le_CD_num": 3.9302
     },
@@ -3756,7 +3756,7 @@
       "Tong_KL": 68200.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 30459.0,
-      "So_ngay_con_lai": 93,
+      "So_ngay_con_lai": 92,
       "Ti_le_CD_str": "1.9651:1",
       "Ti_le_CD_num": 1.9651
     },
@@ -3769,7 +3769,7 @@
       "Tong_KL": 703000.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 29476.0,
-      "So_ngay_con_lai": 10,
+      "So_ngay_con_lai": 9,
       "Ti_le_CD_str": "1.9651:1",
       "Ti_le_CD_num": 1.9651
     },
@@ -3782,7 +3782,7 @@
       "Tong_KL": 1787700.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 29476.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "1.9651:1",
       "Ti_le_CD_num": 1.9651
     },
@@ -3795,7 +3795,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 29476.0,
-      "So_ngay_con_lai": 201,
+      "So_ngay_con_lai": 200,
       "Ti_le_CD_str": "3.9302:1",
       "Ti_le_CD_num": 3.9302
     },
@@ -3808,7 +3808,7 @@
       "Tong_KL": 212000.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 28494.0,
-      "So_ngay_con_lai": 51,
+      "So_ngay_con_lai": 50,
       "Ti_le_CD_str": "3.9302:1",
       "Ti_le_CD_num": 3.9302
     },
@@ -3821,7 +3821,7 @@
       "Tong_KL": 108200.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 28400.0,
-      "So_ngay_con_lai": 191,
+      "So_ngay_con_lai": 190,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -3834,7 +3834,7 @@
       "Tong_KL": 200.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 31999.0,
-      "So_ngay_con_lai": 9,
+      "So_ngay_con_lai": 8,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -3847,7 +3847,7 @@
       "Tong_KL": 10600.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 32888.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -3860,7 +3860,7 @@
       "Tong_KL": 25200.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 33456.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "5:1",
       "Ti_le_CD_num": 5.0
     },
@@ -3873,7 +3873,7 @@
       "Tong_KL": 1745000.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 28500.0,
-      "So_ngay_con_lai": 151,
+      "So_ngay_con_lai": 150,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -3886,7 +3886,7 @@
       "Tong_KL": 292000.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 25000.0,
-      "So_ngay_con_lai": 88,
+      "So_ngay_con_lai": 87,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -3899,7 +3899,7 @@
       "Tong_KL": 378800.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 25500.0,
-      "So_ngay_con_lai": 178,
+      "So_ngay_con_lai": 177,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -3912,7 +3912,7 @@
       "Tong_KL": 59800.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 27200.0,
-      "So_ngay_con_lai": 222,
+      "So_ngay_con_lai": 221,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -3925,7 +3925,7 @@
       "Tong_KL": 9000.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 29000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -3938,7 +3938,7 @@
       "Tong_KL": 245300.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 28000.0,
-      "So_ngay_con_lai": 107,
+      "So_ngay_con_lai": 106,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -3951,7 +3951,7 @@
       "Tong_KL": 100.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 28000.0,
-      "So_ngay_con_lai": 195,
+      "So_ngay_con_lai": 194,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -3964,7 +3964,7 @@
       "Tong_KL": 18900.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 25400.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -3977,7 +3977,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 28600.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "4:1",
       "Ti_le_CD_num": 4.0
     },
@@ -3990,7 +3990,7 @@
       "Tong_KL": 4200.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 29000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -4003,7 +4003,7 @@
       "Tong_KL": 358500.0,
       "Gia_hien_tai": 27450.0,
       "Gia_TH": 27000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -4016,7 +4016,7 @@
       "Tong_KL": 6700.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 46356.0,
-      "So_ngay_con_lai": 27,
+      "So_ngay_con_lai": 26,
       "Ti_le_CD_str": "3.863:1",
       "Ti_le_CD_num": 3.863
     },
@@ -4029,7 +4029,7 @@
       "Tong_KL": 5400.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 47805.0,
-      "So_ngay_con_lai": 121,
+      "So_ngay_con_lai": 120,
       "Ti_le_CD_str": "3.863:1",
       "Ti_le_CD_num": 3.863
     },
@@ -4042,7 +4042,7 @@
       "Tong_KL": 56700.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 29938.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "2.8973:1",
       "Ti_le_CD_num": 2.8973
     },
@@ -4055,7 +4055,7 @@
       "Tong_KL": 88900.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 34766.0,
-      "So_ngay_con_lai": 100,
+      "So_ngay_con_lai": 99,
       "Ti_le_CD_str": "4.8288:1",
       "Ti_le_CD_num": 4.8288
     },
@@ -4068,7 +4068,7 @@
       "Tong_KL": 5200.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 36173.0,
-      "So_ngay_con_lai": 72,
+      "So_ngay_con_lai": 71,
       "Ti_le_CD_str": "4.8288:1",
       "Ti_le_CD_num": 4.8288
     },
@@ -4081,7 +4081,7 @@
       "Tong_KL": 3900.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 28103.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "3.863:1",
       "Ti_le_CD_num": 3.863
     },
@@ -4094,7 +4094,7 @@
       "Tong_KL": 23300.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 31870.0,
-      "So_ngay_con_lai": 284,
+      "So_ngay_con_lai": 283,
       "Ti_le_CD_str": "3.863:1",
       "Ti_le_CD_num": 3.863
     },
@@ -4107,7 +4107,7 @@
       "Tong_KL": 0.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 30000.0,
-      "So_ngay_con_lai": 237,
+      "So_ngay_con_lai": 236,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     },
@@ -4120,7 +4120,7 @@
       "Tong_KL": 10200.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 23000.0,
-      "So_ngay_con_lai": 149,
+      "So_ngay_con_lai": 148,
       "Ti_le_CD_str": "2:1",
       "Ti_le_CD_num": 2.0
     },
@@ -4133,7 +4133,7 @@
       "Tong_KL": 398800.0,
       "Gia_hien_tai": 25500.0,
       "Gia_TH": 25000.0,
-      "So_ngay_con_lai": 219,
+      "So_ngay_con_lai": 218,
       "Ti_le_CD_str": "3:1",
       "Ti_le_CD_num": 3.0
     }
