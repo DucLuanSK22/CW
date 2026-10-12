@@ -954,6 +954,67 @@
         }
     }
 
+    async function resolveGeminiModel(apiKey) {
+        // 1. Try querying ListModels on v1beta
+        try {
+            const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+            if (listRes.ok) {
+                const data = await listRes.json();
+                const models = data.models || [];
+                const genModels = models.filter(m => m.supportedGenerationMethods?.includes('generateContent'));
+                const matched = genModels.find(m => m.name.includes('gemini-1.5-flash') || m.name.includes('gemini-2.0-flash') || m.name.includes('flash')) ||
+                                genModels.find(m => m.name.includes('pro')) || genModels[0];
+                if (matched) {
+                    const cleanName = matched.name.startsWith('models/') ? matched.name : `models/${matched.name}`;
+                    return {
+                        url: `https://generativelanguage.googleapis.com/v1beta/${cleanName}:generateContent?key=${apiKey}`,
+                        modelName: matched.displayName || matched.name
+                    };
+                }
+            }
+        } catch (_) {}
+
+        // 2. Try querying ListModels on v1
+        try {
+            const listResV1 = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${apiKey}`);
+            if (listResV1.ok) {
+                const data = await listResV1.json();
+                const models = data.models || [];
+                const genModels = models.filter(m => m.supportedGenerationMethods?.includes('generateContent'));
+                const matched = genModels.find(m => m.name.includes('gemini-1.5-flash') || m.name.includes('flash')) || genModels[0];
+                if (matched) {
+                    const cleanName = matched.name.startsWith('models/') ? matched.name : `models/${matched.name}`;
+                    return {
+                        url: `https://generativelanguage.googleapis.com/v1/${cleanName}:generateContent?key=${apiKey}`,
+                        modelName: matched.displayName || matched.name
+                    };
+                }
+            }
+        } catch (_) {}
+
+        // 3. Fallback candidates list if ListModels is restricted
+        const candidateUrls = [
+            { url: `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, name: "gemini-1.5-flash (v1)" },
+            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, name: "gemini-2.0-flash (v1beta)" },
+            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, name: "gemini-1.5-flash-latest" },
+            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, name: "gemini-1.5-pro" },
+            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, name: "gemini-pro" }
+        ];
+
+        for (const cand of candidateUrls) {
+            try {
+                const testRes = await fetch(cand.url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: "hi" }] }] })
+                });
+                if (testRes.ok) return { url: cand.url, modelName: cand.name };
+            } catch (_) {}
+        }
+
+        return candidateUrls[0];
+    }
+
     async function testAiConnection() {
         const proxyUrl = document.getElementById('proxyUrlInput').value.trim();
         const apiKey = document.getElementById('directApiKeyInput').value.trim();
@@ -963,11 +1024,11 @@
         statusDiv.style.display = 'block';
         statusDiv.style.background = '#1e293b';
         statusDiv.style.color = '#94a3b8';
-        statusDiv.innerHTML = '<i class="fa-solid fa-spinner spinner"></i> Đang kiểm tra kết nối API...';
+        statusDiv.innerHTML = '<i class="fa-solid fa-spinner spinner"></i> Đang tự động dò tìm mô hình Gemini phù hợp...';
         btn.disabled = true;
 
         try {
-            if (proxyUrl && !proxyUrl.includes('yourname')) {
+            if (proxyUrl && !proxyUrl.includes('yourname') && !proxyUrl.includes('tenban')) {
                 // Test proxy URL
                 const res = await fetch(proxyUrl, {
                     method: 'POST',
@@ -982,13 +1043,14 @@
                 statusDiv.style.color = '#34d399';
                 statusDiv.innerHTML = '✅ Kết nối Cloudflare Worker Proxy thành công!';
             } else if (apiKey) {
-                // Test direct Gemini API Key
-                const gUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-                const res = await fetch(gUrl, {
+                // Test direct Gemini API Key with dynamic model resolution
+                const resolved = await resolveGeminiModel(apiKey);
+                const res = await fetch(resolved.url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: "Trả lời đúng 1 từ: OK" }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: "Chào bạn, hãy trả lời đúng 1 từ: OK" }] }] })
                 });
+
                 if (!res.ok) {
                     let errMsg = `HTTP ${res.status}`;
                     try {
@@ -997,9 +1059,13 @@
                     } catch(_) {}
                     throw new Error(errMsg);
                 }
+
+                aiConfig.activeModelUrl = resolved.url;
+                localStorage.setItem('cw_gemini_config', JSON.stringify(aiConfig));
+
                 statusDiv.style.background = 'rgba(16, 185, 129, 0.15)';
                 statusDiv.style.color = '#34d399';
-                statusDiv.innerHTML = '✅ Kết nối Gemini API Key trực tiếp thành công!';
+                statusDiv.innerHTML = `✅ Kết nối thành công tới mô hình: <b>${resolved.modelName}</b>!`;
             } else {
                 throw new Error("Vui lòng nhập API Key hoặc Cloudflare Worker Proxy hợp lệ!");
             }
@@ -1016,13 +1082,14 @@
         let proxyUrl = document.getElementById('proxyUrlInput').value.trim();
         const apiKey = document.getElementById('directApiKeyInput').value.trim();
         
-        // Clear dummy placeholder URL if user kept "yourname"
-        if (proxyUrl.includes('yourname')) {
+        // Clear dummy placeholder URL if user kept "yourname" or "tenban"
+        if (proxyUrl.includes('yourname') || proxyUrl.includes('tenban')) {
             proxyUrl = '';
             document.getElementById('proxyUrlInput').value = '';
         }
 
-        aiConfig = { proxyUrl, apiKey };
+        aiConfig.proxyUrl = proxyUrl;
+        aiConfig.apiKey = apiKey;
         localStorage.setItem('cw_gemini_config', JSON.stringify(aiConfig));
         toggleChatSettings();
         showToast('Đã lưu cấu hình Gemini AI Chatbot thành công!', 'success');
@@ -1076,7 +1143,7 @@
             let usedProxy = false;
 
             // Check if valid proxy URL configured
-            if (aiConfig.proxyUrl && !aiConfig.proxyUrl.includes('yourname')) {
+            if (aiConfig.proxyUrl && !aiConfig.proxyUrl.includes('yourname') && !aiConfig.proxyUrl.includes('tenban')) {
                 try {
                     const res = await fetch(aiConfig.proxyUrl, {
                         method: 'POST',
@@ -1097,9 +1164,18 @@
 
             // Fallback to direct Gemini API Call if proxy not used or failed
             if (!usedProxy && aiConfig.apiKey) {
-                const systemPrompt = `Bạn là Antigravity CW AI Financial Analyst. Trả lời súc tích, chuyên nghiệp bằng tiếng Việt.\nDữ liệu chứng quyền real-time:\n${JSON.stringify(contextSubset, null, 2)}\n\nCâu hỏi: ${text}`;
-                const gUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${aiConfig.apiKey}`;
-                const res = await fetch(gUrl, {
+                const systemPrompt = `Bạn là Antigravity CW AI Financial Analyst. Trả lời súc tích, chuyên nghiệp bằng tiếng Việt.\nDỮ LIỆU THỊ TRƯỜNG CHỨNG QUYỀN REAL-TIME:\n${JSON.stringify(contextSubset, null, 2)}\n\nCÂU HỎI NHÀ ĐẦU TƯ: ${text}`;
+                
+                // Use cached model URL or resolve dynamically
+                let targetUrl = aiConfig.activeModelUrl;
+                if (!targetUrl || !targetUrl.includes(aiConfig.apiKey)) {
+                    const resolved = await resolveGeminiModel(aiConfig.apiKey);
+                    targetUrl = resolved.url;
+                    aiConfig.activeModelUrl = targetUrl;
+                    localStorage.setItem('cw_gemini_config', JSON.stringify(aiConfig));
+                }
+
+                const res = await fetch(targetUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }] })

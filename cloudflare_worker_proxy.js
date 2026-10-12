@@ -57,7 +57,13 @@ NHIỆM VỤ CỦA BẠN:
 2. Nêu rõ lý do dựa trên: % Moneyness, Phân Loại (1. ITM sâu -> 5. OTM sâu), Điểm TB ⭐, Đòn Bẩy Thực (Effective Gearing), Số ngày còn lại.
 3. Cảnh báo rủi ro nếu chứng quyền sắp đáo hạn (<20 ngày) hoặc quá xa trạng thái hòa vốn.`;
 
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const candidateUrls = [
+        `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`
+      ];
 
       const payload = {
         contents: [
@@ -74,13 +80,32 @@ NHIỆM VỤ CỦA BẠN:
         }
       };
 
-      const geminiRes = await fetch(geminiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
+      let geminiData = null;
+      let lastError = null;
 
-      const geminiData = await geminiRes.json();
+      for (const gUrl of candidateUrls) {
+        try {
+          const geminiRes = await fetch(gUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (geminiRes.ok) {
+            geminiData = await geminiRes.json();
+            break;
+          } else {
+            const errJson = await geminiRes.json().catch(() => ({}));
+            lastError = errJson.error?.message || `HTTP ${geminiRes.status}`;
+          }
+        } catch (e) {
+          lastError = e.message;
+        }
+      }
+
+      if (!geminiData) {
+        throw new Error(`Tất cả mô hình Gemini đều phản hồi lỗi: ${lastError}`);
+      }
+
       const replyText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || "Không thể lấy phản hồi từ Gemini API.";
 
       return new Response(JSON.stringify({ reply: replyText }), {
