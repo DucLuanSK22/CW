@@ -955,64 +955,64 @@
     }
 
     async function resolveGeminiModel(apiKey) {
+        let candidates = [
+            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, modelName: "gemini-3.8-flash" }
+        ];
+
         // 1. Try querying ListModels on v1beta
         try {
             const listRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
             if (listRes.ok) {
                 const data = await listRes.json();
-                const models = data.models || [];
-                const genModels = models.filter(m => m.supportedGenerationMethods?.includes('generateContent'));
-                const matched = genModels.find(m => m.name.includes('gemini-1.5-flash') || m.name.includes('gemini-2.0-flash') || m.name.includes('flash')) ||
-                                genModels.find(m => m.name.includes('pro')) || genModels[0];
-                if (matched) {
-                    const cleanName = matched.name.startsWith('models/') ? matched.name : `models/${matched.name}`;
-                    return {
+                const genModels = (data.models || []).filter(m => m.supportedGenerationMethods?.includes('generateContent'));
+                
+                // Sort: Prioritize gemini-3.8-flash, newer flash models, avoid deprecated versions
+                genModels.sort((a, b) => {
+                    const score = (name) => {
+                        if (name.includes('gemini-3.8-flash')) return 100;
+                        if (name.includes('gemini-3.0-flash')) return 90;
+                        if (name.includes('gemini-2.5-flash')) return 30; // Deprecated
+                        if (name.includes('gemini-2.0-flash')) return 70;
+                        if (name.includes('gemini-1.5-flash')) return 60;
+                        if (name.includes('flash')) return 50;
+                        return 20;
+                    };
+                    return score(b.name) - score(a.name);
+                });
+
+                for (const m of genModels) {
+                    const cleanName = m.name.startsWith('models/') ? m.name : `models/${m.name}`;
+                    candidates.push({
                         url: `https://generativelanguage.googleapis.com/v1beta/${cleanName}:generateContent?key=${apiKey}`,
-                        modelName: matched.displayName || matched.name
-                    };
+                        modelName: m.displayName || cleanName
+                    });
                 }
             }
         } catch (_) {}
 
-        // 2. Try querying ListModels on v1
-        try {
-            const listResV1 = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${apiKey}`);
-            if (listResV1.ok) {
-                const data = await listResV1.json();
-                const models = data.models || [];
-                const genModels = models.filter(m => m.supportedGenerationMethods?.includes('generateContent'));
-                const matched = genModels.find(m => m.name.includes('gemini-1.5-flash') || m.name.includes('flash')) || genModels[0];
-                if (matched) {
-                    const cleanName = matched.name.startsWith('models/') ? matched.name : `models/${matched.name}`;
-                    return {
-                        url: `https://generativelanguage.googleapis.com/v1/${cleanName}:generateContent?key=${apiKey}`,
-                        modelName: matched.displayName || matched.name
-                    };
-                }
-            }
-        } catch (_) {}
+        // 2. Add standard fallbacks
+        candidates.push(
+            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, modelName: "gemini-2.0-flash" },
+            { url: `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, modelName: "gemini-1.5-flash (v1)" },
+            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, modelName: "gemini-1.5-flash-latest" }
+        );
 
-        // 3. Fallback candidates list if ListModels is restricted
-        const candidateUrls = [
-            { url: `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, name: "gemini-1.5-flash (v1)" },
-            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, name: "gemini-2.0-flash (v1beta)" },
-            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, name: "gemini-1.5-flash-latest" },
-            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`, name: "gemini-1.5-pro" },
-            { url: `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, name: "gemini-pro" }
-        ];
-
-        for (const cand of candidateUrls) {
+        // 3. Test candidates one by one to find the working model that Google actually accepts
+        for (const cand of candidates) {
             try {
                 const testRes = await fetch(cand.url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: "hi" }] }] })
                 });
-                if (testRes.ok) return { url: cand.url, modelName: cand.name };
+                if (testRes.ok) {
+                    return cand;
+                }
             } catch (_) {}
         }
 
-        return candidateUrls[0];
+        // Return gemini-3.8-flash as default
+        return candidates[0];
     }
 
     async function testAiConnection() {
