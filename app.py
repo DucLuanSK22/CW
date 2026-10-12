@@ -609,6 +609,8 @@ if not cw_df.empty:
     with tab1:
         if 'user_holdings' not in st.session_state:
             st.session_state['user_holdings'] = USER_HOLDINGS.copy()
+        if 'user_holdings_meta' not in st.session_state:
+            st.session_state['user_holdings_meta'] = {}
 
         st.markdown("### 📌 Quản Lý Danh Mục Chứng Quyền Nắm Giữ")
         selected_holdings = st.multiselect(
@@ -621,7 +623,55 @@ if not cw_df.empty:
             st.session_state['user_holdings'] = selected_holdings
             st.rerun()
 
-        hold_df = unique_cw[unique_cw['CW'].isin(st.session_state['user_holdings'])].sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False])
+        # Input volume and buy price for each holding
+        if st.session_state['user_holdings']:
+            with st.expander("📝 **Cập Nhật Khối Lượng & Giá Gốc (Giá Vốn Mua) Từng Mã**", expanded=False):
+                meta_cols = st.columns(3)
+                for i, hcw in enumerate(st.session_state['user_holdings']):
+                    c_col = meta_cols[i % 3]
+                    curr_meta = st.session_state['user_holdings_meta'].get(hcw, {'volume': 0, 'buy_price': 0})
+                    with c_col:
+                        st.markdown(f"**🏷️ Mã: {hcw}**")
+                        bp = st.number_input(f"Giá vốn {hcw} (đ):", value=float(curr_meta.get('buy_price', 0)), step=50.0, key=f"bp_{hcw}")
+                        vol = st.number_input(f"Số lượng {hcw}:", value=int(curr_meta.get('volume', 0)), step=100, key=f"vol_{hcw}")
+                        st.session_state['user_holdings_meta'][hcw] = {'volume': vol, 'buy_price': bp}
+
+        hold_df = unique_cw[unique_cw['CW'].isin(st.session_state['user_holdings'])].copy()
+        if not hold_df.empty:
+            # Map metadata
+            hold_df['Gia_Goc'] = hold_df['CW'].apply(lambda c: st.session_state['user_holdings_meta'].get(c, {}).get('buy_price', 0.0))
+            hold_df['Khoi_Luong_Nam_Giu'] = hold_df['CW'].apply(lambda c: st.session_state['user_holdings_meta'].get(c, {}).get('volume', 0.0))
+            hold_df['Tong_Von'] = hold_df['Gia_Goc'] * hold_df['Khoi_Luong_Nam_Giu']
+            hold_df['Gia_Tri_TT'] = hold_df['Gia_CW'] * hold_df['Khoi_Luong_Nam_Giu']
+            hold_df['Lai_Lo_Vnd'] = hold_df['Gia_Tri_TT'] - hold_df['Tong_Von']
+            hold_df['Lai_Lo_Pct'] = np.where(hold_df['Gia_Goc'] > 0, (hold_df['Gia_CW'] - hold_df['Gia_Goc']) / hold_df['Gia_Goc'] * 100, 0.0)
+
+            # Portfolio KPI Summary
+            total_cost = hold_df['Tong_Von'].sum()
+            total_val = hold_df['Gia_Tri_TT'].sum()
+            total_pnl = total_val - total_cost
+            total_pnl_pct = (total_pnl / total_cost * 100) if total_cost > 0 else 0.0
+            pnl_color = "#10b981" if total_pnl >= 0 else "#ef4444"
+
+            if total_cost > 0:
+                st.markdown(f"""
+                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                    <div class="kpi-card">
+                        <div class="kpi-val" style="color: #f59e0b;">{total_cost:,.0f} đ</div>
+                        <div class="kpi-lbl">Tổng Vốn Mua</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-val" style="color: #60a5fa;">{total_val:,.0f} đ</div>
+                        <div class="kpi-lbl">Tổng Giá Trị Hiện Tại</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-val" style="color: {pnl_color};">{'+' if total_pnl >= 0 else ''}{total_pnl:,.0f} đ ({'+' if total_pnl_pct >= 0 else ''}{total_pnl_pct:.2f}%)</div>
+                        <div class="kpi-lbl">Tổng Lãi / Lỗ Danh Mục</div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        hold_df = hold_df.sort_values(by=['Diem_TB', 'Tong_KL'], ascending=[False, False])
         render_tab_content(
             hold_df,
             "📌 1. Danh Mục Chứng Quyền Đang Nắm Giữ",

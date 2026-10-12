@@ -1204,10 +1204,24 @@
         bodyContainer.scrollTop = bodyContainer.scrollHeight;
     }
     let USER_HOLDINGS = JSON.parse(localStorage.getItem('cw_user_holdings') || 'null') || ['CMBB2614', 'CVPB2615', 'CACB2511', 'CTCB2611', 'CACB2606', 'CMWG2616', 'CHPG2607'];
+    let USER_HOLDINGS_META = JSON.parse(localStorage.getItem('cw_user_holdings_meta') || '{}');
     let USER_WATCHLIST = JSON.parse(localStorage.getItem('cw_user_watchlist') || 'null') || ['CFPT2501', 'CVHM2502', 'CSTB2503', 'CVNM2504'];
     
     function saveUserHoldings() {
         localStorage.setItem('cw_user_holdings', JSON.stringify(USER_HOLDINGS));
+    }
+
+    function saveUserHoldingsMeta() {
+        localStorage.setItem('cw_user_holdings_meta', JSON.stringify(USER_HOLDINGS_META));
+    }
+
+    function updateHoldingMeta(cwCode, field, val) {
+        if (!USER_HOLDINGS_META[cwCode]) {
+            USER_HOLDINGS_META[cwCode] = { volume: 0, buyPrice: 0 };
+        }
+        USER_HOLDINGS_META[cwCode][field] = parseFloat(val) || 0;
+        saveUserHoldingsMeta();
+        renderCurrentTab();
     }
 
     function saveUserWatchlist() {
@@ -1625,18 +1639,32 @@
 
     function addManualHolding() {
         const input = document.getElementById('addHoldingInput');
+        const qtyInput = document.getElementById('addHoldingQty');
+        const priceInput = document.getElementById('addHoldingPrice');
         if (!input) return;
         const val = input.value.trim().toUpperCase();
         if (!val) return;
+
+        const qty = parseFloat(qtyInput ? qtyInput.value : 0) || 0;
+        const price = parseFloat(priceInput ? priceInput.value : 0) || 0;
+
         if (!USER_HOLDINGS.includes(val)) {
             USER_HOLDINGS.push(val);
-            saveUserHoldings();
-            showToast(`Đã thêm ${val} vào Danh Mục Nắm Giữ 📌`, 'success');
-            input.value = '';
-            renderCurrentTab();
-        } else {
-            showToast(`${val} đã có sẵn trong Danh Mục Nắm Giữ!`, 'warn');
         }
+        
+        USER_HOLDINGS_META[val] = {
+            volume: qty,
+            buyPrice: price
+        };
+
+        saveUserHoldings();
+        saveUserHoldingsMeta();
+
+        showToast(`Đã lưu ${val} (KL: ${qty.toLocaleString()}, Giá: ${price.toLocaleString()}đ) vào Nắm Giữ 📌`, 'success');
+        input.value = '';
+        if (qtyInput) qtyInput.value = '';
+        if (priceInput) priceInput.value = '';
+        renderCurrentTab();
     }
 
     function addManualWatchlist() {
@@ -1830,6 +1858,12 @@
         if (colKey === 'CW') return r.CW;
         if (colKey === 'TCPH') return r.TCPH;
         if (colKey === 'CK_co_so') return r.CK_co_so;
+        if (colKey === 'Gia_Goc') return r.Gia_Goc > 0 ? `${Math.round(r.Gia_Goc).toLocaleString()}đ` : '-';
+        if (colKey === 'Khoi_Luong') return r.Khoi_Luong > 0 ? Math.round(r.Khoi_Luong).toLocaleString() : '-';
+        if (colKey === 'Tong_Von') return r.Tong_Von > 0 ? `${Math.round(r.Tong_Von).toLocaleString()}đ` : '-';
+        if (colKey === 'Gia_Tri_TT') return r.Gia_Tri_TT > 0 ? `${Math.round(r.Gia_Tri_TT).toLocaleString()}đ` : '-';
+        if (colKey === 'Lai_Lo_Pct') return r.Gia_Goc > 0 ? (r.Lai_Lo_Pct >= 0 ? '+' : '') + r.Lai_Lo_Pct.toFixed(2) + '%' : '-';
+        if (colKey === 'Lai_Lo_Vnd') return r.Gia_Goc > 0 && r.Khoi_Luong > 0 ? (r.Lai_Lo_Vnd >= 0 ? '+' : '') + Math.round(r.Lai_Lo_Vnd).toLocaleString() + 'đ' : '-';
         if (colKey === 'Gia_CW') return `${Math.round(r.Gia_CW)}đ`;
         if (colKey === 'Pct_Change_CW') return (r.Pct_Change_CW > 0 ? '+' : '') + (r.Pct_Change_CW || 0).toFixed(2) + '%';
         if (colKey === 'Gia_hien_tai') return `${Math.round(r.Gia_hien_tai)}đ`;
@@ -1847,7 +1881,24 @@
 
     function getTabBaseSubset() {
         if (currentTab === 'tab1') {
-            const sub = allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW));
+            const sub = allWarrantsData.filter(d => USER_HOLDINGS.includes(d.CW)).map(d => {
+                const meta = USER_HOLDINGS_META[d.CW] || { volume: 0, buyPrice: 0 };
+                const buyPrice = meta.buyPrice || 0;
+                const vol = meta.volume || 0;
+                const cost = buyPrice * vol;
+                const curr = d.Gia_CW * vol;
+                const pnl = curr - cost;
+                const pnlPct = buyPrice > 0 ? ((d.Gia_CW - buyPrice) / buyPrice * 100) : 0;
+                return {
+                    ...d,
+                    Gia_Goc: buyPrice,
+                    Khoi_Luong: vol,
+                    Tong_Von: cost,
+                    Gia_Tri_TT: curr,
+                    Lai_Lo_Pct: pnlPct,
+                    Lai_Lo_Vnd: pnl
+                };
+            });
             return sub.sort((a, b) => b.Diem_TB !== a.Diem_TB ? b.Diem_TB - a.Diem_TB : b.Tong_KL - a.Tong_KL);
         } else if (currentTab === 'tab2') {
             const sub = allWarrantsData.filter(d => USER_WATCHLIST.includes(d.CW));
@@ -1860,17 +1911,38 @@
     }
 
     function generateTSV(subset) {
-        let lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\t% Tăng/Giảm CW\tTrạng thái (Moneyness)\t% Moneyness\tPhân Loại\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"];
+        let headers = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)"];
+        if (currentTab === 'tab1') {
+            headers.push("Giá Gốc (đ)\tKhối Lượng\tTổng Vốn (đ)\tGiá Trị TT (đ)\t% Lãi/Lỗ\tLãi/Lỗ (VNĐ)");
+        }
+        headers.push("Thị giá CW\t% Tăng/Giảm CW\tTrạng thái (Moneyness)\t% Moneyness\tPhân Loại\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB");
+        let lines = [headers.join("\t")];
+
         subset.forEach((r, idx) => {
             const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
             const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
             const pctStr = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
             const pctCwStr = (r.Pct_Change_CW > 0 ? '+' : '') + (r.Pct_Change_CW || 0).toFixed(2) + '%';
+            
             const row = [
                 `TOP ${idx + 1}`,
                 r.CW,
                 r.TCPH,
-                `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`,
+                `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`
+            ];
+
+            if (currentTab === 'tab1') {
+                row.push(
+                    r.Gia_Goc > 0 ? `${Math.round(r.Gia_Goc)}đ` : '-',
+                    r.Khoi_Luong > 0 ? Math.round(r.Khoi_Luong).toLocaleString() : '-',
+                    r.Tong_Von > 0 ? `${Math.round(r.Tong_Von).toLocaleString()}đ` : '-',
+                    r.Gia_Tri_TT > 0 ? `${Math.round(r.Gia_Tri_TT).toLocaleString()}đ` : '-',
+                    r.Gia_Goc > 0 ? (r.Lai_Lo_Pct >= 0 ? '+' : '') + r.Lai_Lo_Pct.toFixed(2) + '%' : '-',
+                    r.Gia_Goc > 0 && r.Khoi_Luong > 0 ? (r.Lai_Lo_Vnd >= 0 ? '+' : '') + Math.round(r.Lai_Lo_Vnd).toLocaleString() + 'đ' : '-'
+                );
+            }
+
+            row.push(
                 `${Math.round(r.Gia_CW)}đ`,
                 pctCwStr,
                 mStr,
@@ -1881,7 +1953,7 @@
                 `${Math.round(r.So_ngay_con_lai)} ngày`,
                 Math.round(r.Tong_KL).toLocaleString(),
                 `${r.Diem_TB.toFixed(1)} ⭐`
-            ];
+            );
             lines.push(row.join("\t"));
         });
         return lines.join("\n");
@@ -1893,22 +1965,35 @@
             const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
             const pctStr = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
             const pctCwStr = (r.Pct_Change_CW > 0 ? '+' : '') + (r.Pct_Change_CW || 0).toFixed(2) + '%';
-            return {
+            
+            const item = {
                 "Xếp hạng": `TOP ${idx + 1}`,
                 "Mã CW": r.CW,
                 "TCPH": r.TCPH,
-                "Cơ sở (Giá TT)": `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`,
-                "Thị giá CW": `${Math.round(r.Gia_CW)}đ`,
-                "% Tăng/Giảm CW": pctCwStr,
-                "Trạng thái": mStr,
-                "% Moneyness": pctStr,
-                "Phân Loại": r.Phan_loai_Moneyness,
-                "Giá TH": `${Math.round(r.Gia_TH)}đ`,
-                "Tỉ lệ CĐ": r.Ti_le_CD_str,
-                "Thời gian còn lại": `${Math.round(r.So_ngay_con_lai)} ngày`,
-                "Tổng KL": r.Tong_KL,
-                "Điểm TB": `${r.Diem_TB.toFixed(1)} ⭐`
+                "Cơ sở (Giá TT)": `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`
             };
+
+            if (currentTab === 'tab1') {
+                item["Giá Gốc (đ)"] = r.Gia_Goc > 0 ? r.Gia_Goc : '';
+                item["Khối Lượng"] = r.Khoi_Luong > 0 ? r.Khoi_Luong : '';
+                item["Tổng Vốn (đ)"] = r.Tong_Von > 0 ? r.Tong_Von : '';
+                item["Giá Trị TT (đ)"] = r.Gia_Tri_TT > 0 ? r.Gia_Tri_TT : '';
+                item["% Lãi/Lỗ"] = r.Gia_Goc > 0 ? `${(r.Lai_Lo_Pct >= 0 ? '+' : '')}${r.Lai_Lo_Pct.toFixed(2)}%` : '';
+                item["Lãi/Lỗ (VNĐ)"] = (r.Gia_Goc > 0 && r.Khoi_Luong > 0) ? r.Lai_Lo_Vnd : '';
+            }
+
+            item["Thị giá CW"] = `${Math.round(r.Gia_CW)}đ`;
+            item["% Tăng/Giảm CW"] = pctCwStr;
+            item["Trạng thái"] = mStr;
+            item["% Moneyness"] = pctStr;
+            item["Phân Loại"] = r.Phan_loai_Moneyness;
+            item["Giá TH"] = `${Math.round(r.Gia_TH)}đ`;
+            item["Tỉ lệ CĐ"] = r.Ti_le_CD_str;
+            item["Thời gian còn lại"] = `${Math.round(r.So_ngay_con_lai)} ngày`;
+            item["Tổng KL"] = r.Tong_KL;
+            item["Điểm TB"] = `${r.Diem_TB.toFixed(1)} ⭐`;
+
+            return item;
         });
         const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
         const workbook = XLSX.utils.book_new();
@@ -1987,7 +2072,21 @@
             { key: 'STT', name: 'STT', cls: 'col-compact' },
             { key: 'CW', name: 'Mã CW', cls: 'col-compact' },
             { key: 'TCPH', name: 'TCPH', cls: 'col-compact' },
-            { key: 'CK_co_so', name: 'CK Cơ Sở', cls: 'col-compact' },
+            { key: 'CK_co_so', name: 'CK Cơ Sở', cls: 'col-compact' }
+        ];
+
+        if (currentTab === 'tab1') {
+            columnsHeader.push(
+                { key: 'Gia_Goc', name: 'Giá Gốc (đ)', cls: 'col-compact' },
+                { key: 'Khoi_Luong', name: 'Khối Lượng', cls: 'col-compact' },
+                { key: 'Tong_Von', name: 'Tổng Vốn (đ)', cls: 'col-compact' },
+                { key: 'Gia_Tri_TT', name: 'Giá Trị TT (đ)', cls: 'col-compact' },
+                { key: 'Lai_Lo_Pct', name: '% Lãi/Lỗ', cls: 'col-compact' },
+                { key: 'Lai_Lo_Vnd', name: 'Lãi/Lỗ (VNĐ)', cls: 'col-compact' }
+            );
+        }
+
+        columnsHeader.push(
             { key: 'Gia_CW', name: 'Giá CW', cls: 'col-compact' },
             { key: 'Pct_Change_CW', name: '% Tăng/Giảm CW', cls: 'col-compact' },
             { key: 'Gia_hien_tai', name: 'Giá Cơ Sở', cls: 'col-compact' },
@@ -1998,7 +2097,7 @@
             { key: 'So_ngay_con_lai', name: 'Ngày Còn Lai', cls: 'col-compact' },
             { key: 'Tong_KL', name: 'Tổng KL', cls: 'col-compact' },
             { key: 'Diem_TB', name: 'Điểm TB ⭐', cls: 'col-compact' }
-        ];
+        );
 
         if (currentTab === 'tab3') columnsHeader.push({ key: 'Effective_Gearing', name: 'Đòn Bẩy Thực (Ω)', cls: 'col-compact' });
         if (currentTab === 'tab1' || currentTab === 'tab2') columnsHeader.push({ key: 'Khuyen_nghi', name: 'Khuyến Nghị', cls: 'col-compact' });
@@ -2026,6 +2125,10 @@
             const isPinnedHolding = USER_HOLDINGS.includes(r.CW);
             const isPinnedWatchlist = USER_WATCHLIST.includes(r.CW);
 
+            // Tab 1 Holdings Meta Calculation
+            const pnlColor = r.Lai_Lo_Vnd > 0 ? '#10b981' : (r.Lai_Lo_Vnd < 0 ? '#ef4444' : '#94a3b8');
+            const pnlSign = r.Lai_Lo_Vnd > 0 ? '+' : '';
+
             return `
                 <tr oncontextmenu="openContextMenu(event, '${r.CW}')" data-cw="${r.CW}">
                     <td class="col-compact">
@@ -2040,6 +2143,18 @@
                     <td class="col-compact"><b>${r.CW}</b></td>
                     <td class="col-compact">${r.TCPH}</td>
                     <td class="col-compact"><b>${r.CK_co_so}</b></td>
+                    ${currentTab === 'tab1' ? `
+                    <td class="col-compact">
+                        <input type="number" step="10" value="${r.Gia_Goc || ''}" placeholder="Giá gốc..." onchange="updateHoldingMeta('${r.CW}', 'buyPrice', this.value)" style="width: 82px; background: #0b0e14; border: 1px solid #334155; color: #f59e0b; padding: 4px 6px; border-radius: 4px; font-size: 12px; font-weight: 700; text-align: right;">đ
+                    </td>
+                    <td class="col-compact">
+                        <input type="number" step="100" value="${r.Khoi_Luong || ''}" placeholder="Số lượng..." onchange="updateHoldingMeta('${r.CW}', 'volume', this.value)" style="width: 82px; background: #0b0e14; border: 1px solid #334155; color: #60a5fa; padding: 4px 6px; border-radius: 4px; font-size: 12px; font-weight: 700; text-align: right;">
+                    </td>
+                    <td class="col-compact" style="color: #cbd5e1; font-weight: 600;">${r.Tong_Von > 0 ? Math.round(r.Tong_Von).toLocaleString() + 'đ' : '-'}</td>
+                    <td class="col-compact" style="color: #60a5fa; font-weight: 600;">${r.Gia_Tri_TT > 0 ? Math.round(r.Gia_Tri_TT).toLocaleString() + 'đ' : '-'}</td>
+                    <td class="col-compact" style="color: ${pnlColor}; font-weight: 700;">${r.Gia_Goc > 0 ? (r.Lai_Lo_Pct >= 0 ? '+' : '') + r.Lai_Lo_Pct.toFixed(2) + '%' : '-'}</td>
+                    <td class="col-compact" style="color: ${pnlColor}; font-weight: 700;">${r.Gia_Goc > 0 && r.Khoi_Luong > 0 ? `${pnlSign}${Math.round(r.Lai_Lo_Vnd).toLocaleString()}đ` : '-'}</td>
+                    ` : ''}
                     <td class="col-compact">${Math.round(r.Gia_CW).toLocaleString()}đ</td>
                     <td class="col-compact" style="color: ${pctCwColor}; font-weight: 700;">${pctCwText}</td>
                     <td class="col-compact">${Math.round(r.Gia_hien_tai).toLocaleString()}đ</td>
@@ -2077,7 +2192,7 @@
         if (existingTableBody && container.getAttribute('data-rendered-tab') === currentTab) {
             const thRow = document.getElementById('tableHeaderRow');
             if (thRow) thRow.innerHTML = thsHtml;
-            existingTableBody.innerHTML = tableRows.length > 0 ? tableRows : '<tr><td colspan="14" style="text-align:center; padding: 24px; color: var(--text-muted);">Không tìm thấy dữ liệu phù hợp với bộ lọc</td></tr>';
+            existingTableBody.innerHTML = tableRows.length > 0 ? tableRows : '<tr><td colspan="20" style="text-align:center; padding: 24px; color: var(--text-muted);">Không tìm thấy dữ liệu phù hợp với bộ lọc</td></tr>';
             const countNumEl = document.getElementById('resultCountNum');
             if (countNumEl) countNumEl.innerText = subset.length;
             const tsvEl = document.getElementById('tsvTextArea');
@@ -2090,17 +2205,47 @@
 
         let holdingsControlHtml = '';
         if (currentTab === 'tab1') {
+            // Calculate Portfolio Summary Metrics
+            let portTotalCost = 0;
+            let portTotalValue = 0;
+            subset.forEach(r => {
+                portTotalCost += (r.Tong_Von || 0);
+                portTotalValue += (r.Gia_Tri_TT || 0);
+            });
+            const portTotalPnl = portTotalValue - portTotalCost;
+            const portTotalPnlPct = portTotalCost > 0 ? (portTotalPnl / portTotalCost * 100) : 0;
+            const portPnlColor = portTotalPnl >= 0 ? '#10b981' : '#ef4444';
+
             holdingsControlHtml = `
-                <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                    <span style="font-weight: 700; font-size: 14px; color: #f59e0b;"><i class="fa-solid fa-list-check"></i> Quản Lý Danh Mục Nắm Giữ:</span>
-                    <div style="position: relative; width: 230px;">
-                        <input type="text" id="addHoldingInput" placeholder="Nhập Mã CW (VD: CVPB2615)..." autocomplete="off" oninput="handleHoldingInput(event)" onkeydown="handleHoldingKeydown(event)" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 8px 12px; border-radius: 6px; font-size: 13px; outline: none; width: 100%;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 18px;">
+                    <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 14px 18px; text-align: center;">
+                        <div style="font-size: 11.5px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">💰 TỔNG VỐN ĐẦU TƯ</div>
+                        <div style="font-size: 22px; font-weight: 700; color: #f59e0b; margin-top: 4px;">${Math.round(portTotalCost).toLocaleString()} đ</div>
+                    </div>
+                    <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 14px 18px; text-align: center;">
+                        <div style="font-size: 11.5px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">📊 TỔNG GIÁ TRỊ HIỆN TẠI</div>
+                        <div style="font-size: 22px; font-weight: 700; color: #60a5fa; margin-top: 4px;">${Math.round(portTotalValue).toLocaleString()} đ</div>
+                    </div>
+                    <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 14px 18px; text-align: center;">
+                        <div style="font-size: 11.5px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">🎯 TỔNG LÃI / LỖ DANH MỤC</div>
+                        <div style="font-size: 22px; font-weight: 700; color: ${portPnlColor}; margin-top: 4px;">
+                            ${portTotalPnl >= 0 ? '+' : ''}${Math.round(portTotalPnl).toLocaleString()} đ (${portTotalPnl >= 0 ? '+' : ''}${portTotalPnlPct.toFixed(2)}%)
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: #141c2e; border: 1px solid #23314d; border-radius: 10px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <span style="font-weight: 700; font-size: 13.5px; color: #f59e0b;"><i class="fa-solid fa-list-check"></i> Quản Lý Nắm Giữ:</span>
+                    <div style="position: relative; width: 170px;">
+                        <input type="text" id="addHoldingInput" placeholder="Mã CW (VD: CVPB2615)..." autocomplete="off" oninput="handleHoldingInput(event)" onkeydown="handleHoldingKeydown(event)" style="background: #0b0e14; border: 1px solid #2e3e5e; color: #e0e6ed; padding: 7px 10px; border-radius: 6px; font-size: 12.5px; outline: none; width: 100%;">
                         <div id="holdingAutocompleteBox" class="search-autocomplete-box"></div>
                     </div>
-                    <button onclick="addManualHolding()" style="background: #2563eb; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                    <input type="number" id="addHoldingPrice" placeholder="Giá gốc (đ)..." style="background: #0b0e14; border: 1px solid #2e3e5e; color: #f59e0b; padding: 7px 10px; border-radius: 6px; font-size: 12.5px; outline: none; width: 120px;">
+                    <input type="number" id="addHoldingQty" placeholder="Số lượng..." style="background: #0b0e14; border: 1px solid #2e3e5e; color: #60a5fa; padding: 7px 10px; border-radius: 6px; font-size: 12.5px; outline: none; width: 110px;">
+                    <button onclick="addManualHolding()" style="background: #2563eb; color: white; border: none; padding: 7px 15px; border-radius: 6px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px;">
                         <i class="fa-solid fa-plus"></i> Thêm Nắm Giữ
                     </button>
-                    <span style="color: #94a3b8; font-size: 12.5px;">💡 <b>Mẹo:</b> Dùng ⬆️⬇️ để chọn gợi ý hoặc 📌/👁️ để ghim nhanh!</span>
+                    <span style="color: #94a3b8; font-size: 12px;">💡 <i>Bạn có thể gõ chỉnh sửa trực tiếp Khối Lượng và Giá Gốc ngay trong từng dòng của bảng!</i></span>
                 </div>
             `;
         } else if (currentTab === 'tab2') {
