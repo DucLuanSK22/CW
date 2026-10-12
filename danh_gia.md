@@ -1,5 +1,8 @@
 # Phương Pháp Đánh Giá Sao (& Mô Hình Định Lượng CW)
 
+> [!NOTE]
+> 📖 **Xem Quy Chuẩn Chi Tiết So Sánh Giữa 2 Mô Hình:** Xem tài liệu chuẩn hóa đầy đủ tại [MO_HINH_LL5S_VS_FINBEE5S.md](file:///c:/Users/luanl/OneDrive/Desktop/II/Investment/CW/MO_HINH_LL5S_VS_FINBEE5S.md) để nắm rõ sự phối hợp giữa **Mô hình Sàng lọc Thị trường (Finbee 5s)** và **Mô hình Quản trị Danh mục Thực chiến (LL5s)**.
+
 Hệ thống Phân Tích & Định Giá Chứng Quyền (Covered Warrants - CW) sử dụng **Phương pháp Đánh giá Định lượng Đa Tiêu chí (Multi-Criteria Quantitative Scoring Framework)** để tự động chấm điểm xếp hạng từ **1.0 đến 5.0 sao (⭐)** cho từng mã chứng quyền đang giao dịch trên thị trường.
 
 Điểm tổng sắp (**`Điểm TB ⭐`**) là trung bình cộng của **5 trụ cột chỉ số thành phần** (mỗi chỉ số được chấm từ 1 đến 5 sao dựa trên dữ liệu realtime của SSI iBoard):
