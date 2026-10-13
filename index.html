@@ -1229,6 +1229,7 @@
     }
 
     let allWarrantsData = [];
+    let currentFilteredSubset = [];
     let currentTab = 'tab1';
     let lastUpdateStr = '';
 
@@ -1959,46 +1960,90 @@
         return lines.join("\n");
     }
 
+    function exportCurrentTabExcel() {
+        let tabPrefix = "DanhMuc_NamGiu_CW";
+        if (currentTab === 'tab1') tabPrefix = "DanhMuc_NamGiu_CW";
+        else if (currentTab === 'tab2') tabPrefix = "DanhSach_TheoDoi_CW";
+        else if (currentTab === 'tab3') tabPrefix = "Top30_TiemNang_CW";
+        else if (currentTab === 'tab4') tabPrefix = "ToanBo_ChungQuyen_CW";
+
+        const now = new Date();
+        const dateStr = `${now.getFullYear()}${(now.getMonth()+1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}`;
+        const filename = `${tabPrefix}_${dateStr}`;
+
+        exportToExcel(currentFilteredSubset, filename);
+    }
+
     function exportToExcel(subset, filename) {
+        if (!subset || subset.length === 0) {
+            showToast('Không có dữ liệu phù hợp với bộ lọc hiện tại để xuất!', 'warn');
+            return;
+        }
+
         const dataForExcel = subset.map((r, idx) => {
             const diff = (r.Gia_hien_tai - r.Gia_TH) / 1000.0;
             const mStr = diff > 0 ? `ITM (+${diff.toFixed(2)}k)` : (diff < 0 ? `OTM (${diff.toFixed(2)}k)` : "ATM (0.00k)");
             const pctStr = (r.Pct_to_ITM > 0 ? '+' : '') + r.Pct_to_ITM.toFixed(2) + '%';
-            const pctCwStr = (r.Pct_Change_CW > 0 ? '+' : '') + (r.Pct_Change_CW || 0).toFixed(2) + '%';
+            const pctCwVal = r.Pct_Change_CW || 0;
+            const pctCwStr = (pctCwVal > 0 ? '+' : '') + pctCwVal.toFixed(2) + '%';
             
             const item = {
-                "Xếp hạng": `TOP ${idx + 1}`,
+                "STT": idx + 1,
                 "Mã CW": r.CW,
                 "TCPH": r.TCPH,
                 "Cơ sở (Giá TT)": `${r.CK_co_so} (${(r.Gia_hien_tai/1000).toFixed(2)}k)`
             };
 
             if (currentTab === 'tab1') {
-                item["Giá Gốc (đ)"] = r.Gia_Goc > 0 ? r.Gia_Goc : '';
-                item["Khối Lượng"] = r.Khoi_Luong > 0 ? r.Khoi_Luong : '';
-                item["Tổng Vốn (đ)"] = r.Tong_Von > 0 ? r.Tong_Von : '';
-                item["Giá Trị TT (đ)"] = r.Gia_Tri_TT > 0 ? r.Gia_Tri_TT : '';
-                item["% Lãi/Lỗ"] = r.Gia_Goc > 0 ? `${(r.Lai_Lo_Pct >= 0 ? '+' : '')}${r.Lai_Lo_Pct.toFixed(2)}%` : '';
-                item["Lãi/Lỗ (VNĐ)"] = (r.Gia_Goc > 0 && r.Khoi_Luong > 0) ? r.Lai_Lo_Vnd : '';
+                item["Giá Gốc (đ)"] = r.Gia_Goc > 0 ? r.Gia_Goc : 0;
+                item["Khối Lượng"] = r.Khoi_Luong > 0 ? r.Khoi_Luong : 0;
+                item["Tổng Vốn (đ)"] = r.Tong_Von > 0 ? r.Tong_Von : 0;
+                item["Giá Trị TT (đ)"] = r.Gia_Tri_TT > 0 ? r.Gia_Tri_TT : 0;
+                item["% Lãi/Lỗ"] = r.Gia_Goc > 0 ? `${(r.Lai_Lo_Pct >= 0 ? '+' : '')}${r.Lai_Lo_Pct.toFixed(2)}%` : '0.00%';
+                item["Lãi/Lỗ (VNĐ)"] = (r.Gia_Goc > 0 && r.Khoi_Luong > 0) ? r.Lai_Lo_Vnd : 0;
             }
 
-            item["Thị giá CW"] = `${Math.round(r.Gia_CW)}đ`;
+            item["Thị giá CW (đ)"] = Math.round(r.Gia_CW);
             item["% Tăng/Giảm CW"] = pctCwStr;
-            item["Trạng thái"] = mStr;
+            item["Giá Cơ Sở (đ)"] = Math.round(r.Gia_hien_tai);
+            item["Giá Thực Hiện (đ)"] = Math.round(r.Gia_TH);
+            item["Trạng thái (Moneyness)"] = mStr;
             item["% Moneyness"] = pctStr;
             item["Phân Loại"] = r.Phan_loai_Moneyness;
-            item["Giá TH"] = `${Math.round(r.Gia_TH)}đ`;
             item["Tỉ lệ CĐ"] = r.Ti_le_CD_str;
-            item["Thời gian còn lại"] = `${Math.round(r.So_ngay_con_lai)} ngày`;
-            item["Tổng KL"] = r.Tong_KL;
-            item["Điểm TB"] = `${r.Diem_TB.toFixed(1)} ⭐`;
+            item["Thời gian còn lại (ngày)"] = Math.round(r.So_ngay_con_lai);
+            item["Tổng KL Khớp"] = r.Tong_KL;
+            item["Điểm TB ⭐"] = `${r.Diem_TB.toFixed(1)} ⭐`;
+
+            if (currentTab === 'tab3') {
+                item["Đòn Bẩy Thực (Ω)"] = `${r.Effective_Gearing ? r.Effective_Gearing.toFixed(2) + 'x' : '-'}`;
+            }
+
+            if (currentTab === 'tab1' || currentTab === 'tab2') {
+                item["Khuyến Nghị"] = r.Khuyen_nghi || '-';
+            }
 
             return item;
         });
+
         const worksheet = XLSX.utils.json_to_sheet(dataForExcel);
+
+        // Auto-fit column widths
+        const colKeys = Object.keys(dataForExcel[0] || {});
+        worksheet['!cols'] = colKeys.map(k => ({
+            wch: Math.max(k.length + 4, 12)
+        }));
+
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "CW_Data");
+        let sheetName = "CW_Data";
+        if (currentTab === 'tab1') sheetName = "DanhMuc_NamGiu";
+        else if (currentTab === 'tab2') sheetName = "DanhSach_TheoDoi";
+        else if (currentTab === 'tab3') sheetName = "Top30_TiemNang";
+        else sheetName = "ToanBo_CW";
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
         XLSX.writeFile(workbook, `${filename}.xlsx`);
+        showToast(`Đã tải thành công ${subset.length} mã của danh mục hiện tại ra file Excel!`, 'success');
     }
 
     function switchTab(tabId, btn) {
@@ -2067,6 +2112,8 @@
                 return sortAsc ? (valA - valB) : (valB - valA);
             });
         }
+
+        currentFilteredSubset = subset;
 
         const columnsHeader = [
             { key: 'STT', name: 'STT', cls: 'col-compact' },
@@ -2302,9 +2349,12 @@
                 </div>
                 <div>
                     <h3 style="margin-bottom: 10px;"><i class="fa-solid fa-file-export"></i> Xuất File Trực Tiếp</h3>
-                    <button class="btn-action btn-excel" onclick="exportToExcel(allWarrantsData, '${currentTab}_CW_Report')">
-                        <i class="fa-solid fa-file-excel"></i> Tải File Excel (.xlsx)
+                    <button class="btn-action btn-excel" onclick="exportCurrentTabExcel()">
+                        <i class="fa-solid fa-file-excel"></i> Tải File Excel (.xlsx) Của Danh Mục Này
                     </button>
+                    <div style="font-size: 11.5px; color: #94a3b8; margin-top: 6px;">
+                        Tải chính xác danh sách đang hiển thị và các bộ lọc hiện tại của trang này
+                    </div>
                 </div>
             </div>
         `;

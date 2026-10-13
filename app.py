@@ -295,9 +295,19 @@ def evaluate_cw(df):
     df['Khuyen_nghi'] = res_df['Khuyen_nghi']
     return df
 
-def to_tsv(df_subset):
+def to_tsv(df_subset, tab_name="CW_Analysis"):
     """Original TSV string format specification for Excel copy-paste."""
-    lines = ["Xếp hạng\tMã CW\tTCPH\tCơ sở (Giá TT)\tThị giá CW\t% Tăng/Giảm CW\tTrạng thái (Moneyness)\t% Moneyness\tGiá TH\tTỉ lệ CĐ\tThời gian còn lại\tTổng KL\tĐiểm TB"]
+    is_holdings = 'Gia_Goc' in df_subset.columns
+    headers = ["Xếp hạng", "Mã CW", "TCPH", "Cơ sở (Giá TT)"]
+    if is_holdings:
+        headers.extend(["Giá Gốc (đ)", "Khối Lượng", "Tổng Vốn (đ)", "Giá Trị TT (đ)", "% Lãi/Lỗ", "Lãi/Lỗ (VNĐ)"])
+    headers.extend(["Thị giá CW", "% Tăng/Giảm CW", "Trạng thái (Moneyness)", "% Moneyness", "Giá TH", "Tỉ lệ CĐ", "Thời gian còn lại", "Tổng KL", "Điểm TB"])
+    if 'Effective_Gearing' in df_subset.columns:
+        headers.append("Đòn Bẩy Thực (Ω)")
+    if 'Khuyen_nghi' in df_subset.columns:
+        headers.append("Khuyến Nghị")
+    lines = ["\t".join(headers)]
+    
     for idx, r in df_subset.reset_index(drop=True).iterrows():
         diff = (r['Gia_hien_tai'] - r['Gia_TH']) / 1000.0
         m_str = f"ITM (+{diff:.2f}k)" if diff > 0 else (f"OTM ({diff:.2f}k)" if diff < 0 else "ATM (0.00k)")
@@ -308,7 +318,24 @@ def to_tsv(df_subset):
             f"TOP {idx + 1}",
             str(r['CW']),
             str(r['TCPH']),
-            f"{r['CK_co_so']} ({r['Gia_hien_tai']/1000:.2f}k)",
+            f"{r['CK_co_so']} ({r['Gia_hien_tai']/1000:.2f}k)"
+        ]
+        if is_holdings:
+            bp = r.get('Gia_Goc', 0)
+            vol = r.get('Khoi_Luong_Nam_Giu', 0)
+            cost = r.get('Tong_Von', 0)
+            val = r.get('Gia_Tri_TT', 0)
+            pnl_pct = r.get('Lai_Lo_Pct', 0)
+            pnl_vnd = r.get('Lai_Lo_Vnd', 0)
+            row_vals.extend([
+                f"{bp:,.0f}đ" if bp > 0 else "-",
+                f"{vol:,.0f}" if vol > 0 else "-",
+                f"{cost:,.0f}đ" if cost > 0 else "-",
+                f"{val:,.0f}đ" if val > 0 else "-",
+                f"{pnl_pct:+.2f}%" if bp > 0 else "-",
+                f"{pnl_vnd:+,.0f}đ" if (bp > 0 and vol > 0) else "-"
+            ])
+        row_vals.extend([
             f"{r['Gia_CW']:.0f}đ",
             pct_cw_str,
             m_str,
@@ -318,35 +345,58 @@ def to_tsv(df_subset):
             f"{r['So_ngay_con_lai']:.0f} ngày",
             f"{r['Tong_KL']:,.0f}",
             f"{r['Diem_TB']:.1f} ⭐"
-        ]
+        ])
+        if 'Effective_Gearing' in r:
+            row_vals.append(f"{r['Effective_Gearing']:.2f}x")
+        if 'Khuyen_nghi' in r:
+            row_vals.append(str(r['Khuyen_nghi']))
         lines.append("\t".join(row_vals))
     return "\n".join(lines)
 
 def to_excel_bytes(df_subset, tab_name="CW_Analysis"):
     """Generates Excel binary file (.xlsx) for download."""
-    export_df = pd.DataFrame()
+    rows = []
+    is_holdings = 'Gia_Goc' in df_subset.columns
     for idx, r in df_subset.reset_index(drop=True).iterrows():
         diff = (r['Gia_hien_tai'] - r['Gia_TH']) / 1000.0
         m_str = f"ITM (+{diff:.2f}k)" if diff > 0 else (f"OTM ({diff:.2f}k)" if diff < 0 else "ATM (0.00k)")
         pct_itm_str = f"{r['Pct_to_ITM']:+.2f}%"
         pct_cw = r.get('Pct_Change_CW', 0.0)
         pct_cw_str = f"+{pct_cw:.2f}%" if pct_cw > 0 else f"{pct_cw:.2f}%"
-        export_df = pd.concat([export_df, pd.DataFrame([{
+        
+        row_dict = {
             'Xếp hạng': f"TOP {idx + 1}",
             'Mã CW': str(r['CW']),
             'TCPH': str(r['TCPH']),
             'Cơ sở (Giá TT)': f"{r['CK_co_so']} ({r['Gia_hien_tai']/1000:.2f}k)",
-            'Thị giá CW': f"{r['Gia_CW']:.0f}đ",
+        }
+        if is_holdings:
+            row_dict['Giá Gốc (đ)'] = r.get('Gia_Goc', 0)
+            row_dict['Khối Lượng'] = r.get('Khoi_Luong_Nam_Giu', 0)
+            row_dict['Tổng Vốn (đ)'] = r.get('Tong_Von', 0)
+            row_dict['Giá Trị TT (đ)'] = r.get('Gia_Tri_TT', 0)
+            row_dict['% Lãi/Lỗ'] = f"{r.get('Lai_Lo_Pct', 0):+.2f}%"
+            row_dict['Lãi/Lỗ (VNĐ)'] = r.get('Lai_Lo_Vnd', 0)
+        
+        row_dict.update({
+            'Thị giá CW (đ)': r['Gia_CW'],
             '% Tăng/Giảm CW': pct_cw_str,
+            'Giá Cơ Sở (đ)': r['Gia_hien_tai'],
+            'Giá TH (đ)': r['Gia_TH'],
             'Trạng thái (Moneyness)': m_str,
             '% Moneyness': pct_itm_str,
-            'Giá TH': f"{r['Gia_TH']:.0f}đ",
             'Tỉ lệ CĐ': str(r['Ti_le_CD_str']),
-            'Thời gian còn lại': f"{r['So_ngay_con_lai']:.0f} ngày",
+            'Thời gian còn lại (ngày)': r['So_ngay_con_lai'],
             'Tổng KL': r['Tong_KL'],
             'Điểm TB': f"{r['Diem_TB']:.1f} ⭐"
-        }])], ignore_index=True)
+        })
+        if 'Effective_Gearing' in r:
+            row_dict['Đòn Bẩy Thực (Ω)'] = f"{r['Effective_Gearing']:.2f}x"
+        if 'Khuyen_nghi' in r:
+            row_dict['Khuyến Nghị'] = str(r['Khuyen_nghi'])
+        rows.append(row_dict)
     
+    export_df = pd.DataFrame(rows)
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='openpyxl') as writer:
         export_df.to_excel(writer, sheet_name=tab_name, index=False)
